@@ -1,0 +1,96 @@
+
+syntax = "proto3";
+
+package weblogin;
+
+import "golang.conradwood.net/apis/auth/auth.proto";
+option java_package = "net.conradwood.golang.apis.weblogin";
+import "golang.conradwood.net/apis/h2gproxy/h2gproxy.proto";
+
+message BasicAuthRequest {
+  // the stuff extracted from "Authorization" Header
+  string Username = 1;
+  string Password = 2;
+}
+
+message AuthResponse {
+  bool IsValid = 1;
+  auth.User Response = 2;
+}
+message WebloginRequest {
+  string Method = 1;                 // e.g. POST
+  string Scheme = 2;                 // e.g. https
+  string Host = 3;                   // e.g. www.conradwood.net
+  string Path = 4;                   // e.g. /foo
+  string Query = 5;                  // e.g. foo=bar
+  string Body = 6;                   // submitted body from browser
+  map<string, string> Submitted = 7; // submitted parameters in form
+  string Peer = 8;                   // peer we're coming from
+}
+message EmailPageResponse {
+  string HTML = 1;                 // render this to user
+  bool Verified = 2;               // true if the submitted form resulted in a verification of the email address
+  auth.User User = 3;              // if authenticated==true, this is the user
+  map<string, string> Headers = 4; // any additional headers we need to send back
+}
+message WebloginResponse {
+  bytes Body = 1;
+  bool Authenticated = 2;               // true if the submitted form resulted in a login
+  auth.User User = 3;                   // if authenticated==true, this is the user
+  string Token = 4;                     // the token we generated for this session
+  uint32 CookieLivetime = 5;            // livetime of the cookie to set
+  string RedirectTo = 6;                // if set, h2gproxy will redirect browser to this (absolute) url
+  repeated h2gproxy.Cookie Cookies = 7; // set these cookies
+  map<string, string> Headers = 8;      // any additional headers we need to send back
+  bool ForceGetAfterRedirect=9; // if true will use http-code 303 instead of 307
+  bool PeerIsDosing=10; // true if weblogin does not like it at all and things peer is DOS'ing us
+  string PeerIP=11; // the ip of who's dosing us
+  uint32 HTTPCode=12; // if not 0 - send a specific http code with the response
+}
+
+// this protobuf is never exposed to the user. it is held server-side and referred to by a shortlived magic
+message State {
+  string TriggerHost = 1;  // part of the absolute URL that triggered the login request
+  string TriggerPath = 2;  // part of the absolute URL that triggered the login request
+  string TriggerQuery = 3; // part of the absolute URL that triggered the login request
+  string Token = 4;        // once we authenticated a user this carries the token.
+}
+message StateResponse {
+  string YacloudWebloginState = 1; // the encoded state, guaranteed to be valid to be added to a URL as ?[weblogin_state]=xxx
+  string URLStateName = 2; // the name of the parameter to use to pass state into weblogin service
+}
+
+message RegisterState {
+  string Host=1; // which host the user originally signed on in
+  string Email=2; // the email address the user claimed to have
+  uint32 Created=3; // when was this created?
+}
+message RegisterProto {
+  string State=1; // base64-encoded RegisterState
+  bytes Signature=2;
+}
+message Email {
+  string Subject=1;
+  string Body=2;
+  string Link=3;
+}
+
+service Weblogin {
+  rpc CreateRegisterEmail(RegisterState) returns (Email);
+  // sometimes we need basic auth if so, we get a request to same URL with a an
+  // Authorization Header
+  // if so, the h2gproxy needs to verify the header
+  rpc IsBasicAuthValid(BasicAuthRequest) returns (AuthResponse);
+  // serve the login page
+  rpc GetLoginPage(WebloginRequest) returns (WebloginResponse);
+  // generic html serve thing for h2gproxy
+  rpc ServeHTML(WebloginRequest) returns (WebloginResponse);
+  // called if a user is authenticated but the users' email address is not yet verified
+  // returns true if email is now verified
+  rpc GetVerifyEmail(WebloginRequest) returns (EmailPageResponse);
+  // helper for h2gproxy. verify a "weblogin=foobar" url. Body is ignored in the response.
+  // cookie is helpful though
+  rpc VerifyURL(WebloginRequest) returns (WebloginResponse);
+  // helper for h2gproxy. create a state (before redirecting browser to weblogin)
+  rpc SaveState(WebloginRequest) returns (StateResponse);
+}
