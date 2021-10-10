@@ -15,11 +15,9 @@ import (
 	"time"
 )
 
-const (
-	CAPTCHA_BYPASS = "ohbo8thohph5kai0ib1Fonguudara1aijaethooyaigia3deyaes3goo4uv8meiz"
+var (
+	CAPTCHA_BYPASS = flag.String("captcha_bypass", "", "if set, this header will allow endusers to bypass the captcha. Must be kept secret and long, but maybe useful for probers")
 )
-
-var ()
 
 type RegisterRequest struct {
 	SSOHost    string
