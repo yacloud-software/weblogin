@@ -2,6 +2,7 @@ package register
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	au "golang.conradwood.net/apis/auth"
 	"golang.conradwood.net/apis/h2gproxy"
@@ -88,7 +89,7 @@ func (rr *RegisterRequest) register1_submitted(w *web.WebRequest) ([]byte, error
 	notvalid := ""
 	var c bool
 	var err error
-	if w.GetPara("captcha_bypass") == CAPTCHA_BYPASS {
+	if w.GetPara("captcha_bypass") == *CAPTCHA_BYPASS {
 		c = true
 		err = nil
 	} else {
