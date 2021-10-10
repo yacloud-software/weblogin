@@ -1,0 +1,10 @@
+<section class="white">
+  {{if .Error}}<span class="error">
+    <h2>Registration unsuccessful</h2>
+    We tried to send you ({{.Email}}) an email but we could not send it, because: {{.Error}}</span><br/>{{else}}
+  <h2>Registration - Email Verification</h2>
+  <p>
+    We have sent an email address to {{.Email}}. Please follow the instructions in the email to complete the registration. If you do not receive the email within 10 minutes, please check your spam folder.</p>
+  <p>If you contine to have trouble, please contact our support team.</p>
+  {{end}}
+</section>

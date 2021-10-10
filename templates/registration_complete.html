@@ -1,0 +1,12 @@
+<section class="white">
+  {{if .Error}}<span class="error">
+    <h2>Login unsuccessful</h2>
+    We could not automatically login (Reason: {{.Error}}<br/>
+    You may however continue and log in here: <a href="https://{{.Host}}">{{.Host}}</a><br/>
+    {{else}}
+    <p>
+      You are now logged in.
+      You may continue here: <a href="https://{{.Host}}">{{.Host}}</a><br/>
+  </p>
+  {{end}}
+</section>

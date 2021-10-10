@@ -1,0 +1,40 @@
+<section class="white">
+  {{if .Error}}<span class="error">
+    <h2>Registration unsuccessful</h2>
+    Your email could not be verified: {{.Error}}</span><br/>{{else}}
+  {{if not .UserExists}}
+  <h2>Your Name</h2>
+  <p>
+    Your emailaddress "{{.Email}}" was successfully verified.<br/>
+    Please provide some more details:
+    {{else}}
+    <h2>Your new Password</h2>
+  <p>
+    {{end}}
+    
+    {{if .VError}}<br/><span class="error">The form is not completed fully. Please check: {{.VError}}</span><br/>{{end}}
+    <form  action="https://{{.SSOHost}}/weblogin/register" method="post" loaded-from="fid_login" id="fid_login" class="scForm" enctype="application/x-www-form-urlencoded">
+      {{if .UserExists}}
+      Your useraccount with email address "{{.Email}}" exists already. If you wish to change your password you may choose a new one below. If not, you may close this browser window<br/>
+      {{else}}<label for="firstname">Firstname</label>
+      <input name="firstname" id="firstname" type="text" value="{{.FirstName}}"/>
+      <br/>
+      <label for="lastname">Lastname</label>
+      <input name="lastname" id="lastname" type="text" value="{{.LastName}}"/>
+      <br/>
+      </p><p>
+    Please also choose a password:<br/>
+    {{end}}
+      <label for="password1">Password</label>
+      <input name="password1" id="password1" type="password" value="{{.Password1}}"/>
+      <br/>
+      <label for="password2">Repeat Password</label>
+      <input name="password2" id="password2" type="password" value="{{.Password2}}"/>
+      <br/>
+  </p><p>
+    <input name="form_submit_Ohg5quei4no2gZZZrgeserg" description="dLogin" id="save" type="submit" value="Login"></input>
+    <input name="v_reg" type="hidden" id="vreg" value="{{.VReg}}"/>
+  </form>
+  </p>
+  {{end}}
+</section>

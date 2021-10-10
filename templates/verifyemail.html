@@ -1,0 +1,14 @@
+    <section class="white">
+      	<h2>Verify Your Emailaddress</h2>
+	<p>Please enter the PIN received in your email.<br/>
+	  <p>Did not receive the email? Click <a href="/weblogin/resend-verify-email">here</a></p>
+		<p><span style="error">{{.Msg}}</span></p>
+		<form method="post" loaded-from="fid_login" id="fid_login" class="scForm" enctype="application/x-www-form-urlencoded">
+		  <input type="hidden" name="url" value="{{.Path}}"/>
+			<label for="verifyPin">Pin</label>
+			<input size="20" name="pin" description="Pin" id="verifyPin" autofocus="autofocus" type="text" value=""></input>
+			<br/>
+			<label for="save"/>
+			<input name="form_submit_Ohg5quei4no2grgeserg" description="dLogin" id="save" type="submit" value="Verify"></input>
+		</form>
+    </section>

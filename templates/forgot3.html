@@ -1,0 +1,18 @@
+
+    <section class="white">
+      	<h2>Set a new Password</h2>
+	<p><span style="error">{{.Msg}}</span></p>
+	Please enter a new password below:
+		<form method="post" loaded-from="fid_login" id="fid_login" class="scForm" enctype="application/x-www-form-urlencoded">
+		  <input type="hidden" name="url" value="{{.Path}}"/>
+			<label for="loginInputEmail">Password</label>
+			<input size="20" name="password1" description="Password" id="loginInputEmail" autofocus="autofocus" type="password" value="{{.PW1}}"></input>
+			<br/>
+			<label for="loginInputEmail">Repeat</label>
+			<input size="20" name="password2" description="Password" id="loginInputEmail" autofocus="autofocus" type="password" value="{{.PW2}}"></input>
+			<br/>
+			<label for="save"/>
+			<input name="form_submit_Ohg5quei4no2grgeserg" description="dLogin" id="save" type="submit" value="Save"></input>
+		<input size="20" name="form_id_Ohg5quei4no2" type="hidden" value="fid_login"/><input name="wfs" type="hidden" value=""/></form>
+    </section>
+

@@ -1,0 +1,14 @@
+
+    <section class="white">
+      	<h2>Forgot Password</h2>
+	<p><span style="error">{{.Msg}}</span></p>
+	If you did not receive the email, please re-enter your email address. We will email you another link with which you may reset your password.
+		<form method="post" loaded-from="fid_login" id="fid_login" class="scForm" enctype="application/x-www-form-urlencoded">
+		  <input type="hidden" name="url" value="{{.Path}}"/>
+			<label for="loginInputEmail">Email</label>
+			<input size="20" name="email" description="Email" id="loginInputEmail" autofocus="autofocus" type="text" value="{{.Email}}"></input>
+			<br/>
+			<label for="save"/>
+			<input name="form_submit_Ohg5quei4no2grgeserg" description="dLogin" id="save" type="submit" value="Resend"></input>
+		<input size="20" name="form_id_Ohg5quei4no2" type="hidden" value="fid_login"/><input name="wfs" type="hidden" value=""/></form>
+    </section>

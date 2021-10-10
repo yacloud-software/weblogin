@@ -1,0 +1,27 @@
+<script src="https://www.google.com/recaptcha/api.js?render={{.SiteKey}}"></script>
+  <script>
+    function onClick(e) {
+	console.log( "onclick() - sitekey: \"{{.SiteKey}}\"\n");
+        e.preventDefault();
+        grecaptcha.ready(function() {
+          grecaptcha.execute('{{.SiteKey}}', {action: 'submit'}).then(function(token) {
+              // Add your logic to submit to your backend server here.
+	      console.log("wtf are we doing here? "+token);
+	      document.getElementById('g_captcha').value = token;
+	      document.getElementById('fid_login').submit();
+          });
+        });
+      }
+  </script>
+<section class="white">
+  <h2>Registration - Email Verification</h2>
+  <form onsubmit="onClick(event)" action="https://{{.Host}}/weblogin/register" method="post" loaded-from="fid_login" id="fid_login" class="scForm" enctype="application/x-www-form-urlencoded">
+    <label for="loginInputEmail">Please enter your Emailaddress</label>
+    <input size="40" name="email" description="Email" id="loginInputEmail" autofocus="autofocus" type="text" value="{{.Email}}"></input>
+    <br/>
+    {{if .Error}}<span class="error">Error: {{.Error}}</span><br/>{{end}}
+    <label for="save"/>
+    <input name="form_submit_Ohg5quei4no2grgeserg" description="dLogin" id="save" type="submit" value="Register"></input>
+    <input type="hidden" id="g_captcha" name="g_captcha" value=""/>
+  </form>
+</section>
