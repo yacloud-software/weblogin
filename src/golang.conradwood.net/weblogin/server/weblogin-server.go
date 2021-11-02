@@ -99,7 +99,7 @@ func (w *webhandler) ServeHTTP(response http.ResponseWriter, req *http.Request) 
 		if lh == "remote_addr" {
 			ip, _, err := net.SplitHostPort(lh)
 			if err != nil {
-				fmt.Printf("Invalid remote_addr: %s\n", err)
+				fmt.Printf("Invalid remote_addr \"%s\": %s\n", lh, err)
 			} else {
 				peerip = ip
 			}
