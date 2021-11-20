@@ -10,7 +10,7 @@ require (
 	golang.conradwood.net/apis/h2gproxy v1.1.1428
 	golang.conradwood.net/apis/objectstore v1.1.1430
 	golang.conradwood.net/apis/weblogin v1.1.1428
-	golang.conradwood.net/go-easyops v0.1.10313
+	golang.conradwood.net/go-easyops v0.1.10341
 	google.golang.org/grpc v1.42.0
 )
 
