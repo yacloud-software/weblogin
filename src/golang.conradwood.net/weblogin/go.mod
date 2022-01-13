@@ -5,10 +5,10 @@ go 1.17
 require (
 	golang.conradwood.net/apis/antidos v1.1.1435
 	golang.conradwood.net/apis/auth v1.1.1435
-	golang.conradwood.net/apis/common v1.1.1503
+	golang.conradwood.net/apis/common v1.1.1504
 	golang.conradwood.net/apis/email v1.1.1435
 	golang.conradwood.net/apis/h2gproxy v1.1.1435
-	golang.conradwood.net/apis/objectstore v1.1.1503
+	golang.conradwood.net/apis/objectstore v1.1.1504
 	golang.conradwood.net/apis/weblogin v1.1.1428
 	golang.conradwood.net/go-easyops v0.1.10341
 	google.golang.org/grpc v1.43.0
