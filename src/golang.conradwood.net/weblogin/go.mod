@@ -5,13 +5,13 @@ go 1.17
 require (
 	golang.conradwood.net/apis/antidos v1.1.1435
 	golang.conradwood.net/apis/auth v1.1.1435
-	golang.conradwood.net/apis/common v1.1.1435
+	golang.conradwood.net/apis/common v1.1.1503
 	golang.conradwood.net/apis/email v1.1.1435
 	golang.conradwood.net/apis/h2gproxy v1.1.1435
-	golang.conradwood.net/apis/objectstore v1.1.1435
+	golang.conradwood.net/apis/objectstore v1.1.1503
 	golang.conradwood.net/apis/weblogin v1.1.1428
 	golang.conradwood.net/go-easyops v0.1.10341
-	google.golang.org/grpc v1.42.0
+	google.golang.org/grpc v1.43.0
 )
 
 require (
@@ -31,10 +31,10 @@ require (
 	golang.conradwood.net/apis/framework v1.1.1435 // indirect
 	golang.conradwood.net/apis/registry v1.1.1435 // indirect
 	golang.conradwood.net/apis/rpcinterceptor v1.1.1435 // indirect
-	golang.org/x/net v0.0.0-20211118161319-6a13c67c3ce4 // indirect
-	golang.org/x/sys v0.0.0-20211117180635-dee7805ff2e1 // indirect
+	golang.org/x/net v0.0.0-20220111093109-d55c255bac03 // indirect
+	golang.org/x/sys v0.0.0-20220111092808-5a964db01320 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/genproto v0.0.0-20211118181313-81c1377c94b1 // indirect
+	google.golang.org/genproto v0.0.0-20220112215332-a9c7c0acf9f2 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )
 
