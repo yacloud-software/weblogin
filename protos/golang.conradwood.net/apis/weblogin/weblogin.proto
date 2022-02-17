@@ -46,6 +46,7 @@ message WebloginResponse {
   bool PeerIsDosing=10; // true if weblogin does not like it at all and things peer is DOS'ing us
   string PeerIP=11; // the ip of who's dosing us
   uint32 HTTPCode=12; // if not 0 - send a specific http code with the response
+  string MimeType=13; // the mimetype of the body
 }
 
 // this protobuf is never exposed to the user. it is held server-side and referred to by a shortlived magic
