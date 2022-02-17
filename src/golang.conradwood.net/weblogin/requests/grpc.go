@@ -46,6 +46,7 @@ func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest)
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
+		cr.Debugf("not serving path \"%s\": %s\n", req.Path, e)
 		return ServeError(ctx, req, e)
 	}
 	if *debug {
@@ -79,7 +80,7 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	if len(q) > 50 {
 		q = q[:50] + "..."
 	}
-	cr.Debugf("weblogin.ServeHTML: serving https://%s/%s?%s for user %s\n", req.Host, req.Path, q, auth.Description(u))
+	cr.Debugf("weblogin.ServeHTMLWithError: serving https://%s/%s?%s for user %s\n", req.Host, req.Path, q, auth.Description(u))
 	cr.printParas()
 	if strings.HasSuffix(req.Path, "/oauth") { // oauththing
 		if u != nil {
@@ -207,6 +208,7 @@ func (w *RequestHandler) GetLoginPage(ctx context.Context, req *pb.WebloginReque
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
+		cr.Debugf("GetLoginPage(): determined peer is dos'ing. not serving path \"%s\": %s\n", req.Path, e)
 		return nil, e
 	}
 
