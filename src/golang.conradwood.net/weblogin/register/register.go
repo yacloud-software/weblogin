@@ -36,6 +36,9 @@ type RegisterRequest struct {
 	VReg       string // the email link
 }
 
+func (rr *RegisterRequest) StateQuery() string {
+	return ""
+}
 func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
 	if !web.AllowRegister() {
 		fmt.Printf("Attempt to register\n")

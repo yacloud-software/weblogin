@@ -13,6 +13,10 @@ type errordata struct {
 	ErrorText string
 }
 
+func (e *errordata) StateQuery() string {
+	return ""
+}
+
 // this must not return an error ever. (an error is badly displayed as plain text to user)
 func ServeError(ctx context.Context, req *pb.WebloginRequest, err error) (*pb.WebloginResponse, error) {
 	if *debug {
