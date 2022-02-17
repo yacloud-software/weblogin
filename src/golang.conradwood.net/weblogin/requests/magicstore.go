@@ -49,6 +49,10 @@ func (cr *Request) putMagic(magic string, state *pb.State) error {
 	}
 	return err
 }
+func (cr *Request) getState(ctx context.Context) (*pb.State, error) {
+	magic := cr.req.Submitted[WEBLOGIN_STATE]
+	return cr.getMagic(ctx, magic)
+}
 func (cr *Request) getMagic(ctx context.Context, magic string) (*pb.State, error) {
 	if len(magic) < 10 {
 		cr.Debugf("invalid magic %s: length < 10 (%d)\n", magic, len(magic))

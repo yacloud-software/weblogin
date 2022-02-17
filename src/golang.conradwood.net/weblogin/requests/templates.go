@@ -10,6 +10,7 @@ import (
 
 type template_data interface {
 	Username() string
+	StateQuery() string
 }
 
 func (cr *Request) renderTemplate(l template_data, templateFile string) ([]byte, error) {
@@ -18,18 +19,21 @@ func (cr *Request) renderTemplate(l template_data, templateFile string) ([]byte,
 	tfname := web.TemplatePath() + "/" + templateFile + ".html"
 	t := template.New(templateFile)
 	t.Funcs(template.FuncMap{
-		"username": l.Username,
+		"username":   l.Username,
+		"StateQuery": l.StateQuery,
 	})
 	b, err := readTemplateFile(tfname)
 	if err != nil {
 		cr.Printf("Unable to load template \"%s\"\n", tfname)
 		return nil, err
 	}
+
 	_, err = t.Parse(string(b))
 	if err != nil {
 		fmt.Printf("Unable to load template \"%s\"\n", tfname)
 		return nil, err
 	}
+
 	buf := &bytes.Buffer{}
 	err = t.Execute(buf, l)
 	if err != nil {

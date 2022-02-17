@@ -14,6 +14,10 @@ type LogoutStruct struct {
 	user *apb.User
 }
 
+func (l *LogoutStruct) StateQuery() string {
+	return ""
+}
+
 func (l *LogoutStruct) Username() string {
 	if l.user == nil {
 		return "nobody"

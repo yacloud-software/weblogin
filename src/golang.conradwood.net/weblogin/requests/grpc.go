@@ -92,7 +92,7 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 			}
 		}
 	}
-	str, err := serveThemes(ctx, req)
+	str, err := serveThemes(ctx, cr)
 	if err != nil {
 		return nil, err
 	}
@@ -178,6 +178,10 @@ type loginrender struct {
 	magic                string
 	ImageURLs            []string
 	SiteKey              string
+}
+
+func (l *loginrender) StateQuery() string {
+	return WEBLOGIN_STATE + "=" + l.magic
 }
 
 // render l.state into some string

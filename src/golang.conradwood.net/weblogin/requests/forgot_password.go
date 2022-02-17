@@ -18,6 +18,10 @@ type ForgotStruct struct {
 	PW2   string
 }
 
+func (l *ForgotStruct) StateQuery() string {
+	return WEBLOGIN_STATE + "=" + l.magic
+}
+
 // render l.state into some string
 func (l *ForgotStruct) Weblogin_state_value() string {
 	if l.magic == "" {
