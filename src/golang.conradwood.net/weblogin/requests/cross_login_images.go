@@ -23,7 +23,7 @@ func createDomainLogins(cr *Request) ([]string, error) {
 	submittedParameters := cr.req.Submitted
 	state := submittedParameters[WEBLOGIN_STATE]
 
-	domains := []string{"sso.yacloud.eu", "api.conradwood.net", "api.yacloud.eu", "api.yacloud.eu", "api.singingcat.net"}
+	domains := []string{"sso.yacloud.eu", "api.conradwood.net", "api.yacloud.eu", "api.frei-services.com", "api.singingcat.net"}
 	var res []string
 	for _, d := range domains {
 		res = append(res, fmt.Sprintf("https://%s/weblogin/preauthimg?"+WEBLOGIN_STATE+"=%s", d, state))

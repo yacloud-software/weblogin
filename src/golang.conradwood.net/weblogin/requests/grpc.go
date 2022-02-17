@@ -92,6 +92,14 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 			}
 		}
 	}
+	str, err := serveThemes(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if str != nil {
+		return str, nil
+	}
+
 	if strings.Contains(req.Path, "/register") {
 		return register.Registration(ctx, req)
 	}
@@ -114,7 +122,7 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	// .../login
 	msg := ""
 	if host != web.SSOHost() {
-		msg = fmt.Sprintf("This page must be loaded at %s (not \"%s\")", web.SSOHost(), host)
+		msg = fmt.Sprintf("This page must be loaded at %s (not \"%s\"). (path=%s)", web.SSOHost(), host, req.Path)
 		fmt.Println(msg)
 	}
 	paras := req.Submitted
