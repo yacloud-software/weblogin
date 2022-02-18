@@ -14,10 +14,21 @@ type ForgotStruct struct {
 	Msg   string
 	magic string
 	user  *apb.User
+	state *pb.State
 	PW1   string
 	PW2   string
 }
 
+func (l *ForgotStruct) GetState() *pb.State {
+	return l.state
+}
+func (l *ForgotStruct) ReferrerHost() string {
+	if l.GetState() == nil {
+		return ""
+	}
+	return l.GetState().TriggerHost
+
+}
 func (l *ForgotStruct) StateQuery() string {
 	return WEBLOGIN_STATE + "=" + l.magic
 }
@@ -54,7 +65,8 @@ func forgotpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
 	}
 	// render template to type in an email address
 	u := auth.GetUser(ctx)
-	l := &ForgotStruct{user: u}
+	state, err := cr.getState(ctx)
+	l := &ForgotStruct{user: u, state: state}
 	res := NewWebloginResponse()
 	t, err := cr.renderTemplate(l, "forgotv2")
 	if err != nil {

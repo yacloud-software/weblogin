@@ -2,7 +2,9 @@ package requests
 
 import (
 	"bytes"
+	"context"
 	"fmt"
+	"golang.conradwood.net/apis/themes"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/web"
 	"text/template"
@@ -11,6 +13,20 @@ import (
 type template_data interface {
 	Username() string
 	StateQuery() string
+	ReferrerHost() string
+}
+type extra_data struct {
+	td  template_data
+	ctx context.Context
+}
+
+func (e *extra_data) Heading() string {
+	t, err := themes.GetThemesClient().GetHeaderText(e.ctx, &themes.HostThemeRequest{Host: e.td.ReferrerHost()})
+	if err != nil {
+		fmt.Printf("unable to get heading: %s\n", utils.ErrorString(err))
+		return ""
+	}
+	return t.Text
 }
 
 func (cr *Request) renderTemplate(l template_data, templateFile string) ([]byte, error) {
@@ -18,9 +34,11 @@ func (cr *Request) renderTemplate(l template_data, templateFile string) ([]byte,
 
 	tfname := web.TemplatePath() + "/" + templateFile + ".html"
 	t := template.New(templateFile)
+	e := &extra_data{td: l, ctx: cr.ctx}
 	t.Funcs(template.FuncMap{
 		"username":   l.Username,
 		"StateQuery": l.StateQuery,
+		"Heading":    e.Heading,
 	})
 	b, err := readTemplateFile(tfname)
 	if err != nil {

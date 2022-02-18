@@ -181,6 +181,16 @@ type loginrender struct {
 	SiteKey              string
 }
 
+func (l *loginrender) GetState() *pb.State {
+	return l.weblogin_state_value
+}
+func (l *loginrender) ReferrerHost() string {
+	if l.GetState() == nil {
+		return ""
+	}
+	return l.GetState().TriggerHost
+
+}
 func (l *loginrender) StateQuery() string {
 	return WEBLOGIN_STATE + "=" + l.magic
 }

@@ -10,10 +10,21 @@ import (
 )
 
 type LogoutStruct struct {
-	Msg  string
-	user *apb.User
+	Msg   string
+	user  *apb.User
+	state *pb.State
 }
 
+func (l *LogoutStruct) GetState() *pb.State {
+	return l.state
+}
+func (l *LogoutStruct) ReferrerHost() string {
+	if l.GetState() == nil {
+		return ""
+	}
+	return l.GetState().TriggerHost
+
+}
 func (l *LogoutStruct) StateQuery() string {
 	return ""
 }
@@ -31,7 +42,8 @@ func logoutPage(cr *Request) (*pb.WebloginResponse, error) {
 	if u == nil {
 		return nil, fmt.Errorf("cannot log you out because you are not yet logged in")
 	}
-	l := &LogoutStruct{user: u}
+	state, err := cr.getState(ctx)
+	l := &LogoutStruct{user: u, state: state}
 	res := NewWebloginResponse()
 	addCookie(res, "Auth-Token", "")
 	t, err := cr.renderTemplate(l, "loggedout")

@@ -9,7 +9,7 @@ require (
 	golang.conradwood.net/apis/email v1.1.1576
 	golang.conradwood.net/apis/h2gproxy v1.1.1576
 	golang.conradwood.net/apis/objectstore v1.1.1576
-	golang.conradwood.net/apis/themes v1.1.1628
+	golang.conradwood.net/apis/themes v1.1.1629
 	golang.conradwood.net/apis/weblogin v1.1.1428
 	golang.conradwood.net/go-easyops v0.1.11300
 	google.golang.org/grpc v1.44.0
