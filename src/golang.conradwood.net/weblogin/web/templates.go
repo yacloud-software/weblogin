@@ -9,6 +9,7 @@ import (
 
 type RenderInterface interface {
 	StateQuery() string
+	Heading() string
 }
 
 func (w *WebRequest) Render(templateFile string, data RenderInterface) ([]byte, error) {
@@ -30,6 +31,7 @@ func (w *WebRequest) Render(templateFile string, data RenderInterface) ([]byte, 
 	t.Funcs(template.FuncMap{
 		"username":   w.Username,
 		"StateQuery": data.StateQuery,
+		"Heading":    data.Heading,
 	})
 	_, err = t.Parse(string(s1))
 	if err != nil {

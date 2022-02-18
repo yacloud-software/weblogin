@@ -39,6 +39,9 @@ type RegisterRequest struct {
 func (rr *RegisterRequest) StateQuery() string {
 	return ""
 }
+func (rr *RegisterRequest) Heading() string {
+	return "Register Account"
+}
 func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
 	if !web.AllowRegister() {
 		fmt.Printf("Attempt to register\n")

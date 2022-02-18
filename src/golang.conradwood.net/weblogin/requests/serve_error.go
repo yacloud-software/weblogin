@@ -13,6 +13,9 @@ type errordata struct {
 	ErrorText string
 }
 
+func (e *errordata) Heading() string {
+	return ""
+}
 func (e *errordata) StateQuery() string {
 	return ""
 }
