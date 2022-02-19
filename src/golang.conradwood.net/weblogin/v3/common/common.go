@@ -2,6 +2,7 @@ package common
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/client"
@@ -13,6 +14,10 @@ import (
 const (
 	MAGIC_PREFIX   = "WEBLOGIN3_"
 	WEBLOGIN_STATE = "weblogin3_state_yacloud"
+)
+
+var (
+	allow_registrations = flag.Bool("v3_allow_registrations", true, "if true, allow registration of new users")
 )
 
 func Debugf(format string, args ...interface{}) {

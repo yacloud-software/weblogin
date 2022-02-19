@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"golang.conradwood.net/go-easyops/utils"
 	"html/template"
+	"strings"
 )
 
 type Template_data interface {
@@ -19,16 +20,19 @@ type RequestTemplate struct {
 	Msg                  string
 	Weblogin_state_name  string
 	Weblogin_state_value string
+	Email                string // to pre-fill email fields
 }
 
 func (r *Request) Render(page string, data Template_data) ([]byte, error) {
 	rt := &RequestTemplate{
 		Request:              r,
+		RegistrationEnabled:  *allow_registrations,
 		Data:                 data,
 		StateQuery:           template.HTMLAttr("?" + WEBLOGIN_STATE + "=" + r.ref),
 		Weblogin_state_name:  WEBLOGIN_STATE,
 		Weblogin_state_value: r.ref,
 	}
+
 	templ := ""
 	b, err := utils.ReadFile("templates/v3/header.html")
 	if err != nil {
@@ -50,15 +54,21 @@ func (r *Request) Render(page string, data Template_data) ([]byte, error) {
 
 	t, err := template.New(page).Parse(templ)
 	if err != nil {
-		fmt.Printf("1. Template:\n%s\n", templ)
+		printTemplate(templ)
 		return nil, err
 	}
 	buf := &bytes.Buffer{}
 	err = t.Execute(buf, rt)
 	if err != nil {
-		fmt.Printf("2. Template:\n%s\n", templ)
+		printTemplate(templ)
 		return nil, err
 	}
 
 	return buf.Bytes(), nil
+}
+
+func printTemplate(s string) {
+	for i, line := range strings.Split(s, "\n") {
+		fmt.Printf("%02d. %s\n", (i + 1), line)
+	}
 }

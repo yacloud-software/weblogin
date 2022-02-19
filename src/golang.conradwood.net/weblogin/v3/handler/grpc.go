@@ -16,6 +16,8 @@ func (w *Handler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.W
 	request.Debugf("request started to servehtml for \"%s\"", req.Path)
 	if req.Path == "/weblogin/forgotPassword" {
 		return forgotPassword(request)
+	} else if req.Path == "/weblogin/register" {
+		return register(request)
 	}
 	var err error
 	res := &pb.WebloginResponse{}
@@ -25,6 +27,18 @@ func (w *Handler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.W
 		if err == nil {
 			res.Body = b.Data
 			res.MimeType = "text/css"
+		}
+	} else if req.Path == "/weblogin/logo.png" {
+		b, err := themes.GetThemesClient().GetLogo(ctx, htr)
+		if err == nil {
+			res.Body = b.Data
+			res.MimeType = b.MimeType
+		}
+	} else if req.Path == "/weblogin/favicon.ico" {
+		b, err := themes.GetThemesClient().GetFavIcon(ctx, htr)
+		if err == nil {
+			res.Body = b.Data
+			res.MimeType = b.MimeType
 		}
 	}
 	request.SetResponse(res)
@@ -67,6 +81,20 @@ func (w *Handler) VerifyURL(ctx context.Context, req *pb.WebloginRequest) (*pb.W
 }
 func forgotPassword(request *common.Request) (*pb.WebloginResponse, error) {
 	b, err := request.Render("forgot_password", "")
+	if err != nil {
+		request.Error(err)
+		return request.Close()
+	}
+	w := &pb.WebloginResponse{
+		Body:     b,
+		MimeType: "text/html",
+	}
+	request.SetResponse(w)
+	return request.Close()
+
+}
+func register(request *common.Request) (*pb.WebloginResponse, error) {
+	b, err := request.Render("register", "")
 	if err != nil {
 		request.Error(err)
 		return request.Close()
