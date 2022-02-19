@@ -10,19 +10,24 @@ import (
 type Template_data interface {
 }
 type RequestTemplate struct {
-	Request             *Request
-	Data                Template_data
-	StateQuery          template.HTMLAttr
-	Heading             string
-	SiteKey             string
-	RegistrationEnabled bool
+	Request              *Request
+	Data                 Template_data
+	StateQuery           template.HTMLAttr
+	Heading              string
+	SiteKey              string
+	RegistrationEnabled  bool
+	Msg                  string
+	Weblogin_state_name  string
+	Weblogin_state_value string
 }
 
 func (r *Request) Render(page string, data Template_data) ([]byte, error) {
 	rt := &RequestTemplate{
-		Request:    r,
-		Data:       data,
-		StateQuery: template.HTMLAttr("?" + WEBLOGIN_STATE + "=" + r.ref),
+		Request:              r,
+		Data:                 data,
+		StateQuery:           template.HTMLAttr("?" + WEBLOGIN_STATE + "=" + r.ref),
+		Weblogin_state_name:  WEBLOGIN_STATE,
+		Weblogin_state_value: r.ref,
 	}
 	templ := ""
 	b, err := utils.ReadFile("templates/v3/header.html")
