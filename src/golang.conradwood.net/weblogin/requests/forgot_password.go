@@ -8,6 +8,8 @@ import (
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/common"
+	"html/template"
 )
 
 type ForgotStruct struct {
@@ -17,6 +19,10 @@ type ForgotStruct struct {
 	state *pb.State
 	PW1   string
 	PW2   string
+}
+
+func (l *ForgotStruct) Heading() string {
+	return "Reset Password"
 }
 
 func (l *ForgotStruct) GetState() *pb.State {
@@ -29,8 +35,8 @@ func (l *ForgotStruct) ReferrerHost() string {
 	return l.GetState().TriggerHost
 
 }
-func (l *ForgotStruct) StateQuery() string {
-	return WEBLOGIN_STATE + "=" + l.magic
+func (l *ForgotStruct) StateQuery() template.HTMLAttr {
+	return template.HTMLAttr(common.WEBLOGIN_STATE + "=" + l.magic)
 }
 
 // render l.state into some string
@@ -41,7 +47,7 @@ func (l *ForgotStruct) Weblogin_state_value() string {
 	return l.magic
 }
 func (l *ForgotStruct) Weblogin_state_name() string {
-	return WEBLOGIN_STATE
+	return common.WEBLOGIN_STATE
 }
 
 func (l *ForgotStruct) State() string {
@@ -154,7 +160,7 @@ func resetpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
 func (cr *Request) resettingPage() (*pb.WebloginResponse, error) {
 	req := cr.req
 	ctx := cr.ctx
-	s := req.Submitted[WEBLOGIN_STATE]
+	s := req.Submitted[common.WEBLOGIN_STATE]
 	state, err := cr.getMagic(ctx, s)
 	if err != nil {
 		return nil, err

@@ -12,7 +12,9 @@ import (
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/http"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/web"
+	"html/template"
 	"net/url"
 	"strings"
 	"time"
@@ -23,6 +25,48 @@ var (
 	dur_secs               = flag.Int("session_lifetime", 12*60*60, "session lifetime in `seconds`")
 	Cookie_livetime        *int
 )
+
+type loginrender struct {
+	Msg                  string
+	weblogin_state_value *pb.State
+	magic                string
+	ImageURLs            []string
+	SiteKey              string
+}
+
+func (l *loginrender) Heading() string {
+	return "Log In"
+}
+func (l *loginrender) GetState() *pb.State {
+	return l.weblogin_state_value
+}
+func (l *loginrender) ReferrerHost() string {
+	if l.GetState() == nil {
+		return ""
+	}
+	return l.GetState().TriggerHost
+
+}
+func (l *loginrender) StateQuery() template.HTMLAttr {
+	return template.HTMLAttr("?" + common.WEBLOGIN_STATE + "=" + l.magic)
+}
+
+// render l.state into some string
+func (l *loginrender) Weblogin_state_value() string {
+	if l.magic == "" {
+		panic("missing magic")
+	}
+	return l.magic
+}
+func (l *loginrender) Weblogin_state_name() string {
+	return common.WEBLOGIN_STATE
+}
+func (l *loginrender) RegistrationEnabled() bool {
+	return web.AllowRegister()
+}
+func (l *loginrender) Username() string {
+	return ""
+}
 
 // this redirects to sso.yacloud.eu if it is not already and then serves the form
 func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
@@ -37,7 +81,7 @@ func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
 		}
 		res := NewWebloginResponse()
 		res.Body = []byte("redirecting to sso")
-		res.RedirectTo = fmt.Sprintf("https://%s/weblogin/login?"+WEBLOGIN_STATE+"=%s", web.SSOHost(), magic)
+		res.RedirectTo = fmt.Sprintf("https://%s/weblogin/login?"+common.WEBLOGIN_STATE+"=%s", web.SSOHost(), magic)
 		return res, nil
 	}
 	cr.Debugf("Presenting loginpage...\n")
@@ -49,7 +93,7 @@ func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
 	}
 	res := NewWebloginResponse()
 	submittedParameters := req.Submitted
-	magic := submittedParameters[WEBLOGIN_STATE]
+	magic := submittedParameters[common.WEBLOGIN_STATE]
 	state, err := cr.getMagic(ctx, magic)
 	if err != nil {
 		cr.Debugf("Whilst presenting login page, tried to recreate state, but error: %s\n", err)
@@ -67,7 +111,6 @@ func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
 		cr.Debugf("[servehtml] failed to create domain logins: %s\n", err)
 	}
 	cr.Debugf("[servehtml] State: %#v\n", l.weblogin_state_value)
-
 	t, err := cr.renderTemplate(l, "loginv2")
 	if err != nil {
 		cr.Debugf("template error: %s\n", err)
@@ -84,7 +127,7 @@ func (cr *Request) skipAuth() (*pb.WebloginResponse, error) {
 	req := cr.req
 	u := auth.GetUser(ctx)
 	cr.Debugf("Skipping auth for user %s\n", auth.Description(u))
-	magic := req.Submitted[WEBLOGIN_STATE]
+	magic := req.Submitted[common.WEBLOGIN_STATE]
 	state, err := cr.getMagic(ctx, magic)
 	if err != nil {
 		return nil, err
@@ -122,7 +165,7 @@ func processLogin(cr *Request) (*pb.WebloginResponse, error) {
 		}
 		fmt.Printf("Captcha verified and OK\n")
 	}
-	magic := paras[WEBLOGIN_STATE]
+	magic := paras[common.WEBLOGIN_STATE]
 	if magic == "" {
 		return nil, errors.InvalidArgs(ctx, "ordering mismatch", "no state in processLogin")
 	}
@@ -146,7 +189,7 @@ func processLogin(cr *Request) (*pb.WebloginResponse, error) {
 	}
 	fmt.Printf("User %s (%s) Logged in\n", auth.Description(u.User), u.User.ID)
 	qp := map[string]string{
-		WEBLOGIN_STATE: magic,
+		common.WEBLOGIN_STATE: magic,
 	}
 	target := stateToURL(state, qp)
 	s := "<html><body>Welcome " + u.User.Email + "<br>\nYou were coming from here:</br>\n" + target + "</body></html>"
@@ -161,7 +204,7 @@ func processLogin(cr *Request) (*pb.WebloginResponse, error) {
 	}
 	h := strings.Trim(state.TriggerHost, "/")
 
-	res.RedirectTo = fmt.Sprintf("https://%s/weblogin/setcookie?"+WEBLOGIN_STATE+"=%s", h, magic)
+	res.RedirectTo = fmt.Sprintf("https://%s/weblogin/setcookie?"+common.WEBLOGIN_STATE+"=%s", h, magic)
 	return res, nil
 }
 

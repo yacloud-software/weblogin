@@ -7,17 +7,24 @@ import (
 	"golang.conradwood.net/weblogin/web"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"html/template"
 )
 
 type errordata struct {
 	ErrorText string
 }
 
+func (e *errordata) Username() string {
+	return ""
+}
+func (e *errordata) ReferrerHost() string {
+	return ""
+}
 func (e *errordata) Heading() string {
 	return ""
 }
-func (e *errordata) StateQuery() string {
-	return ""
+func (e *errordata) StateQuery() template.HTMLAttr {
+	return template.HTMLAttr("")
 }
 
 // this must not return an error ever. (an error is badly displayed as plain text to user)

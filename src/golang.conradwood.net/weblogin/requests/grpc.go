@@ -10,6 +10,7 @@ import (
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/server"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/web"
 	//	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/register"
@@ -93,6 +94,8 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 			}
 		}
 	}
+	initMagic(ctx, req, cr)
+
 	str, err := serveThemes(ctx, cr)
 	if err != nil {
 		return nil, err
@@ -168,48 +171,9 @@ func (w *RequestHandler) SaveState(ctx context.Context, req *pb.WebloginRequest)
 	if err != nil {
 		return nil, err
 	}
-	res := &pb.StateResponse{YacloudWebloginState: m, URLStateName: WEBLOGIN_STATE}
+	res := &pb.StateResponse{YacloudWebloginState: m, URLStateName: common.WEBLOGIN_STATE}
 	fmt.Printf("created new state (by rpc): %s\n", m)
 	return res, nil
-}
-
-type loginrender struct {
-	Msg                  string
-	weblogin_state_value *pb.State
-	magic                string
-	ImageURLs            []string
-	SiteKey              string
-}
-
-func (l *loginrender) GetState() *pb.State {
-	return l.weblogin_state_value
-}
-func (l *loginrender) ReferrerHost() string {
-	if l.GetState() == nil {
-		return ""
-	}
-	return l.GetState().TriggerHost
-
-}
-func (l *loginrender) StateQuery() string {
-	return WEBLOGIN_STATE + "=" + l.magic
-}
-
-// render l.state into some string
-func (l *loginrender) Weblogin_state_value() string {
-	if l.magic == "" {
-		panic("missing magic")
-	}
-	return l.magic
-}
-func (l *loginrender) Weblogin_state_name() string {
-	return WEBLOGIN_STATE
-}
-func (l *loginrender) RegistrationEnabled() bool {
-	return web.AllowRegister()
-}
-func (l *loginrender) Username() string {
-	return ""
 }
 
 // we end up here if h2gproxy calls a backend which then says 'please authenticate me'
@@ -276,4 +240,23 @@ func addStandardHeader(r *pb.WebloginResponse) {
 		r.Headers = make(map[string]string)
 	}
 	r.Headers["weblogin"] = "true"
+}
+
+func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *Request) {
+	cr.magic = cr.req.Submitted[common.WEBLOGIN_STATE]
+	if cr.magic != "" {
+		cr.state, _ = common.ParseMagic(ctx, cr.magic)
+		return
+	}
+	s := cr.req.Submitted["v_reg"] // email link
+	if s != "" {
+		p, err := register.DecodeEmailLink(ctx, s)
+		if err != nil {
+			fmt.Printf("failed to decode email link: %s\n", err)
+		}
+		if p != nil {
+			fmt.Printf("[regverify] user verified link. state: %#v\n", p)
+			cr.state = &pb.State{}
+		}
+	}
 }

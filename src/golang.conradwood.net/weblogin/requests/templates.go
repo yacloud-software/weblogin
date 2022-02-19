@@ -6,17 +6,13 @@ import (
 	"fmt"
 	"golang.conradwood.net/apis/themes"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/web"
-	"text/template"
+	"html/template"
 )
 
-type template_data interface {
-	Username() string
-	StateQuery() string
-	ReferrerHost() string
-}
 type extra_data struct {
-	td  template_data
+	td  common.Template_data
 	ctx context.Context
 }
 
@@ -29,7 +25,7 @@ func (e *extra_data) Heading() string {
 	return t.Text
 }
 
-func (cr *Request) renderTemplate(l template_data, templateFile string) ([]byte, error) {
+func (cr *Request) renderTemplate(l common.Template_data, templateFile string) ([]byte, error) {
 	cr.Debugf("Rendering template %s\n", templateFile)
 
 	tfname := web.TemplatePath() + "/" + templateFile + ".html"

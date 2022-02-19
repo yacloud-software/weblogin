@@ -10,7 +10,9 @@ import (
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/web"
+	"html/template"
 	"net/mail"
 	"net/url"
 	"time"
@@ -34,15 +36,27 @@ type RegisterRequest struct {
 	UserExists bool
 	VError     string // used in verify registration email
 	VReg       string // the email link
+	magic      string
+	state      *pb.State
 }
 
-func (rr *RegisterRequest) StateQuery() string {
+func (rr *RegisterRequest) ReferrerHost() string {
+	if rr.state == nil {
+		return ""
+	}
+	return rr.state.TriggerHost
+}
+func (rr *RegisterRequest) Username() string {
 	return ""
+}
+func (rr *RegisterRequest) StateQuery() template.HTMLAttr {
+	return template.HTMLAttr("?" + common.WEBLOGIN_STATE + "=" + rr.magic)
 }
 func (rr *RegisterRequest) Heading() string {
 	return "Register Account"
 }
 func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
+	var err error
 	if !web.AllowRegister() {
 		fmt.Printf("Attempt to register\n")
 		return nil, errors.NotFound(ctx, "not found")
@@ -52,13 +66,25 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 		SSOHost: web.SSOHost(),
 		SiteKey: web.CaptchaKey(),
 	}
+
 	w := web.NewWebRequest(ctx, req)
+	if w.GetPara(common.WEBLOGIN_STATE) != "" {
+		rr.magic = w.GetPara(common.WEBLOGIN_STATE)
+		rr.state, err = common.ParseMagic(ctx, rr.magic)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if rr.state == nil {
+		rr.state = &pb.State{}
+	}
+	fmt.Printf("[registration] coming from host \"%s\"\n", rr.state.TriggerHost)
+
 	rr.Host = w.GetPara("host")
 	if rr.Host == "" {
 		rr.Host = web.SSOHost()
 	}
 	var b []byte
-	var err error
 
 	if w.GetPara("v_reg") != "" || w.GetPara("form_submit_Ohg5quei4no2gZZZrgeserg") != "" {
 		// this is a link from an email

@@ -3,6 +3,7 @@ package requests
 import (
 	"fmt"
 	pb "golang.conradwood.net/apis/weblogin"
+	"golang.conradwood.net/weblogin/common"
 )
 
 var (
@@ -21,12 +22,12 @@ var (
 // for now, it is hardcoded...
 func createDomainLogins(cr *Request) ([]string, error) {
 	submittedParameters := cr.req.Submitted
-	state := submittedParameters[WEBLOGIN_STATE]
+	state := submittedParameters[common.WEBLOGIN_STATE]
 
 	domains := []string{"sso.yacloud.eu", "api.conradwood.net", "api.yacloud.eu", "api.yacloud.eu", "api.singingcat.net"}
 	var res []string
 	for _, d := range domains {
-		res = append(res, fmt.Sprintf("https://%s/weblogin/preauthimg?"+WEBLOGIN_STATE+"=%s", d, state))
+		res = append(res, fmt.Sprintf("https://%s/weblogin/preauthimg?"+common.WEBLOGIN_STATE+"=%s", d, state))
 	}
 	return res, nil
 }

@@ -8,6 +8,7 @@ import (
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/web"
 	"net/url"
 	"time"
@@ -52,7 +53,7 @@ func make_proto(cr *pb.RegisterState) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	b := web.SignString(rs)
+	b := common.SignString(rs)
 	rp := &pb.RegisterProto{State: rs, Signature: b}
 	rps, err := utils.Marshal(rp)
 	if err != nil {
@@ -60,7 +61,9 @@ func make_proto(cr *pb.RegisterState) (string, error) {
 	}
 	return rps, nil
 }
-
+func DecodeEmailLink(ctx context.Context, vreg string) (*pb.RegisterState, error) {
+	return decode_email_link(vreg)
+}
 func decode_email_link(vreg string) (*pb.RegisterState, error) {
 	if vreg == "" {
 		return nil, errors.InvalidArgs(authremote.Context(), "missing authentication information", "no vreg received")
@@ -70,7 +73,7 @@ func decode_email_link(vreg string) (*pb.RegisterState, error) {
 	if err != nil {
 		return nil, err
 	}
-	b := web.Verify([]byte(rp.State), rp.Signature)
+	b := common.Verify([]byte(rp.State), rp.Signature)
 	if !b {
 		fmt.Printf("invalid link received (unverifiable) [%s]\n", vreg)
 		return nil, errors.InvalidArgs(authremote.Context(), "invalid link", "link signature is broken")

@@ -4,15 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/common"
 	"html/template"
 )
 
-type RenderInterface interface {
-	StateQuery() string
-	Heading() string
-}
-
-func (w *WebRequest) Render(templateFile string, data RenderInterface) ([]byte, error) {
+func (w *WebRequest) Render(templateFile string, data common.Template_data) ([]byte, error) {
 	s1, err := utils.ReadFile(TemplatePath() + "/header.html")
 	if err != nil {
 		return nil, err

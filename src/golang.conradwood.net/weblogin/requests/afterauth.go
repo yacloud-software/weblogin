@@ -1,5 +1,7 @@
 package requests
 
+import "golang.conradwood.net/weblogin/common"
+
 // user made it past the login form, got authenticated and the weblogin server
 // redirected to the original host which triggered the request.
 import (
@@ -14,7 +16,7 @@ func setCookiePage(cr *Request) (*pb.WebloginResponse, error) {
 	ctx := cr.ctx
 	req := cr.req
 	paras := req.Submitted
-	magic := paras[WEBLOGIN_STATE]
+	magic := paras[common.WEBLOGIN_STATE]
 	if magic == "" {
 		return nil, errors.InvalidArgs(ctx, "missing state", "setcookiepage - missing state")
 	}

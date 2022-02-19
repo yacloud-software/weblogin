@@ -7,6 +7,7 @@ import (
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/auth"
 	"golang.conradwood.net/go-easyops/utils"
+	"html/template"
 )
 
 type LogoutStruct struct {
@@ -15,6 +16,9 @@ type LogoutStruct struct {
 	state *pb.State
 }
 
+func (l *LogoutStruct) Heading() string {
+	return "Log out"
+}
 func (l *LogoutStruct) GetState() *pb.State {
 	return l.state
 }
@@ -25,8 +29,8 @@ func (l *LogoutStruct) ReferrerHost() string {
 	return l.GetState().TriggerHost
 
 }
-func (l *LogoutStruct) StateQuery() string {
-	return ""
+func (l *LogoutStruct) StateQuery() template.HTMLAttr {
+	return template.HTMLAttr("")
 }
 
 func (l *LogoutStruct) Username() string {

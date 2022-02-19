@@ -6,10 +6,6 @@ import (
 	"golang.conradwood.net/go-easyops/authremote"
 )
 
-const (
-	WEBLOGIN_STATE = "weblogin_state_yacloud"
-)
-
 var (
 	authManager au.AuthManagerServiceClient
 	debug       = flag.Bool("debug", false, "debug v2")

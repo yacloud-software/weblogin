@@ -10,10 +10,12 @@ import (
 )
 
 type Request struct {
-	req  *pb.WebloginRequest
-	ctx  context.Context
-	ip   string
-	port int
+	req   *pb.WebloginRequest
+	ctx   context.Context
+	magic string
+	state *pb.State
+	ip    string
+	port  int
 }
 
 func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {

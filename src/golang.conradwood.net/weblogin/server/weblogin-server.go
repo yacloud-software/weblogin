@@ -8,8 +8,9 @@ import (
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/server"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/requests"
-	"golang.conradwood.net/weblogin/web"
+	"golang.conradwood.net/weblogin/v3/handler"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -40,16 +41,24 @@ var (
 	port            = flag.Int("port", 10001, "The server port")
 	httpport        = flag.Int("http_port", 8091, "The port to start the HTTP listener on")
 	cookie_livetime = flag.Int("cookie_expiry", 30*60, "cookie expiry time in seconds")
+	use_version     = flag.Int("use_version", 2, "use a particular version (cannot be set live)")
 	authClient      apb.AuthenticationServiceClient
 	authMgr         apb.AuthManagerServiceClient
-	rh              *requests.RequestHandler
+	rh              common.VersionHandler
 )
 
 func main() {
 	flag.Parse() // parse stuff. see "var" section above
-	web.InitKey()
+	common.InitKey()
 	requests.Cookie_livetime = cookie_livetime
-	rh = requests.NewHandler()
+	v := *use_version
+	if v == 2 {
+		rh = requests.NewHandler()
+	} else if v == 3 {
+		rh = handler.NewHandler()
+	} else {
+		panic(fmt.Sprintf("Invalid version %d", v))
+	}
 	go rh.StartGRPC(*port)
 	fmt.Printf("Starting http server on port %d\n", *httpport)
 	sd := server.NewHTMLServerDef("weblogin.Weblogin")
