@@ -51,6 +51,7 @@ func (r *Request) buildNewState() *pb.V3State {
 		TriggerHost:  r.Req.Host,
 		TriggerPath:  r.Req.Path,
 		TriggerQuery: r.Req.Query,
+		RequestID:    uint64(utils.RandomInt(999)),
 	}
 	return res
 }
@@ -63,7 +64,7 @@ func (r *Request) Debugf(format string, args ...interface{}) {
 	if r.user != nil {
 		uss = fmt.Sprintf("%s(%s)", r.user.ID, r.user.Email)
 	}
-	s := fmt.Sprintf("[user=%s, host=%s, path=%s] ", uss, r.State().TriggerHost, r.State().TriggerPath)
+	s := fmt.Sprintf("[id=%03d,user=%s, host=%s, path=%s] ", r.ID(), uss, r.State().TriggerHost, r.State().TriggerPath)
 	fmt.Printf(s+format+"\n", args...)
 }
 
@@ -108,4 +109,20 @@ func (r *Request) Error(err error) {
 	if r.failure == nil && err != nil {
 		r.failure = err
 	}
+}
+
+// return the id of this request
+func (r *Request) ID() uint64 {
+	s := r.State()
+	if s == nil {
+		return 0
+	}
+	return s.RequestID
+}
+
+func (r *Request) TriggerHost() string {
+	if r.state == nil {
+		panic("triggerhost() called without state")
+	}
+	return r.state.TriggerHost
 }

@@ -3,17 +3,33 @@ package handler
 import (
 	"context"
 	"fmt"
+	"golang.conradwood.net/apis/themes"
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/weblogin/v3/common"
 )
 
 func (w *Handler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
-	request := common.NewRequest(ctx, req)
-	request.Debugf("request started")
-	if request.Req.Host == common.SSOHost() && request.Req.Path == "/weblogin/login" {
+	if req.Host == common.SSOHost() && req.Path == "/weblogin/login" {
 		return w.GetLoginPage(ctx, req)
 	}
-	return nil, nil
+	request := common.NewRequest(ctx, req)
+	request.Debugf("request started to servehtml for \"%s\"", req.Path)
+	if req.Path == "/weblogin/forgotPassword" {
+		return forgotPassword(request)
+	}
+	var err error
+	res := &pb.WebloginResponse{}
+	htr := &themes.HostThemeRequest{Host: request.TriggerHost()}
+	if req.Path == "/weblogin/stylesheet.css" {
+		b, err := themes.GetThemesClient().GetCSS(ctx, htr)
+		if err == nil {
+			res.Body = b.Data
+			res.MimeType = "text/css"
+		}
+	}
+	request.SetResponse(res)
+	request.Error(err)
+	return request.Close()
 }
 func (w *Handler) CreateRegisterEmail(ctx context.Context, cr *pb.RegisterState) (*pb.Email, error) {
 	return nil, fmt.Errorf("CreateRegisteremail not implemented in v3")
@@ -48,4 +64,18 @@ func (w *Handler) GetLoginPage(ctx context.Context, req *pb.WebloginRequest) (*p
 }
 func (w *Handler) VerifyURL(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
 	return nil, nil
+}
+func forgotPassword(request *common.Request) (*pb.WebloginResponse, error) {
+	b, err := request.Render("forgot_password", "")
+	if err != nil {
+		request.Error(err)
+		return request.Close()
+	}
+	w := &pb.WebloginResponse{
+		Body:     b,
+		MimeType: "text/html",
+	}
+	request.SetResponse(w)
+	return request.Close()
+
 }
