@@ -15,7 +15,12 @@ func (w *Handler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.W
 	}
 	return nil, nil
 }
-
+func (w *Handler) CreateRegisterEmail(ctx context.Context, cr *pb.RegisterState) (*pb.Email, error) {
+	return nil, fmt.Errorf("CreateRegisteremail not implemented in v3")
+}
+func (w *Handler) IsBasicAuthValid(ctx context.Context, cr *pb.BasicAuthRequest) (*pb.AuthResponse, error) {
+	return nil, fmt.Errorf("isbasicauth not implemented in v3")
+}
 func (w *Handler) GetVerifyEmail(ctx context.Context, req *pb.WebloginRequest) (*pb.EmailPageResponse, error) {
 	return nil, nil
 }
