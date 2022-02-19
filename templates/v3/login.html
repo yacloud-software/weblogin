@@ -1,0 +1,51 @@
+<script src="https://www.google.com/recaptcha/api.js?render={{.SiteKey}}"></script>
+  <script>
+    function onClick(e) {
+	console.log( "onclick() - sitekey: \"{{.SiteKey}}\"\n");
+        e.preventDefault();
+        grecaptcha.ready(function() {
+          grecaptcha.execute('{{.SiteKey}}', {action: 'submit'}).then(function(token) {
+              // Add your logic to submit to your backend server here.
+	      console.log("wtf are we doing here? "+token);
+	      document.getElementById('g_captcha').value = token;
+	      document.getElementById('fid_login').submit();
+          });
+        });
+      }
+  </script>
+<section class="white">
+  <h2>Log In</h2>
+  <p>You can log in here by filling out the little form below.<br/>
+    <a href="/weblogin/forgotPassword{{.StateQuery}}">Forgotten your password?</a>
+    {{if .RegistrationEnabled}}
+    If you have no account yet, you may register <a href="/weblogin/register{{.StateQuery}}">here</a>.
+    {{end}}
+  </p>
+  <p><span style="error">{{.Msg}}</span></p>
+  <form  onsubmit="onClick(event)" method="post" loaded-from="fid_login" id="fid_login" class="scForm" enctype="application/x-www-form-urlencoded">
+    <label for="loginInputEmail">Email</label>
+    <input size="20" name="email" description="Email" id="loginInputEmail" autofocus="autofocus" type="text" value=""></input>
+    <br/>
+    <label for="loginInputPassword">Password</label>
+    <input size="20" name="password" description="Password" id="loginInputPassword" type="password" value=""></input>
+    <br/>
+    <p/>
+    <label for="save"></label>
+    <input name="form_submit_Ohg5quei4no2grgeserg" description="dLogin" id="save" type="submit" value="Login"></input>
+    <input size="20" name="form_id_Ohg5quei4no2" type="hidden" value="fid_login"></input>
+    <input name="wfs" type="hidden" value=""></input>
+    <br/>
+    <input type="hidden" name="{{.Weblogin_state_name}}" value="{{.Weblogin_state_value}}"></input>
+    <input type="hidden" id="g_captcha" name="g_captcha" value=""></input>
+  </form>
+
+  {{if .RegistrationEnabled}}
+  <div class="loginhighlight">
+    <h3>No Account? Register <a href="/weblogin/register{{.StateQuery}}">here</a></h3>
+  </div>
+  {{end}}
+  <div class="loginhighlight">
+    <h3>Forgotten your password? <a href="/weblogin/forgotPassword{{.StateQuery}}">Click here</a></h3>
+  </div>
+    {{ range .ImageURLs }}<img src="{{.}}"/>{{end}}
+</section>
