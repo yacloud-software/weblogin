@@ -29,11 +29,23 @@
     <label for="loginInputPassword">Password</label>
     <input size="20" name="password" description="Password" id="loginInputPassword" type="password" value=""></input>
     <br/>
-    <label for="save"/>
+    <p/>
+    <label for="save"></label>
     <input name="form_submit_Ohg5quei4no2grgeserg" description="dLogin" id="save" type="submit" value="Login"></input>
-    <input size="20" name="form_id_Ohg5quei4no2" type="hidden" value="fid_login"/><input name="wfs" type="hidden" value=""/>
-<br/>    <input type="hidden" name="{{.Weblogin_state_name}}" value="{{.Weblogin_state_value}}"/>
-    <input type="hidden" id="g_captcha" name="g_captcha" value=""/>
+    <input size="20" name="form_id_Ohg5quei4no2" type="hidden" value="fid_login"></input>
+    <input name="wfs" type="hidden" value=""></input>
+    <br/>
+    <input type="hidden" name="{{.Weblogin_state_name}}" value="{{.Weblogin_state_value}}"></input>
+    <input type="hidden" id="g_captcha" name="g_captcha" value=""></input>
   </form>
-  {{ range .ImageURLs }}<img src="{{.}}"/>{{end}}
+
+  {{if .RegistrationEnabled}}
+  <div class="loginhighlight">
+    <h3>No Account? Register <a href="/weblogin/register">here</a></h3>
+  </div>
+  {{end}}
+  <div class="loginhighlight">
+    <h3>Forgotten your password? <a href="/weblogin/forgotPassword">Click here</a></h3>
+  </div>
+    {{ range .ImageURLs }}<img src="{{.}}"/>{{end}}
 </section>
