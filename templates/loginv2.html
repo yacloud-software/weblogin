@@ -16,9 +16,9 @@
 <section class="white">
   <h2>Log In</h2>
   <p>You can log in here by filling out the little form below.<br/>
-    <a href="/weblogin/forgotPassword">Forgotten your password?</a>
+    <a href="/weblogin/forgotPassword{{StateQuery}}">Forgotten your password?</a>
     {{if .RegistrationEnabled}}
-    If you have no account yet, you may register <a href="/weblogin/register">here</a>.
+    If you have no account yet, you may register <a href="/weblogin/register{{StateQuery}}">here</a>.
     {{end}}
   </p>
   <p><span style="error">{{.Msg}}</span></p>
@@ -41,11 +41,11 @@
 
   {{if .RegistrationEnabled}}
   <div class="loginhighlight">
-    <h3>No Account? Register <a href="/weblogin/register">here</a></h3>
+    <h3>No Account? Register <a href="/weblogin/register{{StateQuery}}">here</a></h3>
   </div>
   {{end}}
   <div class="loginhighlight">
-    <h3>Forgotten your password? <a href="/weblogin/forgotPassword">Click here</a></h3>
+    <h3>Forgotten your password? <a href="/weblogin/forgotPassword{{StateQuery}}">Click here</a></h3>
   </div>
     {{ range .ImageURLs }}<img src="{{.}}"/>{{end}}
 </section>
