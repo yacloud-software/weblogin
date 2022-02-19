@@ -76,12 +76,20 @@ message Email {
   string Link=3;
 }
 
+/* this is the state of a process from beginning to end. */
+message V3State {
+  string TriggerHost = 1;  // part of the absolute URL that triggered the login request
+  string TriggerPath = 2;  // part of the absolute URL that triggered the login request
+  string TriggerQuery = 3; // part of the absolute URL that triggered the login request
+  bool HaveTriedGlobalCookie=4;
+}
+
 service Weblogin {
-  rpc CreateRegisterEmail(RegisterState) returns (Email);
+  //  rpc CreateRegisterEmail(RegisterState) returns (Email);
   // sometimes we need basic auth if so, we get a request to same URL with a an
   // Authorization Header
   // if so, the h2gproxy needs to verify the header
-  rpc IsBasicAuthValid(BasicAuthRequest) returns (AuthResponse);
+  //  rpc IsBasicAuthValid(BasicAuthRequest) returns (AuthResponse);
   // serve the login page
   rpc GetLoginPage(WebloginRequest) returns (WebloginResponse);
   // generic html serve thing for h2gproxy
