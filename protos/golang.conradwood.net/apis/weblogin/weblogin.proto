@@ -82,6 +82,7 @@ message V3State {
   string TriggerPath = 2;  // part of the absolute URL that triggered the login request
   string TriggerQuery = 3; // part of the absolute URL that triggered the login request
   bool HaveTriedGlobalCookie=4;
+  uint64 RequestID=5; // remains the same throughout the weblogin session
 }
 
 service Weblogin {
