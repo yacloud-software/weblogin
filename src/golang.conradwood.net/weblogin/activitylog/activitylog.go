@@ -4,6 +4,7 @@ import (
 	"context"
 	pb "golang.conradwood.net/apis/weblogin"
 	//	"golang.conradwood.net/weblogin/db"
+	"fmt"
 	"time"
 )
 
@@ -24,6 +25,10 @@ func (l *Logger) Log(ctx context.Context, message string) {
 		LogMessage:  message,
 	}
 	//	db.DefaultDBActivityLog().Save(ctx, al)
-	send_notification("[weblogin,email=%s] message=%s", al.Email, al.LogMessage)
+	ip := ""
+	if al.IP != "" {
+		ip = fmt.Sprintf(", ip=%s", al.IP)
+	}
+	send_notification("[weblogin,email=%s%s] message=%s", al.Email, ip, al.LogMessage)
 
 }
