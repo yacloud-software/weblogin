@@ -13,6 +13,7 @@ import (
 	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/web"
 	//	"golang.conradwood.net/go-easyops/utils"
+	al "golang.conradwood.net/weblogin/activitylog"
 	"golang.conradwood.net/weblogin/register"
 	"google.golang.org/grpc"
 	"strings"
@@ -132,7 +133,22 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	paras := req.Submitted
 
 	if paras["email"] != "" {
-		return processLogin(cr)
+		s := ""
+		if cr.state != nil {
+			s = cr.state.TriggerHost
+		}
+		logger := al.Logger{
+			IP:          cr.req.Peer,
+			TriggerHost: s,
+			Email:       paras["email"],
+		}
+		r, err := processLogin(cr)
+		if err != nil {
+			logger.Log(ctx, fmt.Sprintf("login failed: %s", err))
+		} else {
+			logger.Log(ctx, fmt.Sprintf("login suceeded"))
+		}
+		return r, err
 	}
 	// any other path: serve a login page
 	res, err := cr.createLoginPage()
