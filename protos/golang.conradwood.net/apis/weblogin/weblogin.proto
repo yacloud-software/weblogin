@@ -65,6 +65,7 @@ message RegisterState {
   string Host=1; // which host the user originally signed on in
   string Email=2; // the email address the user claimed to have
   uint32 Created=3; // when was this created?
+  string Magic=4; // magic might still be valid
 }
 message RegisterProto {
   string State=1; // base64-encoded RegisterState
