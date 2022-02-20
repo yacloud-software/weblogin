@@ -111,7 +111,7 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	}
 
 	if w.GetPara("form_submit_Ohg5quei4no2grgeserg") != "" || w.GetPara("email") != "" {
-		b, err = rr.register1_submitted(w)
+		b, err = rr.register1_submitted(ctx, logger, w)
 	} else {
 		// default - no submission
 		b, err = w.Render("register1", rr)
@@ -125,10 +125,11 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 }
 
 // user is on the first form entering his/her email
-func (rr *RegisterRequest) register1_submitted(w *web.WebRequest) ([]byte, error) {
+func (rr *RegisterRequest) register1_submitted(ctx context.Context, logger *activitylog.Logger, w *web.WebRequest) ([]byte, error) {
 	fmt.Printf("Register email submitted\n")
 	e := w.GetPara("email")
 	rr.Email = e
+	logger.Email = e
 	notvalid := ""
 	var c bool
 	var err error
@@ -149,6 +150,7 @@ func (rr *RegisterRequest) register1_submitted(w *web.WebRequest) ([]byte, error
 	} else if len(e) < 3 {
 		notvalid = "email address needs to be at least 3 characters"
 	}
+	logger.Log(ctx, fmt.Sprintf("Registration request from host \"%s\"", rr.state.TriggerHost))
 	if notvalid == "" {
 		ad, err := mail.ParseAddress(e)
 		if err != nil {
