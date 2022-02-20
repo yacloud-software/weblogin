@@ -151,7 +151,7 @@ func (rr *RegisterRequest) register1_submitted(ctx context.Context, logger *acti
 	} else if len(e) < 3 {
 		notvalid = "email address needs to be at least 3 characters"
 	}
-	logger.Log(ctx, fmt.Sprintf("Registration request from host \"%s\"", rr.state.TriggerHost))
+	logger.Log(ctx, fmt.Sprintf("Registration request for host \"%s\" %s", rr.state.TriggerHost, notvalid))
 	if notvalid == "" {
 		ad, err := mail.ParseAddress(e)
 		if err != nil {
@@ -192,6 +192,9 @@ func (rr *RegisterRequest) VerifyEmail(w *web.WebRequest) (*pb.WebloginResponse,
 	rr.state = &pb.State{
 		TriggerHost: rs.Host,
 	}
+	ctx = authremote.Context()
+	rr.logger.Email = rs.Email
+	rr.logger.Log(ctx, "user clicked on email link")
 	rr.magic = rs.Magic
 	rr.RegisterState = rs
 	rr.Host = rs.Host
@@ -202,7 +205,7 @@ func (rr *RegisterRequest) VerifyEmail(w *web.WebRequest) (*pb.WebloginResponse,
 	rr.LastName = w.GetPara("lastname")
 	rr.UserExists = false
 	// it is possible that user re-registered (e.g. already exists)
-	ctx = authremote.Context()
+
 	user, err = authremote.GetAuthManagerClient().GetUserByEmail(ctx, &au.ByEmailRequest{Email: rr.Email})
 	if err != nil {
 		fmt.Printf("error checking user \"%s\": %s\n", rr.Email, utils.ErrorString(err))

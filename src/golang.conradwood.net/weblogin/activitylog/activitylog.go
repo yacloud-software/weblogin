@@ -5,6 +5,7 @@ import (
 	pb "golang.conradwood.net/apis/weblogin"
 	//	"golang.conradwood.net/weblogin/db"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -16,6 +17,10 @@ type Logger struct {
 }
 
 func (l *Logger) Log(ctx context.Context, message string) {
+	if strings.Contains(l.IP, "2001:ba8:1f1:f0bd::2") {
+		// do not slack me on my own ones
+		return
+	}
 	al := &pb.ActivityLog{
 		IP:          l.IP,
 		UserID:      l.UserID,
