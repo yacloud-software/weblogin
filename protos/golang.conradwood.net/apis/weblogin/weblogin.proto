@@ -76,6 +76,15 @@ message Email {
   string Body=2;
   string Link=3;
 }
+message ActivityLog {
+  uint64 ID=1;
+  string IP=2;
+  string UserID=3;
+  string Email=4;
+  string TriggerHost=5;
+  uint32 Occured=6;
+  string LogMessage=7;
+}
 
 /* this is the state of a process from beginning to end. */
 message V3State {
