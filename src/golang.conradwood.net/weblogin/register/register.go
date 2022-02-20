@@ -40,6 +40,7 @@ type RegisterRequest struct {
 	magic         string
 	state         *pb.State
 	RegisterState *pb.RegisterState
+	logger        *activitylog.Logger
 }
 
 func (rr *RegisterRequest) ReferrerHost() string {
@@ -76,7 +77,7 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 		SSOHost: web.SSOHost(),
 		SiteKey: web.CaptchaKey(),
 	}
-
+	rr.logger = logger
 	w := web.NewWebRequest(ctx, req)
 	if w.GetPara(common.WEBLOGIN_STATE) != "" {
 		rr.magic = w.GetPara(common.WEBLOGIN_STATE)

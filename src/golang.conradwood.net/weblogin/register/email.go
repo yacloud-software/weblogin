@@ -88,16 +88,16 @@ func decode_email_link(vreg string) (*pb.RegisterState, error) {
 }
 
 func (rr *RegisterRequest) send_email(w *web.WebRequest) error {
+	ctx := authremote.Context()
 	th := rr.ReferrerHost()
 	if th == "" {
-		panic("no referrer host for email")
+		rr.logger.Log(ctx, "no referrer host for email")
 	}
 	rs := &pb.RegisterState{Host: th, Email: rr.Email, Created: uint32(time.Now().Unix()), Magic: rr.magic}
 	e, err := create_email(rs)
 	if err != nil {
 		return err
 	}
-	ctx := authremote.Context()
 	t := &email.TemplateEmailRequest{
 		Sender:       "foo",
 		Recipient:    rs.Email,
