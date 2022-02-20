@@ -15,6 +15,7 @@
   </script>
 <section class="white">
   <h2>Registration - Email Verification</h2>
+  <p>The website <a href="https://{{ReferrerHost}}">{{ReferrerHost}}</a> requires a valid account. You may register an account here<p/>
   <form onsubmit="onClick(event)" action="https://{{.Host}}/weblogin/register{{StateQuery}}" method="post" loaded-from="fid_login" id="fid_login" class="scForm" enctype="application/x-www-form-urlencoded">
     <label for="loginInputEmail">Please enter your Emailaddress</label>
     <input size="40" name="email" description="Email" id="loginInputEmail" autofocus="autofocus" type="text" value="{{.Email}}"></input>
