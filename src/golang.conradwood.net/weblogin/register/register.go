@@ -23,28 +23,34 @@ var (
 )
 
 type RegisterRequest struct {
-	SSOHost    string
-	Host       string
-	Error      string
-	Email      string
-	userid     string
-	Password1  string
-	Password2  string
-	SiteKey    string
-	FirstName  string
-	LastName   string
-	UserExists bool
-	VError     string // used in verify registration email
-	VReg       string // the email link
-	magic      string
-	state      *pb.State
+	SSOHost       string
+	Host          string
+	Error         string
+	Email         string
+	userid        string
+	Password1     string
+	Password2     string
+	SiteKey       string
+	FirstName     string
+	LastName      string
+	UserExists    bool
+	VError        string // used in verify registration email
+	VReg          string // the email link
+	magic         string
+	state         *pb.State
+	RegisterState *pb.RegisterState
 }
 
 func (rr *RegisterRequest) ReferrerHost() string {
-	if rr.state == nil {
-		return ""
+	if rr.state != nil {
+		return rr.state.TriggerHost
 	}
-	return rr.state.TriggerHost
+	if rr.RegisterState != nil {
+		return rr.RegisterState.Host
+	}
+	fmt.Printf("WARNING - no referrer host!!\n")
+	return ""
+
 }
 func (rr *RegisterRequest) Username() string {
 	return ""
@@ -175,6 +181,11 @@ func (rr *RegisterRequest) VerifyEmail(w *web.WebRequest) (*pb.WebloginResponse,
 		w.BadIP()
 		goto error
 	}
+	rr.state = &pb.State{
+		TriggerHost: rs.Host,
+	}
+	rr.magic = rs.Magic
+	rr.RegisterState = rs
 	rr.Host = rs.Host
 	rr.Email = rs.Email
 	rr.Password1 = w.GetPara("password1")

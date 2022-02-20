@@ -21,6 +21,10 @@ var (
 // given the host the user requested we should authenticate some other domains here as well
 // for now, it is hardcoded...
 func createDomainLogins(cr *Request) ([]string, error) {
+	if 1 == 1 {
+		// do not use preauthimg anymore
+		return nil, nil
+	}
 	submittedParameters := cr.req.Submitted
 	state := submittedParameters[common.WEBLOGIN_STATE]
 

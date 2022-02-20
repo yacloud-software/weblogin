@@ -32,9 +32,10 @@ func (cr *Request) renderTemplate(l common.Template_data, templateFile string) (
 	t := template.New(templateFile)
 	e := &extra_data{td: l, ctx: cr.ctx}
 	t.Funcs(template.FuncMap{
-		"username":   l.Username,
-		"StateQuery": l.StateQuery,
-		"Heading":    e.Heading,
+		"username":     l.Username,
+		"StateQuery":   l.StateQuery,
+		"Heading":      e.Heading,
+		"ReferrerHost": l.ReferrerHost,
 	})
 	b, err := readTemplateFile(tfname)
 	if err != nil {
