@@ -4,18 +4,20 @@ import (
 	"context"
 	"fmt"
 	pb "golang.conradwood.net/apis/weblogin"
+	al "golang.conradwood.net/weblogin/activitylog"
 	"net"
 	"strconv"
 	"strings"
 )
 
 type Request struct {
-	req   *pb.WebloginRequest
-	ctx   context.Context
-	magic string
-	state *pb.State
-	ip    string
-	port  int
+	req    *pb.WebloginRequest
+	ctx    context.Context
+	magic  string
+	state  *pb.State
+	ip     string
+	port   int
+	logger *al.Logger
 }
 
 func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
@@ -27,6 +29,7 @@ func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
 	res.ip = ip
 	iport, _ := strconv.Atoi(port)
 	res.port = iport
+	res.logger = &al.Logger{IP: ip}
 	return res
 }
 func (l *Request) prefix() string {

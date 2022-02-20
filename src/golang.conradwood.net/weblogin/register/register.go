@@ -10,6 +10,7 @@ import (
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/activitylog"
 	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/web"
 	"html/template"
@@ -67,6 +68,9 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 		fmt.Printf("Attempt to register\n")
 		return nil, errors.NotFound(ctx, "not found")
 	}
+	logger := &activitylog.Logger{
+		IP: req.Peer,
+	}
 	res := &pb.WebloginResponse{}
 	rr := &RegisterRequest{
 		SSOHost: web.SSOHost(),
@@ -84,6 +88,7 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	if rr.state == nil {
 		rr.state = &pb.State{}
 	}
+	logger.Log(ctx, fmt.Sprintf("Registration request from host \"%s\"", rr.state.TriggerHost))
 	fmt.Printf("[registration] coming from host \"%s\"\n", rr.state.TriggerHost)
 
 	rr.Host = w.GetPara("host")
