@@ -34,6 +34,7 @@ func (l *Logger) Log(ctx context.Context, message string) {
 	if al.IP != "" {
 		ip = fmt.Sprintf(", ip=%s", al.IP)
 	}
-	send_notification("[weblogin,email=%s%s] message=%s", al.Email, ip, al.LogMessage)
-
+	s := fmt.Sprintf("[weblogin,email=%s%s] %s", al.Email, ip, al.LogMessage)
+	send_notification("%s", s)
+	fmt.Println(s)
 }
