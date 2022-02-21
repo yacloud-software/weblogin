@@ -84,7 +84,7 @@ func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
 		res.RedirectTo = fmt.Sprintf("https://%s/weblogin/login?"+common.WEBLOGIN_STATE+"=%s", web.SSOHost(), magic)
 		return res, nil
 	}
-	cr.logger.Log(ctx, "Presenting loginpage")
+	//cr.logger.Log(ctx, "Presenting loginpage")
 	cr.Debugf("Presenting loginpage...\n")
 	// now the magic:
 	// are we authenticated already? if so, skip asking and move on
