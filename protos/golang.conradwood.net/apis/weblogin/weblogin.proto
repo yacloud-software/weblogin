@@ -26,6 +26,7 @@ message WebloginRequest {
   string Body = 6;                   // submitted body from browser
   map<string, string> Submitted = 7; // submitted parameters in form
   string Peer = 8;                   // peer we're coming from
+  repeated h2gproxy.Cookie Cookies = 9; // cookies received
 }
 message EmailPageResponse {
   string HTML = 1;                 // render this to user
@@ -38,7 +39,7 @@ message WebloginResponse {
   bool Authenticated = 2;               // true if the submitted form resulted in a login
   auth.User User = 3;                   // if authenticated==true, this is the user
   string Token = 4;                     // the token we generated for this session
-  uint32 CookieLivetime = 5;            // livetime of the cookie to set
+  uint32 CookieLivetime = 5;            // obsolete - use cookie.Expiry instead livetime of the cookie to set
   string RedirectTo = 6;                // if set, h2gproxy will redirect browser to this (absolute) url
   repeated h2gproxy.Cookie Cookies = 7; // set these cookies
   map<string, string> Headers = 8;      // any additional headers we need to send back
