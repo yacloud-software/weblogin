@@ -10,6 +10,7 @@ import (
 	"net"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -82,7 +83,11 @@ func (cr *Request) CookiesToSet() []*h2gproxy.Cookie {
 	var res []*h2gproxy.Cookie
 	if cr.BrowserID() == "" {
 		s := utils.RandomString(128)
-		res = append(res, &h2gproxy.Cookie{Name: BROWSERID_COOKIE, Value: s})
+		e := uint32(time.Now().Add(time.Duration(365*24*5) * time.Hour).Unix())
+		res = append(res, &h2gproxy.Cookie{Name: BROWSERID_COOKIE, Value: s, Expiry: e})
 	}
 	return res
+}
+func (cr *Request) UserAgent() string {
+	return cr.req.UserAgent
 }

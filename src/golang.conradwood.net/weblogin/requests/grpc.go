@@ -143,6 +143,7 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 			TriggerHost: s,
 			Email:       paras["email"],
 			DeviceID:    cr.BrowserID(),
+			UserAgent:   cr.UserAgent(),
 		}
 		r, err := processLogin(cr)
 		if err != nil {
@@ -283,7 +284,7 @@ func login_success(ctx context.Context, logger *al.Logger) {
 	sr := &sm.NewSessionRequest{
 		IPAddress: logger.IP,
 		DeviceID:  logger.DeviceID,
-		UserAgent: "foo",
+		UserAgent: logger.UserAgent,
 	}
 	sb, err := sm.GetSessionManagerClient().NewSession(ctx, sr)
 	if err != nil {
