@@ -27,6 +27,7 @@ message WebloginRequest {
   map<string, string> Submitted = 7; // submitted parameters in form
   string Peer = 8;                   // peer we're coming from
   repeated h2gproxy.Cookie Cookies = 9; // cookies received
+  string UserAgent = 10;
 }
 message EmailPageResponse {
   string HTML = 1;                 // render this to user
