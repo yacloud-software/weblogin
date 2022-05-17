@@ -30,6 +30,7 @@ func setCookiePage(cr *Request) (*pb.WebloginResponse, error) {
 	res := NewWebloginResponse()
 	res.RedirectTo = target
 	addCookie(res, "Auth-Token", state.Token)
+	addCookies(res, cr.CookiesToSet())
 	if state.Token == "" {
 		return nil, errors.AccessDenied(ctx, "missing token")
 	}

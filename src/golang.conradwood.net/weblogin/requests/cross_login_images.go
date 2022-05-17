@@ -42,6 +42,7 @@ func createDomainLogins(cr *Request) ([]string, error) {
 // if so, we just need to set more auth cookies
 func preAuthCookie(cr *Request) (*pb.WebloginResponse, error) {
 	res := NewWebloginResponse()
+	res.Cookies = append(res.Cookies, cr.CookiesToSet()...)
 	res.Body = smallimg
 	res.MimeType = "image/png"
 	addCookie(res, "Pre-Auth-Token", "weblogin_is_incomplete_cross_domain_pre_auth_not_working_yet")

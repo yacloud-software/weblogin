@@ -15,6 +15,7 @@ import (
 	//	"golang.conradwood.net/go-easyops/utils"
 	al "golang.conradwood.net/weblogin/activitylog"
 	"golang.conradwood.net/weblogin/register"
+	sm "golang.yacloud.eu/apis/sessionmanager"
 	"google.golang.org/grpc"
 	"strings"
 )
@@ -137,16 +138,17 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 		if cr.state != nil {
 			s = cr.state.TriggerHost
 		}
-		logger := al.Logger{
+		logger := &al.Logger{
 			IP:          cr.req.Peer,
 			TriggerHost: s,
 			Email:       paras["email"],
+			DeviceID:    cr.BrowserID(),
 		}
 		r, err := processLogin(cr)
 		if err != nil {
 			logger.Log(ctx, fmt.Sprintf("login failed: %s", err))
 		} else {
-			logger.Log(ctx, fmt.Sprintf("login suceeded"))
+			login_success(ctx, logger)
 		}
 		return r, err
 	}
@@ -275,4 +277,19 @@ func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *Request) {
 			cr.state = &pb.State{}
 		}
 	}
+}
+
+func login_success(ctx context.Context, logger *al.Logger) {
+	sr := &sm.NewSessionRequest{
+		IPAddress: logger.IP,
+		DeviceID:  logger.DeviceID,
+		UserAgent: "foo",
+	}
+	sb, err := sm.GetSessionManagerClient().NewSession(ctx, sr)
+	if err != nil {
+		fmt.Printf("Failed to get session: %s\n", utils.ErrorString(err))
+	} else {
+		fmt.Printf("Session created: %#v\n", sb)
+	}
+	logger.Log(ctx, fmt.Sprintf("login suceeded"))
 }

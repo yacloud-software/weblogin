@@ -14,6 +14,7 @@ type Logger struct {
 	UserID      string
 	IP          string
 	TriggerHost string
+	DeviceID    string
 }
 
 func (l *Logger) Log(ctx context.Context, message string) {

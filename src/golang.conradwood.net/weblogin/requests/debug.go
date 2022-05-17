@@ -3,21 +3,28 @@ package requests
 import (
 	"context"
 	"fmt"
+	"golang.conradwood.net/apis/h2gproxy"
 	pb "golang.conradwood.net/apis/weblogin"
+	"golang.conradwood.net/go-easyops/utils"
 	al "golang.conradwood.net/weblogin/activitylog"
 	"net"
 	"strconv"
 	"strings"
 )
 
+const (
+	BROWSERID_COOKIE = "yacloud_browserid"
+)
+
 type Request struct {
-	req    *pb.WebloginRequest
-	ctx    context.Context
-	magic  string
-	state  *pb.State
-	ip     string
-	port   int
-	logger *al.Logger
+	req       *pb.WebloginRequest
+	ctx       context.Context
+	magic     string
+	state     *pb.State
+	ip        string
+	port      int
+	logger    *al.Logger
+	browserid string
 }
 
 func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
@@ -30,6 +37,11 @@ func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
 	iport, _ := strconv.Atoi(port)
 	res.port = iport
 	res.logger = &al.Logger{IP: ip}
+	for _, c := range req.Cookies {
+		if c.Name == BROWSERID_COOKIE {
+			res.browserid = c.Value
+		}
+	}
 	return res
 }
 func (l *Request) prefix() string {
@@ -61,4 +73,16 @@ func (cr *Request) printParas() {
 		}
 		fmt.Printf("Parameter %s: %s\n", k, v)
 	}
+}
+
+func (cr *Request) BrowserID() string {
+	return cr.browserid
+}
+func (cr *Request) CookiesToSet() []*h2gproxy.Cookie {
+	var res []*h2gproxy.Cookie
+	if cr.BrowserID() == "" {
+		s := utils.RandomString(128)
+		res = append(res, &h2gproxy.Cookie{Name: BROWSERID_COOKIE, Value: s})
+	}
+	return res
 }

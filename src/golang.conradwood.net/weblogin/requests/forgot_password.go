@@ -74,6 +74,7 @@ func forgotpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
 	state, err := cr.getState(ctx)
 	l := &ForgotStruct{user: u, state: state}
 	res := NewWebloginResponse()
+	addCookies(res, cr.CookiesToSet())
 	t, err := cr.renderTemplate(l, "forgotv2")
 	if err != nil {
 		fmt.Printf("template error: %s\n", err)
@@ -149,6 +150,7 @@ func resetpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
 		l.Msg = "Please enter passwords"
 	}
 	res := NewWebloginResponse()
+	addCookies(res, cr.CookiesToSet())
 	t, err := cr.renderTemplate(l, "forgotv2.2")
 	if err != nil {
 		fmt.Printf("template error: %s\n", err)

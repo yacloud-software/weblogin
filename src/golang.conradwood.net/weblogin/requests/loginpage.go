@@ -196,6 +196,7 @@ func processLogin(cr *Request) (*pb.WebloginResponse, error) {
 	s := "<html><body>Welcome " + u.User.Email + "<br>\nYou were coming from here:</br>\n" + target + "</body></html>"
 	b := []byte(s)
 	res := NewWebloginResponse()
+	addCookies(res, cr.CookiesToSet())
 	res.Body = b
 	addCookie(res, "Auth-Token", u.Token)
 	state.Token = u.Token
@@ -209,6 +210,10 @@ func processLogin(cr *Request) (*pb.WebloginResponse, error) {
 	return res, nil
 }
 
+func addCookies(wr *pb.WebloginResponse, cookies []*h2gproxy.Cookie) {
+	wr.Cookies = append(wr.Cookies, cookies...)
+
+}
 func addCookie(wr *pb.WebloginResponse, name string, value string) {
 	exp := time.Now().Unix()
 	exp = exp + int64(*Cookie_livetime)

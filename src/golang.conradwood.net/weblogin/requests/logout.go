@@ -49,6 +49,7 @@ func logoutPage(cr *Request) (*pb.WebloginResponse, error) {
 	state, err := cr.getState(ctx)
 	l := &LogoutStruct{user: u, state: state}
 	res := NewWebloginResponse()
+	addCookies(res, cr.CookiesToSet())
 	addCookie(res, "Auth-Token", "")
 	t, err := cr.renderTemplate(l, "loggedout")
 	if err != nil {
