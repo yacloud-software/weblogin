@@ -142,14 +142,14 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 			IP:          cr.req.Peer,
 			TriggerHost: s,
 			Email:       paras["email"],
-			DeviceID:    cr.BrowserID(),
+			BrowserID:   cr.BrowserID(),
 			UserAgent:   cr.UserAgent(),
 		}
-		r, err := processLogin(cr)
+		r, user, err := processLogin(cr)
 		if err != nil {
 			logger.Log(ctx, fmt.Sprintf("login failed: %s", err))
 		} else {
-			login_success(ctx, logger)
+			login_success(ctx, user, logger)
 		}
 		return r, err
 	}
@@ -280,10 +280,10 @@ func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *Request) {
 	}
 }
 
-func login_success(ctx context.Context, logger *al.Logger) {
+func login_success(ctx context.Context, user *au.User, logger *al.Logger) {
 	sr := &sm.NewSessionRequest{
 		IPAddress: logger.IP,
-		DeviceID:  logger.DeviceID,
+		BrowserID: logger.BrowserID,
 		UserAgent: logger.UserAgent,
 	}
 	sb, err := sm.GetSessionManagerClient().NewSession(ctx, sr)

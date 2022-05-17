@@ -153,7 +153,7 @@ func (cr *Request) skipAuth() (*pb.WebloginResponse, error) {
 /*********************************************
 * process a form that was submitted.
 **********************************************/
-func processLogin(cr *Request) (*pb.WebloginResponse, error) {
+func processLogin(cr *Request) (*pb.WebloginResponse, *au.User, error) {
 	req := cr.req
 	ctx := cr.ctx
 	cr.Debugf("[processLogin] path for weblogin: %s/%s\n", req.Host, req.Path)
@@ -162,17 +162,17 @@ func processLogin(cr *Request) (*pb.WebloginResponse, error) {
 		err := check_captcha(paras["g_captcha"], cr.req.Host)
 		if err != nil {
 			fmt.Printf("Captcha verification failed: %s\n", err)
-			return nil, err
+			return nil, nil, err
 		}
 		fmt.Printf("Captcha verified and OK\n")
 	}
 	magic := paras[common.WEBLOGIN_STATE]
 	if magic == "" {
-		return nil, errors.InvalidArgs(ctx, "ordering mismatch", "no state in processLogin")
+		return nil, nil, errors.InvalidArgs(ctx, "ordering mismatch", "no state in processLogin")
 	}
 	state, err := cr.getMagic(ctx, magic)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	cr.Debugf("[processlogin] request coming from %s %s\n", state.TriggerHost, state.TriggerPath)
@@ -180,13 +180,13 @@ func processLogin(cr *Request) (*pb.WebloginResponse, error) {
 	apr := &au.AuthenticatePasswordRequest{Email: paras["email"], Password: paras["password"]}
 	u, err := authremote.GetAuthClient().GetByPassword(ctx, apr)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	if !u.Valid {
-		return nil, errors.AccessDenied(ctx, "user invalid")
+		return nil, nil, errors.AccessDenied(ctx, "user invalid")
 	}
 	if u == nil || u.User == nil {
-		return nil, errors.AccessDenied(ctx, "no user")
+		return nil, nil, errors.AccessDenied(ctx, "no user")
 	}
 	fmt.Printf("User %s (%s) Logged in\n", auth.Description(u.User), u.User.ID)
 	qp := map[string]string{
@@ -202,12 +202,12 @@ func processLogin(cr *Request) (*pb.WebloginResponse, error) {
 	state.Token = u.Token
 	err = cr.putMagic(magic, state) // update our store with the state including token
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	h := strings.Trim(state.TriggerHost, "/")
 
 	res.RedirectTo = fmt.Sprintf("https://%s/weblogin/setcookie?"+common.WEBLOGIN_STATE+"=%s", h, magic)
-	return res, nil
+	return res, u.User, nil
 }
 
 func addCookies(wr *pb.WebloginResponse, cookies []*h2gproxy.Cookie) {

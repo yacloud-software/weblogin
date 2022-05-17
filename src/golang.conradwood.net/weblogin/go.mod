@@ -3,17 +3,18 @@ module golang.conradwood.net/weblogin
 go 1.17
 
 require (
-	golang.conradwood.net/apis/antidos v1.1.1641
-	golang.conradwood.net/apis/auth v1.1.1641
-	golang.conradwood.net/apis/common v1.1.1641
-	golang.conradwood.net/apis/email v1.1.1641
-	golang.conradwood.net/apis/h2gproxy v1.1.1641
-	golang.conradwood.net/apis/objectstore v1.1.1641
-	golang.conradwood.net/apis/slackgateway v1.1.1641
-	golang.conradwood.net/apis/themes v1.1.1641
+	golang.conradwood.net/apis/antidos v1.1.1715
+	golang.conradwood.net/apis/auth v1.1.1715
+	golang.conradwood.net/apis/common v1.1.1715
+	golang.conradwood.net/apis/email v1.1.1715
+	golang.conradwood.net/apis/h2gproxy v1.1.1715
+	golang.conradwood.net/apis/objectstore v1.1.1715
+	golang.conradwood.net/apis/slackgateway v1.1.1715
+	golang.conradwood.net/apis/themes v1.1.1715
 	golang.conradwood.net/apis/weblogin v1.1.1428
-	golang.conradwood.net/go-easyops v0.1.11816
-	google.golang.org/grpc v1.44.0
+	golang.conradwood.net/go-easyops v0.1.12500
+	golang.yacloud.eu/apis/sessionmanager v1.1.1715
+	google.golang.org/grpc v1.46.2
 )
 
 require (
@@ -21,25 +22,24 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/lib/pq v1.10.4 // indirect
+	github.com/lib/pq v1.10.6 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
-	github.com/prometheus/client_golang v1.12.1 // indirect
+	github.com/prometheus/client_golang v1.12.2 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
-	github.com/prometheus/common v0.32.1 // indirect
+	github.com/prometheus/common v0.34.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
-	golang.conradwood.net/apis/autodeployer v1.1.1641 // indirect
-	golang.conradwood.net/apis/deploymonkey v1.1.1641 // indirect
-	golang.conradwood.net/apis/echoservice v1.1.1641 // indirect
-	golang.conradwood.net/apis/errorlogger v1.1.1641 // indirect
-	golang.conradwood.net/apis/framework v1.1.1641 // indirect
-	golang.conradwood.net/apis/registry v1.1.1641 // indirect
-	golang.conradwood.net/apis/rpcinterceptor v1.1.1641 // indirect
-	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
-	golang.org/x/sys v0.0.0-20220223155357-96fed51e1446 // indirect
+	golang.conradwood.net/apis/autodeployer v1.1.1715 // indirect
+	golang.conradwood.net/apis/deploymonkey v1.1.1715 // indirect
+	golang.conradwood.net/apis/echoservice v1.1.1715 // indirect
+	golang.conradwood.net/apis/errorlogger v1.1.1715 // indirect
+	golang.conradwood.net/apis/framework v1.1.1715 // indirect
+	golang.conradwood.net/apis/registry v1.1.1715 // indirect
+	golang.conradwood.net/apis/rpcinterceptor v1.1.1715 // indirect
+	golang.org/x/net v0.0.0-20220516155154-20f960328961 // indirect
+	golang.org/x/sys v0.0.0-20220513210249-45d2b4557a2a // indirect
 	golang.org/x/text v0.3.7 // indirect
-	golang.yacloud.eu/apis/sessionmanager v1.1.1710 // indirect
-	google.golang.org/genproto v0.0.0-20220222213610-43724f9ea8cf // indirect
-	google.golang.org/protobuf v1.27.1 // indirect
+	google.golang.org/genproto v0.0.0-20220505152158-f39f71e6c8f3 // indirect
+	google.golang.org/protobuf v1.28.0 // indirect
 )
 
 replace golang.conradwood.net/apis/weblogin => ../../golang.conradwood.net/apis/weblogin

@@ -14,7 +14,7 @@ type Logger struct {
 	UserID      string
 	IP          string
 	TriggerHost string
-	DeviceID    string
+	BrowserID   string
 	UserAgent   string
 }
 
@@ -38,6 +38,6 @@ func (l *Logger) Log(ctx context.Context, message string) {
 	}
 	s := fmt.Sprintf("[weblogin,email=%s%s] %s", al.Email, ip, al.LogMessage)
 	send_notification("%s", s)
-	s = s + fmt.Sprintf(", useragent=%s, deviceid=%s", l.UserAgent, l.DeviceID)
+	s = s + fmt.Sprintf(", useragent=%s, deviceid=%s", l.UserAgent, l.BrowserID)
 	fmt.Println(s)
 }
