@@ -285,6 +285,9 @@ func login_success(ctx context.Context, user *au.User, logger *al.Logger) {
 		IPAddress: logger.IP,
 		BrowserID: logger.BrowserID,
 		UserAgent: logger.UserAgent,
+		UserID:    user.ID,
+		Useremail: user.Email,
+		Username:  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 	}
 	sb, err := sm.GetSessionManagerClient().NewSession(ctx, sr)
 	if err != nil {
