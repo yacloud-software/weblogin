@@ -18,6 +18,7 @@ import (
 	sm "golang.yacloud.eu/apis/sessionmanager"
 	"google.golang.org/grpc"
 	"strings"
+	"time"
 )
 
 func (r *RequestHandler) StartGRPC(port int) error {
@@ -292,8 +293,25 @@ func login_success(ctx context.Context, user *au.User, logger *al.Logger) {
 	sb, err := sm.GetSessionManagerClient().NewSession(ctx, sr)
 	if err != nil {
 		fmt.Printf("Failed to get session: %s\n", utils.ErrorString(err))
+		logger.Log(ctx, fmt.Sprintf("login suceeded - session failed (%s)", err))
 	} else {
 		fmt.Printf("Session created: %#v\n", sb)
+		if noteworthy_login(ctx, user, sb) {
+			logger.Log(ctx, fmt.Sprintf("login suceeded"))
+		}
 	}
-	logger.Log(ctx, fmt.Sprintf("login suceeded"))
+}
+
+func noteworthy_login(ctx context.Context, user *au.User, sr *sm.SessionResponse) bool {
+	if user.ID != "1" || user.ID != "7" {
+		return true
+	}
+	if sr.NewDevice {
+		return true
+	}
+	t := time.Unix(int64(sr.LastSessionTimestamp), 0)
+	if time.Since(t) > time.Duration(25)*time.Hour {
+		return true
+	}
+	return false
 }
