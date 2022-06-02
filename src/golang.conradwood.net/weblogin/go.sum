@@ -241,6 +241,8 @@ golang.conradwood.net/apis/antidos v1.1.1739 h1:bm7QeHx13AosZKCq4E+5QQ2mYbn4BzLJ
 golang.conradwood.net/apis/antidos v1.1.1739/go.mod h1:Wt3Rd+W/HQk+pBp0zbaz/l924PunTHh5cw6UiPz0KcY=
 golang.conradwood.net/apis/antidos v1.1.1740 h1:jqmW4pAXl4St5F5ur7CeWzFnKVciAahK5aGCkI0ptQo=
 golang.conradwood.net/apis/antidos v1.1.1740/go.mod h1:Wt3Rd+W/HQk+pBp0zbaz/l924PunTHh5cw6UiPz0KcY=
+golang.conradwood.net/apis/antidos v1.1.1742 h1:f/gMTrZkal2pZeTXMm/NOXYbTbP2ebU/kXb5+2+/1zQ=
+golang.conradwood.net/apis/antidos v1.1.1742/go.mod h1:Wt3Rd+W/HQk+pBp0zbaz/l924PunTHh5cw6UiPz0KcY=
 golang.conradwood.net/apis/auth v1.1.1498/go.mod h1:13gt/TDpM3GL+i/FAo5uohTL8ul/eavR7zTAJ4PSS9I=
 golang.conradwood.net/apis/auth v1.1.1576 h1:17HW+aSOWyfEMQykNy58pBYRA2JCfpRQgFo5uUAsozo=
 golang.conradwood.net/apis/auth v1.1.1576/go.mod h1:13gt/TDpM3GL+i/FAo5uohTL8ul/eavR7zTAJ4PSS9I=
@@ -254,6 +256,8 @@ golang.conradwood.net/apis/auth v1.1.1739 h1:u1S2kerFbCvRZNNv40WBtPWirmhocVykYMj
 golang.conradwood.net/apis/auth v1.1.1739/go.mod h1:13gt/TDpM3GL+i/FAo5uohTL8ul/eavR7zTAJ4PSS9I=
 golang.conradwood.net/apis/auth v1.1.1740 h1:W2R+/TRsTMh/Yn0vk23oNF/eZF8GBucWFa4JtoB67Qo=
 golang.conradwood.net/apis/auth v1.1.1740/go.mod h1:13gt/TDpM3GL+i/FAo5uohTL8ul/eavR7zTAJ4PSS9I=
+golang.conradwood.net/apis/auth v1.1.1742 h1:RW8q7tX/H/2J96i20IeVhD9JuyDJB2aGYOrIEFSaNE0=
+golang.conradwood.net/apis/auth v1.1.1742/go.mod h1:13gt/TDpM3GL+i/FAo5uohTL8ul/eavR7zTAJ4PSS9I=
 golang.conradwood.net/apis/autodeployer v1.1.1498 h1:SZ0chNLU36nQYlJ9+VAaMTie+1jESWImurs8ziZ6cNI=
 golang.conradwood.net/apis/autodeployer v1.1.1498/go.mod h1:1N49+5L0Lvty7l+HOnN/S6y2UZOL3qFkGCcoXVdxqQo=
 golang.conradwood.net/apis/autodeployer v1.1.1633 h1:XnoMRE+0rVvSTIz3lKcqhtjsKjTd1yEf8MrII/1+yoU=
@@ -266,6 +270,8 @@ golang.conradwood.net/apis/autodeployer v1.1.1739 h1:yJX7Sp45mSlRlVeVsf9xlRHFIP5
 golang.conradwood.net/apis/autodeployer v1.1.1739/go.mod h1:1N49+5L0Lvty7l+HOnN/S6y2UZOL3qFkGCcoXVdxqQo=
 golang.conradwood.net/apis/autodeployer v1.1.1740 h1:ywltbUT93WR+NxzgPnMTNuFgQf1MhqI7V+7JdEpi8Cs=
 golang.conradwood.net/apis/autodeployer v1.1.1740/go.mod h1:1N49+5L0Lvty7l+HOnN/S6y2UZOL3qFkGCcoXVdxqQo=
+golang.conradwood.net/apis/autodeployer v1.1.1742 h1:+6h4gxXjCVwXboCdWy0CE0NFpMojaZSQc+e5qfPsgHw=
+golang.conradwood.net/apis/autodeployer v1.1.1742/go.mod h1:1N49+5L0Lvty7l+HOnN/S6y2UZOL3qFkGCcoXVdxqQo=
 golang.conradwood.net/apis/common v1.1.1498/go.mod h1:82LAi77ejEi9771su5wf1GFmBcy78TnUb/lpJZutmzo=
 golang.conradwood.net/apis/common v1.1.1576 h1:QKhG45NbL+uJGLigDOCo3Pfm7xcVe44lC4is0zpzb7o=
 golang.conradwood.net/apis/common v1.1.1576/go.mod h1:82LAi77ejEi9771su5wf1GFmBcy78TnUb/lpJZutmzo=
@@ -279,6 +285,8 @@ golang.conradwood.net/apis/common v1.1.1739 h1:B7daEMhZaVQXuzK3L3AZchkK2S+9+WAkd
 golang.conradwood.net/apis/common v1.1.1739/go.mod h1:82LAi77ejEi9771su5wf1GFmBcy78TnUb/lpJZutmzo=
 golang.conradwood.net/apis/common v1.1.1740 h1:hdz4+CtEJ3nd99HErLDkPHlSKlWidm055Efouq1eyOw=
 golang.conradwood.net/apis/common v1.1.1740/go.mod h1:82LAi77ejEi9771su5wf1GFmBcy78TnUb/lpJZutmzo=
+golang.conradwood.net/apis/common v1.1.1742 h1:SQJBKEe8jBw7RR18zTg3jMoSjyMe6O+y9z8u0Mij6A4=
+golang.conradwood.net/apis/common v1.1.1742/go.mod h1:82LAi77ejEi9771su5wf1GFmBcy78TnUb/lpJZutmzo=
 golang.conradwood.net/apis/deploymonkey v1.1.1498 h1:xZVWFxN6GrtjTNrLSiuEkjWIg/tsRwcw4fjHVhCt7yE=
 golang.conradwood.net/apis/deploymonkey v1.1.1498/go.mod h1:D5eGV5SK8VPs9ZaAxrLphRXsZMW08S1KnV0PtMsr9hc=
 golang.conradwood.net/apis/deploymonkey v1.1.1633 h1:OHWdx5MvaihNVrVs9NhkdU9ecVmP/V3BucRIVs9UJIs=
@@ -291,6 +299,8 @@ golang.conradwood.net/apis/deploymonkey v1.1.1739 h1:WEz+SnZa/bPWedCMuu8M44Os9C8
 golang.conradwood.net/apis/deploymonkey v1.1.1739/go.mod h1:D5eGV5SK8VPs9ZaAxrLphRXsZMW08S1KnV0PtMsr9hc=
 golang.conradwood.net/apis/deploymonkey v1.1.1740 h1:9Nuj56N3/KY6Dh4DAcCkY733T8TXM4IZRrv14fMgBnE=
 golang.conradwood.net/apis/deploymonkey v1.1.1740/go.mod h1:D5eGV5SK8VPs9ZaAxrLphRXsZMW08S1KnV0PtMsr9hc=
+golang.conradwood.net/apis/deploymonkey v1.1.1742 h1:F4Dl5gG0IZIL+DRwp4YstbJsA3pATBdebBfbp282A00=
+golang.conradwood.net/apis/deploymonkey v1.1.1742/go.mod h1:D5eGV5SK8VPs9ZaAxrLphRXsZMW08S1KnV0PtMsr9hc=
 golang.conradwood.net/apis/echoservice v1.1.1498 h1:VPJuCNqieCN6lEK6sEYlxjoiBSi3v0TzkN+D3RdmsCQ=
 golang.conradwood.net/apis/echoservice v1.1.1498/go.mod h1:n7dJwvgDXvGYy6vxFH3Mk2FguPmFWP/CCLAuUee+r7E=
 golang.conradwood.net/apis/echoservice v1.1.1633 h1:DSfNw83Cs8X82tmP8Z6JGbQmwTBHW6EEt7BV1HR87cA=
@@ -303,6 +313,8 @@ golang.conradwood.net/apis/echoservice v1.1.1739 h1:xbz4XOqnW1CaRFjxpAM4/T7RR4uf
 golang.conradwood.net/apis/echoservice v1.1.1739/go.mod h1:n7dJwvgDXvGYy6vxFH3Mk2FguPmFWP/CCLAuUee+r7E=
 golang.conradwood.net/apis/echoservice v1.1.1740 h1:0K04+SHM7WzPYzujQgTnjcLL0etHQhiXHDoI4mgGJ8E=
 golang.conradwood.net/apis/echoservice v1.1.1740/go.mod h1:n7dJwvgDXvGYy6vxFH3Mk2FguPmFWP/CCLAuUee+r7E=
+golang.conradwood.net/apis/echoservice v1.1.1742 h1:Wte5GKS0uQkDw2Dh+LtRQ56h3UpdpWLDq3liTA98EnE=
+golang.conradwood.net/apis/echoservice v1.1.1742/go.mod h1:n7dJwvgDXvGYy6vxFH3Mk2FguPmFWP/CCLAuUee+r7E=
 golang.conradwood.net/apis/email v1.1.1576 h1:pxrPqhcFvcGmrFWYI0OisuNtgMbtEGhXRAZ/ro1XSW4=
 golang.conradwood.net/apis/email v1.1.1576/go.mod h1:hpCMWabmuEPK7+J0hyqciamSvrLFfNJb+m7lRr9H374=
 golang.conradwood.net/apis/email v1.1.1633 h1:h0BKmzkxLveuiHcb8Iv3oXLgyifk5GB053RiQbP+IYg=
@@ -315,6 +327,8 @@ golang.conradwood.net/apis/email v1.1.1739 h1:M6UH9IQt1/SIDLHVAFNj6JNj+25AlIIpQ0
 golang.conradwood.net/apis/email v1.1.1739/go.mod h1:hpCMWabmuEPK7+J0hyqciamSvrLFfNJb+m7lRr9H374=
 golang.conradwood.net/apis/email v1.1.1740 h1:0xOdbW9aWFUFd2XkxGwU/5FgUPVqQDaRHBWPKToRyD8=
 golang.conradwood.net/apis/email v1.1.1740/go.mod h1:hpCMWabmuEPK7+J0hyqciamSvrLFfNJb+m7lRr9H374=
+golang.conradwood.net/apis/email v1.1.1742 h1:Xm1w/oIGOza/omXXeTX/JWFxqUDtHJkwNzOjkB3JYzE=
+golang.conradwood.net/apis/email v1.1.1742/go.mod h1:hpCMWabmuEPK7+J0hyqciamSvrLFfNJb+m7lRr9H374=
 golang.conradwood.net/apis/errorlogger v1.1.1498 h1:zMo7BMtm0r5WP42M0zIB5kFs475uH3bt3BECq0PIu8Y=
 golang.conradwood.net/apis/errorlogger v1.1.1498/go.mod h1:+eKYK50e04sTKr9qD9U44eztaeMSafHkzfjejBdMaqw=
 golang.conradwood.net/apis/errorlogger v1.1.1633 h1:LIV3w1n9EoZh1Sx0zKG0xQmSKrbqJ8buvlYGFQbgNLg=
@@ -327,6 +341,8 @@ golang.conradwood.net/apis/errorlogger v1.1.1739 h1:96mOa+AXztmPyFb4Hz9Z1Noc8Vgk
 golang.conradwood.net/apis/errorlogger v1.1.1739/go.mod h1:+eKYK50e04sTKr9qD9U44eztaeMSafHkzfjejBdMaqw=
 golang.conradwood.net/apis/errorlogger v1.1.1740 h1:ypsLuDCL1ABTzUazTWL2Ko/XzK5/TDweyXjlqWYUf/M=
 golang.conradwood.net/apis/errorlogger v1.1.1740/go.mod h1:+eKYK50e04sTKr9qD9U44eztaeMSafHkzfjejBdMaqw=
+golang.conradwood.net/apis/errorlogger v1.1.1742 h1:jJiUmpIWvtSFm97zlRuHeuY8+DYpWWkcvcFq2XdgV1s=
+golang.conradwood.net/apis/errorlogger v1.1.1742/go.mod h1:+eKYK50e04sTKr9qD9U44eztaeMSafHkzfjejBdMaqw=
 golang.conradwood.net/apis/framework v1.1.1498 h1:r4TKylZcOKriP1LcgJFJ9w3ocdBaFf8E4nXco5fdJSs=
 golang.conradwood.net/apis/framework v1.1.1498/go.mod h1:aakclkFxoK6Rwfb6wWbfyCPRiWsAZM94xYz69Y9fid4=
 golang.conradwood.net/apis/framework v1.1.1633 h1:cXPdg4XxuQggVSkNz2ap6T1PjpKF8Wpur5Xwoo6XCPM=
@@ -339,6 +355,8 @@ golang.conradwood.net/apis/framework v1.1.1739 h1:wmcdJ3Q7wxlQxmXpgU5Bjd6GasBQe8
 golang.conradwood.net/apis/framework v1.1.1739/go.mod h1:aakclkFxoK6Rwfb6wWbfyCPRiWsAZM94xYz69Y9fid4=
 golang.conradwood.net/apis/framework v1.1.1740 h1:7qLP6EtcnJYQouCY8Hta8gs2MP8hNBzCC0rCTs8ZrVQ=
 golang.conradwood.net/apis/framework v1.1.1740/go.mod h1:aakclkFxoK6Rwfb6wWbfyCPRiWsAZM94xYz69Y9fid4=
+golang.conradwood.net/apis/framework v1.1.1742 h1:n0Z3gEdd8fMm67CrYtLoOJZB6gz4VdFdYUOmksS/bhI=
+golang.conradwood.net/apis/framework v1.1.1742/go.mod h1:aakclkFxoK6Rwfb6wWbfyCPRiWsAZM94xYz69Y9fid4=
 golang.conradwood.net/apis/h2gproxy v1.1.1576 h1:qfRZbu7MPHmRV6ivCpH/H2Lf9B9aXYs3FgDw29bcFAg=
 golang.conradwood.net/apis/h2gproxy v1.1.1576/go.mod h1:/QxwL6QrsXr3qKABVL8hUgrpcmw5IvTpEajHhm5/c0c=
 golang.conradwood.net/apis/h2gproxy v1.1.1633 h1:wngwctGqoqSQI+hSENqOPaBiVTreQnI3VxqN0jNh2KU=
@@ -351,6 +369,8 @@ golang.conradwood.net/apis/h2gproxy v1.1.1739 h1:h3WvzVEkpDS4sY6B7OC0RT3k543vtFe
 golang.conradwood.net/apis/h2gproxy v1.1.1739/go.mod h1:/QxwL6QrsXr3qKABVL8hUgrpcmw5IvTpEajHhm5/c0c=
 golang.conradwood.net/apis/h2gproxy v1.1.1740 h1:OG7vyyYkHVjrWsbGA/FgvtRbItcM7n36WpAMF/+x3y4=
 golang.conradwood.net/apis/h2gproxy v1.1.1740/go.mod h1:/QxwL6QrsXr3qKABVL8hUgrpcmw5IvTpEajHhm5/c0c=
+golang.conradwood.net/apis/h2gproxy v1.1.1742 h1:KrYnC0uqRmhipH/2XzFGZwevCxEDqk1urcQJR6fHBNw=
+golang.conradwood.net/apis/h2gproxy v1.1.1742/go.mod h1:/QxwL6QrsXr3qKABVL8hUgrpcmw5IvTpEajHhm5/c0c=
 golang.conradwood.net/apis/logservice v1.1.1498/go.mod h1:lHKq9Oj6vUE77MOwAsk/zqTvfuJw3i0FEkhAz4w7I4c=
 golang.conradwood.net/apis/objectstore v1.1.1498/go.mod h1:e2yf47IrPI8nSmbDODyI1zvhtP/f22VWK32GvFZgYjU=
 golang.conradwood.net/apis/objectstore v1.1.1576 h1:3N9IFvAxcdcZKxp/8q3VZUykWQSVILCFowwBKqhynzE=
@@ -365,6 +385,8 @@ golang.conradwood.net/apis/objectstore v1.1.1739 h1:Ghsja1KKoF+OfVplz4ejUpPE4rGB
 golang.conradwood.net/apis/objectstore v1.1.1739/go.mod h1:e2yf47IrPI8nSmbDODyI1zvhtP/f22VWK32GvFZgYjU=
 golang.conradwood.net/apis/objectstore v1.1.1740 h1:clX5PEIlopbMDU72FIhL2d3Oj+V47bH9PlCjPTGHXtA=
 golang.conradwood.net/apis/objectstore v1.1.1740/go.mod h1:e2yf47IrPI8nSmbDODyI1zvhtP/f22VWK32GvFZgYjU=
+golang.conradwood.net/apis/objectstore v1.1.1742 h1:CxB3YknUMtXKKpxKTdeMuid0FO3hVyfw9kor9fYfYbs=
+golang.conradwood.net/apis/objectstore v1.1.1742/go.mod h1:e2yf47IrPI8nSmbDODyI1zvhtP/f22VWK32GvFZgYjU=
 golang.conradwood.net/apis/registry v1.1.1498 h1:iJTAe9R1N7E889dL4d+x/9Gw6PHUkcDplKiIZ85GVIo=
 golang.conradwood.net/apis/registry v1.1.1498/go.mod h1:p4jF77DwFYWYQdpgzxHWvPi3Zlg1PiWqV792OOkSN+o=
 golang.conradwood.net/apis/registry v1.1.1633 h1:KPQJO5mnUuHA+fNPBhv+o6wlc0piYyVL8FtiTg1SOKg=
@@ -377,6 +399,8 @@ golang.conradwood.net/apis/registry v1.1.1739 h1:4xpv4RCILmPIBUfMvErNXCCI2xz+NJY
 golang.conradwood.net/apis/registry v1.1.1739/go.mod h1:p4jF77DwFYWYQdpgzxHWvPi3Zlg1PiWqV792OOkSN+o=
 golang.conradwood.net/apis/registry v1.1.1740 h1:f4QvfNKmSdgxyDfikYdwG//cCGKMNKxMcrSHcrkarPU=
 golang.conradwood.net/apis/registry v1.1.1740/go.mod h1:p4jF77DwFYWYQdpgzxHWvPi3Zlg1PiWqV792OOkSN+o=
+golang.conradwood.net/apis/registry v1.1.1742 h1:Jx0LZ7cvck3JgorSAR1MzFBAx3QY6n+SDCC/INk+CMw=
+golang.conradwood.net/apis/registry v1.1.1742/go.mod h1:p4jF77DwFYWYQdpgzxHWvPi3Zlg1PiWqV792OOkSN+o=
 golang.conradwood.net/apis/rpcinterceptor v1.1.1498 h1:TgHjfkKMJ69eeauq5dhZh0YSBgh66TgX/b0Yp1YivRI=
 golang.conradwood.net/apis/rpcinterceptor v1.1.1498/go.mod h1:35V9nIc9TEUWuIOVo4YOr/d0FHsq4zcVnKozVOMSr0c=
 golang.conradwood.net/apis/rpcinterceptor v1.1.1633 h1:yWZQ7rfk3CKzkRzEqZb2ohmAmpktOXcz0i0BL60irZY=
@@ -389,6 +413,8 @@ golang.conradwood.net/apis/rpcinterceptor v1.1.1739 h1:5wQitqWYlDJZPKCmkFEvVN/7A
 golang.conradwood.net/apis/rpcinterceptor v1.1.1739/go.mod h1:35V9nIc9TEUWuIOVo4YOr/d0FHsq4zcVnKozVOMSr0c=
 golang.conradwood.net/apis/rpcinterceptor v1.1.1740 h1:ZngKdsPuiZfanx9rITv7nAkn1UEnSn0bJOJ3kQltSC8=
 golang.conradwood.net/apis/rpcinterceptor v1.1.1740/go.mod h1:35V9nIc9TEUWuIOVo4YOr/d0FHsq4zcVnKozVOMSr0c=
+golang.conradwood.net/apis/rpcinterceptor v1.1.1742 h1:eYUw5uuv06+SFC6HNODKJiVV4eEtbeMpNXXKNVidcGA=
+golang.conradwood.net/apis/rpcinterceptor v1.1.1742/go.mod h1:35V9nIc9TEUWuIOVo4YOr/d0FHsq4zcVnKozVOMSr0c=
 golang.conradwood.net/apis/slackgateway v1.1.1633 h1:bHWT8PimCwdgg6Lf3gJ4/GR/WmscnAW3kou7MRCDjDE=
 golang.conradwood.net/apis/slackgateway v1.1.1633/go.mod h1:FKl4IE5XD7RRfar2OmW8ZXFziG3sqF226Jg3GWuNF/o=
 golang.conradwood.net/apis/slackgateway v1.1.1641 h1:npJr+9XUrejo5YXy6vvfviVFWSd1t1MuZkbaBkzEezE=
@@ -399,6 +425,8 @@ golang.conradwood.net/apis/slackgateway v1.1.1739 h1:tjebe9k5keAGlJ6uC+6BqSiomQJ
 golang.conradwood.net/apis/slackgateway v1.1.1739/go.mod h1:FKl4IE5XD7RRfar2OmW8ZXFziG3sqF226Jg3GWuNF/o=
 golang.conradwood.net/apis/slackgateway v1.1.1740 h1:flv+pG0BUcuVI0Eiq+4kTDiQFWXYRvcmi46CIFknEbw=
 golang.conradwood.net/apis/slackgateway v1.1.1740/go.mod h1:FKl4IE5XD7RRfar2OmW8ZXFziG3sqF226Jg3GWuNF/o=
+golang.conradwood.net/apis/slackgateway v1.1.1742 h1:/rWUuuBalJ2TKx68cxwYJVZmRy4A0eK0BQB1rj0rs+s=
+golang.conradwood.net/apis/slackgateway v1.1.1742/go.mod h1:FKl4IE5XD7RRfar2OmW8ZXFziG3sqF226Jg3GWuNF/o=
 golang.conradwood.net/apis/themes v1.1.1629 h1:QZC9aj+RO41cq6K2rh2OskLvBJ34m5Brvb3rYuzxOTY=
 golang.conradwood.net/apis/themes v1.1.1629/go.mod h1:/+kqO6Pc/zwZ365EU4DAFPm5xi3VNeG7n5llrDozuHA=
 golang.conradwood.net/apis/themes v1.1.1633 h1:d0FeGQ+LK3SoFxV6Z7kMl+w2uB4k/YilPaOMzvmK1Jw=
@@ -411,6 +439,8 @@ golang.conradwood.net/apis/themes v1.1.1739 h1:kM5ir6w+asy4IjTWE/UgQfnuZ0SkEBHZG
 golang.conradwood.net/apis/themes v1.1.1739/go.mod h1:/+kqO6Pc/zwZ365EU4DAFPm5xi3VNeG7n5llrDozuHA=
 golang.conradwood.net/apis/themes v1.1.1740 h1:aXIolJorQPgALhmx+0UwNwoUfdibchJoodrlZ6TFZ1I=
 golang.conradwood.net/apis/themes v1.1.1740/go.mod h1:/+kqO6Pc/zwZ365EU4DAFPm5xi3VNeG7n5llrDozuHA=
+golang.conradwood.net/apis/themes v1.1.1742 h1:xBL9i+qNUo0UMuLOdPafeAj324/ZT4O7YI1Zf23JW4s=
+golang.conradwood.net/apis/themes v1.1.1742/go.mod h1:/+kqO6Pc/zwZ365EU4DAFPm5xi3VNeG7n5llrDozuHA=
 golang.conradwood.net/go-easyops v0.1.11300 h1:J/C6RIx60gHKoJ3G3g5J0tv5ahVnlvLWMCq8gcYbGhs=
 golang.conradwood.net/go-easyops v0.1.11300/go.mod h1:+wuPkqhxeUYTz1djvoMbCC5zYitU2Cay82j74GI+fLE=
 golang.conradwood.net/go-easyops v0.1.11556 h1:sPpDdRzhXyrpellJkIKlwGNhSkWE+ELRVj61s6bYkJM=
@@ -632,6 +662,8 @@ golang.yacloud.eu/apis/sessionmanager v1.1.1739 h1:A51l3zeq58C5eOUSMfu2Sqbz2mi77
 golang.yacloud.eu/apis/sessionmanager v1.1.1739/go.mod h1:5E2K3DdfqCbJpHrUJxWJEzm6cOeHpmradKbEBpT9/ss=
 golang.yacloud.eu/apis/sessionmanager v1.1.1740 h1:qNrKsMx+obbdulXol92Asq86UDngpMaOL78y/5+DBqU=
 golang.yacloud.eu/apis/sessionmanager v1.1.1740/go.mod h1:5E2K3DdfqCbJpHrUJxWJEzm6cOeHpmradKbEBpT9/ss=
+golang.yacloud.eu/apis/sessionmanager v1.1.1742 h1:zHk8dmCaJJ7LSrudfJGzlSc856a+DQiaaIDO7kIM0IQ=
+golang.yacloud.eu/apis/sessionmanager v1.1.1742/go.mod h1:5E2K3DdfqCbJpHrUJxWJEzm6cOeHpmradKbEBpT9/ss=
 google.golang.org/api v0.4.0/go.mod h1:8k5glujaEP+g9n7WNsDg8QP6cUVNI86fCNMcbazEtwE=
 google.golang.org/api v0.7.0/go.mod h1:WtwebWUNSVBH/HAw79HIFXZNqEvBhG+Ra+ax0hx3E3M=
 google.golang.org/api v0.8.0/go.mod h1:o4eAsZoiT+ibD93RtjEohWalFOjRDx6CVaqeizhEnKg=
