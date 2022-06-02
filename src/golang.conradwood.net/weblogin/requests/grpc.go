@@ -303,7 +303,7 @@ func login_success(ctx context.Context, user *au.User, logger *al.Logger) {
 }
 
 func noteworthy_login(ctx context.Context, user *au.User, sr *sm.SessionResponse) bool {
-	if user.ID != "1" || user.ID != "7" {
+	if user.ID != "1" && user.ID != "7" {
 		return true
 	}
 	if sr.NewDevice {
