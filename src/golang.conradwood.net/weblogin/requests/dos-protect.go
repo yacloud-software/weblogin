@@ -32,6 +32,10 @@ func IsDosing(cr *Request) error {
 		return nil
 	}
 	peer_ip_string := cr.ip
+	if peer_ip_string == "" {
+		fmt.Printf("antidos: no ip address!!!\n")
+		return nil
+	}
 	u := auth.GetUser(cr.ctx)
 	if u != nil {
 		return nil
