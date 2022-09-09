@@ -7,6 +7,7 @@ import (
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/auth"
 	"golang.conradwood.net/go-easyops/utils"
+	cm "golang.conradwood.net/weblogin/common"
 	"html/template"
 )
 
@@ -44,7 +45,7 @@ func logoutPage(cr *Request) (*pb.WebloginResponse, error) {
 	ctx := cr.ctx
 	u := auth.GetUser(ctx)
 	if u == nil {
-		return nil, fmt.Errorf("cannot log you out because you are not yet logged in")
+		return nil, cm.Errorf("cannot log you out because you are not yet logged in")
 	}
 	state, err := cr.getState(ctx)
 	l := &LogoutStruct{user: u, state: state}

@@ -256,26 +256,26 @@ func (rr *RegisterRequest) verify_submit_reg_form(w *web.WebRequest) error {
 		// if user exists, don't bother with firstname/lastname
 		f := w.GetPara("firstname")
 		if len(f) == 0 {
-			return fmt.Errorf("Firstname is mandatory")
+			return common.UrgentErrorf("Firstname is mandatory")
 		}
 		if len(f) < 3 {
-			return fmt.Errorf("Firstname is too short")
+			return common.UrgentErrorf("Firstname is too short")
 		}
 		l := w.GetPara("lastname")
 		if len(l) == 0 {
-			return fmt.Errorf("Lastname is mandatory")
+			return common.UrgentErrorf("Lastname is mandatory")
 		}
 		if len(l) < 3 {
-			return fmt.Errorf("Lastname is too short")
+			return common.UrgentErrorf("Lastname is too short")
 		}
 	}
 	p1 := w.GetPara("password1")
 	p2 := w.GetPara("password2")
 	if len(p1) < 8 {
-		return fmt.Errorf("Password must have a minimum length of 8 characters")
+		return common.UrgentErrorf("Password must have a minimum length of 8 characters")
 	}
 	if p1 != p2 {
-		return fmt.Errorf("Passwords do not match")
+		return common.UrgentErrorf("Passwords do not match")
 	}
 	return nil
 }

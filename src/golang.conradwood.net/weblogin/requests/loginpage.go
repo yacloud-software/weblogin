@@ -268,7 +268,7 @@ type GResponse struct {
 
 func check_captcha(response string, hostname string) error {
 	if response == "" {
-		return fmt.Errorf("invalid captcha")
+		return common.Errorf("invalid captcha")
 	}
 	h := &http.HTTP{}
 	h.SetHeader("Content-Type", "application/x-www-form-urlencoded")
@@ -300,7 +300,7 @@ func check_captcha(response string, hostname string) error {
 		return nil
 	}
 	if hostname != g.Hostname {
-		return fmt.Errorf("google found a different hostname (%s)", g.Hostname)
+		return common.UrgentErrorf("google found a different hostname (%s)", g.Hostname)
 	}
 	return nil
 

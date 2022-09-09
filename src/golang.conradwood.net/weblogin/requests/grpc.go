@@ -148,7 +148,10 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 		}
 		r, user, err := processLogin(cr)
 		if err != nil {
-			logger.Log(ctx, fmt.Sprintf("login failed: %s", err))
+			werr, castable := err.(*common.WError)
+			if (castable && werr.Urgent) || (!castable) {
+				logger.Log(ctx, fmt.Sprintf("login failed: %s", err))
+			}
 		} else {
 			login_success(ctx, user, logger)
 		}
