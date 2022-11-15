@@ -2,6 +2,8 @@
   <script>
     function onClick(e) {
 	console.log( "onclick() - sitekey: \"{{.SiteKey}}\"\n");
+	document.getElementById('save').value = "logging in...";
+	document.getElementById('save').disabled = true;
         e.preventDefault();
         grecaptcha.ready(function() {
           grecaptcha.execute('{{.SiteKey}}', {action: 'submit'}).then(function(token) {
