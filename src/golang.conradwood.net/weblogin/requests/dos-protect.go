@@ -49,7 +49,7 @@ func IsDosing(cr *Request) error {
 	if ipc.isPeerOverLimit() {
 		fmt.Printf("Blocked peer %s\n", peer_ip_string)
 		ctx := authremote.Context()
-		_, err := antidos.GetAntiDOSClient().IPFailure(ctx, &antidos.IPFailureRequest{Message: "peer over limit", IP: peer_ip_string})
+		_, err := antidos.GetAntiDOSClient().IPFailure(ctx, &antidos.IPFailureRequest{Botiness: 1, Message: "peer over limit", IP: peer_ip_string})
 		if err != nil {
 			fmt.Printf("Failed to antidos: %s\n", utils.ErrorString(err))
 		}
