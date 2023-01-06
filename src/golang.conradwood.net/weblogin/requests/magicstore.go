@@ -1,10 +1,10 @@
 package requests
 
 import (
+    "golang.conradwood.net/go-easyops/authremote"
 	"context"
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/client"
-	"golang.conradwood.net/go-easyops/tokens"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
 	"time"
@@ -27,7 +27,7 @@ func generateMagicIfNecessary(cr *Request) error {
 }
 
 func (cr *Request) putMagic(magic string, state *pb.State) error {
-	ctx := tokens.ContextWithToken()
+	ctx := authremote.Context()
 	state_string, err := utils.Marshal(state)
 	if err != nil {
 		return err
