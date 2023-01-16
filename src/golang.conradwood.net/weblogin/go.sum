@@ -106,8 +106,8 @@ golang.org/x/tools v0.0.0-20190226205152-f727befe758c/go.mod h1:9Yl7xja0Znq3iFh3
 golang.org/x/tools v0.0.0-20190311212946-11955173bddd/go.mod h1:LCzVGOaR6xXOjkQ3onu1FJEFr0SW1gC7cKk1uF8kGRs=
 golang.org/x/tools v0.0.0-20190524140312-2c0ae7006135/go.mod h1:RgjU9mgBXZiqYHBnxXauZ1Gv1EHHAz9KjViQ78xBX0Q=
 golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
-golang.yacloud.eu/apis/sessionmanager v1.1.1993 h1:7TjJWt/t5WiEy6B8crvSwBizNWiHEZzxAcWNh5LxEGg=
-golang.yacloud.eu/apis/sessionmanager v1.1.1993/go.mod h1:5E2K3DdfqCbJpHrUJxWJEzm6cOeHpmradKbEBpT9/ss=
+golang.yacloud.eu/apis/sessionmanager v1.1.2099 h1:+uYloGo7B4vCnRJNVZDRU2RiboXBXC0Dd5abhA1JXJQ=
+golang.yacloud.eu/apis/sessionmanager v1.1.2099/go.mod h1:5E2K3DdfqCbJpHrUJxWJEzm6cOeHpmradKbEBpT9/ss=
 golang.yacloud.eu/apis/urlcacher v1.1.2073 h1:MjdEb1grR7MwP6ONCYh2aCfpN5nWYNtXncWr7lR3aV0=
 golang.yacloud.eu/apis/urlcacher v1.1.2073/go.mod h1:m8Lb2GDsF+HVUzjV3p1j+sUe2rEwTeWIF6ZlvrDyEM4=
 google.golang.org/appengine v1.1.0/go.mod h1:EbEs0AVv82hx2wNQdGPgUI5lhzA/G0D9YwlJXL52JkM=

@@ -13,7 +13,7 @@ require (
 	golang.conradwood.net/apis/themes v1.1.1993
 	golang.conradwood.net/apis/weblogin v1.1.1428
 	golang.conradwood.net/go-easyops v0.1.15252
-	golang.yacloud.eu/apis/sessionmanager v1.1.1993
+	golang.yacloud.eu/apis/sessionmanager v1.1.2099
 	google.golang.org/grpc v1.51.0
 )
 

@@ -286,12 +286,13 @@ func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *Request) {
 
 func login_success(ctx context.Context, user *au.User, logger *al.Logger) {
 	sr := &sm.NewSessionRequest{
-		IPAddress: logger.IP,
-		BrowserID: logger.BrowserID,
-		UserAgent: logger.UserAgent,
-		UserID:    user.ID,
-		Useremail: user.Email,
-		Username:  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
+		IPAddress:   logger.IP,
+		BrowserID:   logger.BrowserID,
+		UserAgent:   logger.UserAgent,
+		UserID:      user.ID,
+		Useremail:   user.Email,
+		TriggerHost: logger.TriggerHost,
+		Username:    fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 	}
 	sb, err := sm.GetSessionManagerClient().NewSession(ctx, sr)
 	if err != nil {
