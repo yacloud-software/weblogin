@@ -142,10 +142,10 @@ func (rr *RegisterRequest) register1_submitted(ctx context.Context, logger *acti
 	}
 	if err != nil {
 		notvalid = fmt.Sprintf("%s", err)
-		w.BadIP()
+		w.BadIP(40)
 	} else if !c {
 		notvalid = "google captcha did not verify you as a user. try again please"
-		w.BadIP()
+		w.BadIP(90)
 	} else if len(e) == 0 {
 		notvalid = "email address is mandatory"
 	} else if len(e) < 3 {
@@ -188,7 +188,7 @@ func (rr *RegisterRequest) VerifyEmail(w *web.WebRequest) (*pb.WebloginResponse,
 	rr.VReg = p
 	rs, err := decode_email_link(p)
 	if err != nil {
-		w.BadIP()
+		w.BadIP(60)
 		goto error
 	}
 	rr.state = &pb.State{
