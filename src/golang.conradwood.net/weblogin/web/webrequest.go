@@ -99,7 +99,7 @@ func (w *WebRequest) VerifyCaptcha() (bool, error) {
 }
 
 // this ip misbehaved, tell antidos
-func (w *WebRequest) BadIP(botiness uint32) {
+func (w *WebRequest) BadIP() {
 	ctx := authremote.Context()
 	peer := w.details.GetPeer()
 	ip, port, err := net.SplitHostPort(peer)
@@ -112,8 +112,8 @@ func (w *WebRequest) BadIP(botiness uint32) {
 		fmt.Printf("failed to split port from \"%s\" (%s): %s\n", peer, port, err)
 		return
 	}
-	ifr := &antidos.IPFailureRequest{Message: "weblogin, bad webrequest", IP: ip, Botiness: botiness}
-	_, err = antidos.GetAntiDOSClient().IPFailure(ctx, ifr)
+
+	_, err = antidos.GetAntiDOSClient().IPFailure(ctx, &antidos.IPFailureRequest{Message: "weblogin, bad webrequest", IP: ip})
 	if err != nil {
 		fmt.Printf("ANTIDOS failed: %s\n", utils.ErrorString(err))
 	} else if *debug {

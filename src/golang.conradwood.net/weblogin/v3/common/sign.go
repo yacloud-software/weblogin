@@ -13,6 +13,7 @@ import (
 	os "golang.conradwood.net/apis/objectstore"
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/client"
+	"golang.conradwood.net/go-easyops/tokens"
 	"golang.conradwood.net/go-easyops/utils"
 )
 
@@ -33,7 +34,7 @@ func InitKey() {
 		ostore = os.NewObjectStoreClient(client.Connect("objectstore.ObjectStore"))
 	}
 	ctx := authremote.Context()
-	ctx = authremote.Context()
+	ctx = tokens.ContextWithToken()
 	p, err := ostore.TryGet(ctx, &os.GetRequest{ID: KEY_ID})
 	if err != nil {
 		fmt.Printf("Cannot get key: %s\n", utils.ErrorString(err))

@@ -300,7 +300,7 @@ func login_success(ctx context.Context, user *au.User, logger *al.Logger) {
 	} else {
 		fmt.Printf("Session created: %#v\n", sb)
 		if noteworthy_login(ctx, user, sb) {
-			logger.Log(ctx, fmt.Sprintf("login suceeded"))
+			logger.Log(ctx, fmt.Sprintf("login suceeded (to %s)", logger.TriggerHost))
 		}
 	}
 }
