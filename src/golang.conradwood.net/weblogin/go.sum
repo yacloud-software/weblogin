@@ -76,8 +76,8 @@ golang.conradwood.net/apis/slackgateway v1.1.1993 h1:Rzd6+fY5dYzYsWw+ELRjto4RP4f
 golang.conradwood.net/apis/slackgateway v1.1.1993/go.mod h1:FKl4IE5XD7RRfar2OmW8ZXFziG3sqF226Jg3GWuNF/o=
 golang.conradwood.net/apis/themes v1.1.1993 h1:hZmErZJ6QBvCHjp2+nWdlbLtR/HWis1MYPwxoxSNP+E=
 golang.conradwood.net/apis/themes v1.1.1993/go.mod h1:/+kqO6Pc/zwZ365EU4DAFPm5xi3VNeG7n5llrDozuHA=
-golang.conradwood.net/go-easyops v0.1.15081 h1:gzcYwG+pHxIAOvGESOA2h+aeMN6blD9HZ3VheNqAxQA=
-golang.conradwood.net/go-easyops v0.1.15081/go.mod h1:GEqo1/IDnnXhRlkGjbH2s/Rh58wmwgR1a2g1jF8tR+w=
+golang.conradwood.net/go-easyops v0.1.15252 h1:6pSg1rcWACIGmwwGh08fMKLPyB0nwDRD6Ogg7HR23Xo=
+golang.conradwood.net/go-easyops v0.1.15252/go.mod h1:B3zkniJWe1jLelmHjwNZfBaAFzr+Bqz8gZgHS/ygkmU=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/exp v0.0.0-20190121172915-509febef88a4/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
 golang.org/x/lint v0.0.0-20181026193005-c67002cb31c3/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=
