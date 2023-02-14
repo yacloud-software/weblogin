@@ -56,8 +56,8 @@ golang.conradwood.net/apis/slackgateway v1.1.2125 h1:J+7ySM5j8dVxfLXNLbNtPMUapNM
 golang.conradwood.net/apis/slackgateway v1.1.2125/go.mod h1:R4QX5dmLLl7c78qFZrIvYBjey5bHwRgYPPm0h3xUw94=
 golang.conradwood.net/apis/themes v1.1.2125 h1:5f3b4RJdoj9ids+y2UdZJgFDfKS0CncENqhVTEHC6x4=
 golang.conradwood.net/apis/themes v1.1.2125/go.mod h1:RFswHVBnX+PS7DnjCNgIaYoJcnIf87pdVXGIZsxgYRQ=
-golang.conradwood.net/go-easyops v0.1.16136 h1:M2PSWWbc3ccGTflZTqTaBeWoRsy7OMaukoKg4XurZ5A=
-golang.conradwood.net/go-easyops v0.1.16136/go.mod h1:ktYKHhBLaWt06KAXfT3hxYUPIAxSkv8ve8XR6SfNpz8=
+golang.conradwood.net/go-easyops v0.1.16334 h1:VRYZ2UfwaQUPGliMCdig0G1CK5eS4swUTpxmIbbvkvM=
+golang.conradwood.net/go-easyops v0.1.16334/go.mod h1:ktYKHhBLaWt06KAXfT3hxYUPIAxSkv8ve8XR6SfNpz8=
 golang.org/x/net v0.5.0 h1:GyT4nK/YDHSqa1c4753ouYCDajOYKTja9Xb/OHtgvSw=
 golang.org/x/net v0.5.0/go.mod h1:DivGGAXEgPSlEBzxGzZI+ZLohi+xUj054jfeKui00ws=
 golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
