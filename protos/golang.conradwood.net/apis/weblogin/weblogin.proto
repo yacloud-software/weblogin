@@ -6,6 +6,7 @@ package weblogin;
 import "golang.conradwood.net/apis/auth/auth.proto";
 option java_package = "net.conradwood.golang.apis.weblogin";
 import "golang.conradwood.net/apis/h2gproxy/h2gproxy.proto";
+import "golang.yacloud.eu/apis/session/session.proto";
 
 message BasicAuthRequest {
   // the stuff extracted from "Authorization" Header
@@ -49,6 +50,7 @@ message WebloginResponse {
   string PeerIP=11; // the ip of who's dosing us
   uint32 HTTPCode=12; // if not 0 - send a specific http code with the response
   string MimeType=13; // the mimetype of the body
+  session.Session Session=14; // weblogin might generate a session
 }
 
 // this protobuf is never exposed to the user. it is held server-side and referred to by a shortlived magic
