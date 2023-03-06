@@ -1,8 +1,15 @@
 // client create: WebloginClient
+/*
+  Created by /home/cnw/devel/go/go-tools/src/golang.conradwood.net/gotools/protoc-gen-cnw/protoc-gen-cnw.go
+*/
+
 /* geninfo:
    filename  : protos/golang.conradwood.net/apis/weblogin/weblogin.proto
    gopackage : golang.conradwood.net/apis/weblogin
    importname: ai_0
+   clientfunc: GetWeblogin
+   serverfunc: NewWeblogin
+   lookupfunc: WebloginLookupID
    varname   : client_WebloginClient_0
    clientname: WebloginClient
    servername: WebloginServer
@@ -33,8 +40,9 @@ func GetWebloginClient() WebloginClient {
        return client_WebloginClient_0
     }
 
-    client_WebloginClient_0 = NewWebloginClient(client.Connect("weblogin.Weblogin"))
+    client_WebloginClient_0 = NewWebloginClient(client.Connect(WebloginLookupID()))
     lock_WebloginClient_0.Unlock()
     return client_WebloginClient_0
 }
 
+func WebloginLookupID() string { return "weblogin.Weblogin" } // returns the ID suitable for lookup in the registry. treat as opaque, subject to change.
