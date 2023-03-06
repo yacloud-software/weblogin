@@ -36,7 +36,7 @@ func (l *ForgotStruct) ReferrerHost() string {
 
 }
 func (l *ForgotStruct) StateQuery() template.HTMLAttr {
-	return template.HTMLAttr(common.WEBLOGIN_STATE + "=" + l.magic)
+	return template.HTMLAttr("?" + common.WEBLOGIN_STATE + "=" + l.magic)
 }
 
 // render l.state into some string
@@ -64,6 +64,7 @@ func (l *ForgotStruct) Username() string {
 }
 
 func forgotpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
+	cr.Debugf("Forgotpassword request\n")
 	ctx := cr.ctx
 	req := cr.req
 	if req.Submitted["email"] != "" {

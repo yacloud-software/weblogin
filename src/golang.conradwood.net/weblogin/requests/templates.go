@@ -27,7 +27,6 @@ func (e *extra_data) Heading() string {
 
 func (cr *Request) renderTemplate(l common.Template_data, templateFile string) ([]byte, error) {
 	cr.Debugf("Rendering template %s\n", templateFile)
-
 	tfname := web.TemplatePath() + "/" + templateFile + ".html"
 	t := template.New(templateFile)
 	e := &extra_data{td: l, ctx: cr.ctx}
