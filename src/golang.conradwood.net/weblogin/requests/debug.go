@@ -46,7 +46,11 @@ func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
 	return res
 }
 func (l *Request) prefix() string {
-	s := fmt.Sprintf("[%s] ", l.ip)
+	m := "unknown"
+	if l != nil && l.req != nil {
+		m = l.req.Method
+	}
+	s := fmt.Sprintf("[%s/%s] ", l.ip, m)
 	return s
 }
 func (l *Request) Printf(format string, args ...interface{}) {
@@ -57,6 +61,8 @@ func (l *Request) Debugf(format string, args ...interface{}) {
 	dodebug = dodebug || strings.HasPrefix(l.req.Peer, "[2001:8b0:1400:279b:5")
 	dodebug = dodebug || strings.HasPrefix(l.req.Peer, "81.187.88.146")
 	dodebug = dodebug || strings.HasPrefix(l.req.Peer, "81.187.202.194")
+	dodebug = dodebug || strings.HasPrefix(l.req.Peer, "137.220.64.19")
+	dodebug = dodebug || strings.HasPrefix(l.req.Peer, "2a01:4b00:ab0f:5100:5::5")
 	if !dodebug {
 		return
 	}

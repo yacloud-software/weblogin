@@ -70,6 +70,7 @@ func (l *loginrender) Username() string {
 
 // this redirects to sso.yacloud.eu if it is not already and then serves the form
 func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
+	cr.Debugf("")
 	cr.Debugf("createLoginPage()\n")
 	ctx := cr.ctx
 	req := cr.req
