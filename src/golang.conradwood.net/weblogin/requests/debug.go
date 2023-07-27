@@ -33,11 +33,20 @@ func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
 	if req.Submitted == nil {
 		req.Submitted = make(map[string]string)
 	}
-	ip, port, _ := net.SplitHostPort(req.Peer)
-	res.ip = ip
-	iport, _ := strconv.Atoi(port)
-	res.port = iport
-	res.logger = &al.Logger{IP: ip}
+	xip := net.ParseIP(req.Peer)
+	if xip != nil {
+		res.ip = req.Peer
+	} else {
+		ip, port, _ := net.SplitHostPort(req.Peer)
+		res.ip = ip
+		iport, _ := strconv.Atoi(port)
+		res.port = iport
+	}
+	log_ip := res.ip
+	if log_ip == "" {
+		log_ip = req.Peer
+	}
+	res.logger = &al.Logger{IP: log_ip}
 	for _, c := range req.Cookies {
 		if c.Name == BROWSERID_COOKIE {
 			res.browserid = c.Value

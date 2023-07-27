@@ -119,7 +119,7 @@ func (w *webhandler) ServeHTTP(response http.ResponseWriter, req *http.Request) 
 	fmt.Printf("URL: %#v\n", url)
 	ctx := authremote.Context()
 	greq := &pb.WebloginRequest{
-		Method: "get",
+		Method: req.Method,
 		Scheme: "http",
 		Host:   host,
 		Path:   loc,
