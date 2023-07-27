@@ -70,7 +70,6 @@ func (l *loginrender) Username() string {
 
 // this redirects to sso.yacloud.eu if it is not already and then serves the form
 func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
-	cr.Debugf("")
 	cr.Debugf("createLoginPage()\n")
 	ctx := cr.ctx
 	req := cr.req
@@ -248,7 +247,7 @@ func stateToURL(state *pb.State, qparas map[string]string) string {
 }
 func createState(cr *Request) (string, *pb.State, error) {
 	req := cr.req
-	state := &pb.State{TriggerHost: req.Host, TriggerPath: req.Path, TriggerQuery: req.Query}
+	state := &pb.State{Method: req.Method, TriggerHost: req.Host, TriggerPath: req.Path, TriggerQuery: req.Query}
 	magic := utils.RandomString(60)
 	err := cr.putMagic(magic, state)
 	if err != nil {
