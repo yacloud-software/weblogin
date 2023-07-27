@@ -2,10 +2,15 @@ package requests
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"golang.conradwood.net/apis/themes"
 	pb "golang.conradwood.net/apis/weblogin"
 	"strings"
+)
+
+var (
+	debug_themes = flag.Bool("debug_themes", false, "debug themes stuff")
 )
 
 func serveThemes(ctx context.Context, cr *Request) (*pb.WebloginResponse, error) {
@@ -18,8 +23,9 @@ func serveThemes(ctx context.Context, cr *Request) (*pb.WebloginResponse, error)
 	if err == nil && state != nil {
 		host = state.TriggerHost
 	}
-
-	fmt.Printf("[themes] Coming from host \"%s\"\n", host)
+	if *debug_themes {
+		fmt.Printf("[themes] Coming from host \"%s\"\n", host)
+	}
 	path := strings.TrimSuffix(req.Path, "?")
 	if strings.HasSuffix(path, "stylesheet.css") {
 		cs, err := themes.GetThemesClient().GetCSS(ctx, &themes.HostThemeRequest{Host: host})
