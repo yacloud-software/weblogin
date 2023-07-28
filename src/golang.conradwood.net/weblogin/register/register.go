@@ -89,7 +89,9 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	if rr.state == nil {
 		rr.state = &pb.State{}
 	}
-	logger.Log(ctx, fmt.Sprintf("Registration request from host \"%s\"", rr.state.TriggerHost))
+	if rr.state.TriggerHost != "" {
+		logger.Log(ctx, fmt.Sprintf("Registration request from host \"%s\"", rr.state.TriggerHost))
+	}
 	fmt.Printf("[registration] coming from host \"%s\"\n", rr.state.TriggerHost)
 
 	rr.Host = w.GetPara("host")
