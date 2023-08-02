@@ -89,9 +89,6 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	if rr.state == nil {
 		rr.state = &pb.State{}
 	}
-	if rr.state.TriggerHost != "" {
-		logger.Log(ctx, fmt.Sprintf("Registration request from host \"%s\"", rr.state.TriggerHost))
-	}
 	fmt.Printf("[registration] coming from host \"%s\"\n", rr.state.TriggerHost)
 
 	rr.Host = w.GetPara("host")
@@ -101,6 +98,7 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	var b []byte
 
 	if w.GetPara("v_reg") != "" || w.GetPara("form_submit_Ohg5quei4no2gZZZrgeserg") != "" {
+		logger.Log(ctx, fmt.Sprintf("Registration email verification request from host \"%s\"", rr.state.TriggerHost))
 		// this is a link from an email
 		return rr.VerifyEmail(w)
 	}
@@ -114,6 +112,7 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	}
 
 	if w.GetPara("form_submit_Ohg5quei4no2grgeserg") != "" || w.GetPara("email") != "" {
+		logger.Log(ctx, fmt.Sprintf("Registration email from submitted from host \"%s\" for email \"%s\"", rr.state.TriggerHost, w.GetPara("email")))
 		b, err = rr.register1_submitted(ctx, logger, w)
 	} else {
 		// default - no submission
