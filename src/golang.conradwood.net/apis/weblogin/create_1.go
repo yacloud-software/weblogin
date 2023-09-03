@@ -1,6 +1,6 @@
 // client create: WebloginClient
 /*
-  Created by /srv/home/cnw/devel/go/go-tools/src/golang.conradwood.net/gotools/protoc-gen-cnw/protoc-gen-cnw.go
+  Created by /home/cnw/devel/go/yatools/src/golang.yacloud.eu/yatools/protoc-gen-cnw/protoc-gen-cnw.go
 */
 
 /* geninfo:
@@ -13,7 +13,7 @@
    varname   : client_WebloginClient_0
    clientname: WebloginClient
    servername: WebloginServer
-   gscvname  : weblogin.Weblogin
+   gsvcname  : weblogin.Weblogin
    lockname  : lock_WebloginClient_0
    activename: active_WebloginClient_0
 */
@@ -46,3 +46,7 @@ func GetWebloginClient() WebloginClient {
 }
 
 func WebloginLookupID() string { return "weblogin.Weblogin" } // returns the ID suitable for lookup in the registry. treat as opaque, subject to change.
+
+func init() {
+   client.RegisterDependency("weblogin.Weblogin")
+}
