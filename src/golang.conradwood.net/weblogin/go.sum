@@ -48,8 +48,8 @@ golang.conradwood.net/apis/framework v1.1.2503 h1:SpqBi75HmRmj48EYjqCl9AXYCWiubT
 golang.conradwood.net/apis/framework v1.1.2503/go.mod h1:a8WDJ4qsCA7rqeUx/s9ehMxxloqGzAlz7+aHIaKcz/A=
 golang.conradwood.net/apis/goeasyops v1.1.2503 h1:vNdg1iEn9uq6w/xit5EFO/UCN6YTLuNQNwuWYJzrG3g=
 golang.conradwood.net/apis/goeasyops v1.1.2503/go.mod h1:uA+AbBCJJ2atLoXONz27w0CacXDfhqsQVTHU9OV41+A=
-golang.conradwood.net/apis/h2gproxy v1.1.2341 h1:NnpW70hyfjUiCHzWLWr767GGbV3IxUh7aAAwMqeW8Yc=
-golang.conradwood.net/apis/h2gproxy v1.1.2341/go.mod h1:EbjMf4xrtF7kLjwjldi8Ulk1B4GCgvyb4vejA3AGzG8=
+golang.conradwood.net/apis/h2gproxy v1.1.2526 h1:XTGkz3WviKOe2+AQH+ZLxRWSXOSZTN9clxWdc78VB/k=
+golang.conradwood.net/apis/h2gproxy v1.1.2526/go.mod h1:hV2g2yHAcl+LLgJefvNJmQGMHFOZCJHPXS5lp3EZb+I=
 golang.conradwood.net/apis/objectstore v1.1.2503 h1:ylhSoEKjoW5PnNLgLBKmfm19UPbzoNsHAQB8NEGCAgg=
 golang.conradwood.net/apis/objectstore v1.1.2503/go.mod h1:/epSFsxgELu/8CFg9eOInujLDyxmBar5KLX+F/oKweE=
 golang.conradwood.net/apis/registry v1.1.2503 h1:jMHHCMhp46AgN45C88X0hKVlTIYVzTPrBEaKv5HAabY=
@@ -60,8 +60,8 @@ golang.conradwood.net/apis/slackgateway v1.1.2341 h1:nOhX5dZKk0JRfrn+uStzJTf0L1c
 golang.conradwood.net/apis/slackgateway v1.1.2341/go.mod h1:NI5qI6WLViEmhMnzZJDCEB5kxewMUXV/hMegy5HdVYg=
 golang.conradwood.net/apis/themes v1.1.2341 h1:dHE1avZK21NpZu/CGj/xkgQ5E2Of29FGQ3wP6kZzm5k=
 golang.conradwood.net/apis/themes v1.1.2341/go.mod h1:Ew59Xlg0HSRC13CbJYo+yafhqO6/ocU1S3a2tjBfQY8=
-golang.conradwood.net/go-easyops v0.1.19396 h1:wrwsD61qf7bJw6KgDCETeXTg8/rcvqsdBsJ9V0N5uIU=
-golang.conradwood.net/go-easyops v0.1.19396/go.mod h1:RC7fYrRFMXBQWlCSx3eaLTwAKA89p7LcP0fJz7wbv+4=
+golang.conradwood.net/go-easyops v0.1.19472 h1:ZoSs2jgWT+XqujnEn6W2potRQ3bRQmKHTJI9AM98Cv4=
+golang.conradwood.net/go-easyops v0.1.19472/go.mod h1:RC7fYrRFMXBQWlCSx3eaLTwAKA89p7LcP0fJz7wbv+4=
 golang.org/x/net v0.14.0 h1:BONx9s002vGdD9umnlX1Po8vOZmrgH34qlHcD1MfK14=
 golang.org/x/net v0.14.0/go.mod h1:PpSgVXXLK0OxS0F31C1/tv6XNguvCrnXIDrFMspZIUI=
 golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=

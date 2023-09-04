@@ -7,12 +7,12 @@ require (
 	golang.conradwood.net/apis/auth v1.1.2503
 	golang.conradwood.net/apis/common v1.1.2503
 	golang.conradwood.net/apis/email v1.1.2341
-	golang.conradwood.net/apis/h2gproxy v1.1.2341
+	golang.conradwood.net/apis/h2gproxy v1.1.2526
 	golang.conradwood.net/apis/objectstore v1.1.2503
 	golang.conradwood.net/apis/slackgateway v1.1.2341
 	golang.conradwood.net/apis/themes v1.1.2341
 	golang.conradwood.net/apis/weblogin v1.1.1428
-	golang.conradwood.net/go-easyops v0.1.19396
+	golang.conradwood.net/go-easyops v0.1.19472
 	golang.yacloud.eu/apis/sessionmanager v1.1.2341
 	google.golang.org/grpc v1.57.0
 )
