@@ -227,7 +227,7 @@ func (w *RequestHandler) VerifyURL(ctx context.Context, req *pb.WebloginRequest)
 		return nil, e
 	}
 
-	cr.Debugf("verifying url")
+	cr.Debugf("verifying url\n")
 	wls := req.Submitted["weblogin"]
 	if wls == "" {
 		return nil, errors.InvalidArgs(ctx, "missing weblogin", "missing weblogin parameter")
