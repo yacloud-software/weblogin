@@ -12,7 +12,7 @@ require (
 	golang.conradwood.net/apis/slackgateway v1.1.2341
 	golang.conradwood.net/apis/themes v1.1.2341
 	golang.conradwood.net/apis/weblogin v1.1.1428
-	golang.conradwood.net/go-easyops v0.1.19878
+	golang.conradwood.net/go-easyops v0.1.20106
 	golang.yacloud.eu/apis/sessionmanager v1.1.2341
 	google.golang.org/grpc v1.57.0
 )
@@ -36,7 +36,6 @@ require (
 	golang.conradwood.net/apis/framework v1.1.2503 // indirect
 	golang.conradwood.net/apis/goeasyops v1.1.2503 // indirect
 	golang.conradwood.net/apis/registry v1.1.2503 // indirect
-	golang.conradwood.net/apis/rpcinterceptor v1.1.2495 // indirect
 	golang.org/x/net v0.14.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
