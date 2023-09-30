@@ -12,7 +12,7 @@ require (
 	golang.conradwood.net/apis/slackgateway v1.1.2341
 	golang.conradwood.net/apis/themes v1.1.2341
 	golang.conradwood.net/apis/weblogin v1.1.1428
-	golang.conradwood.net/go-easyops v0.1.20683
+	golang.conradwood.net/go-easyops v0.1.20970
 	golang.yacloud.eu/apis/sessionmanager v1.1.2341
 	google.golang.org/grpc v1.57.0
 )
