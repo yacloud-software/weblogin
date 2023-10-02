@@ -46,7 +46,9 @@ func (w *RequestHandler) IsBasicAuthValid(ctx context.Context, cr *pb.BasicAuthR
 
 // we end up in here if a well-known url for weblogin is requested, that is "/weblogin/"
 func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
+	fmt.Printf("Requested path \"%s\"\n", req.Path)
 	cr := NewRequest(ctx, req)
+
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
@@ -56,6 +58,14 @@ func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest)
 	if *debug {
 		cr.Debugf("weblogin.ServeHTML(), serving %s\n", req.Path)
 	}
+	xs := strings.Split(req.Path, "/")
+	if len(xs) >= 2 {
+		fname := xs[len(xs)-1]
+		if xs[len(xs)-2] == "assets" {
+			return cr.ServeAsset(ctx, fname)
+		}
+	}
+
 	wl, err := w.ServeHTMLWithError(ctx, req)
 	if err != nil {
 		u := auth.GetUser(ctx)
