@@ -21,6 +21,10 @@ type ForgotStruct struct {
 	PW2   string
 }
 
+func (rr *ForgotStruct) TargetURL() string {
+	return common.State2URL(rr.state)
+}
+
 func (l *ForgotStruct) Heading() string {
 	return "Reset Password"
 }

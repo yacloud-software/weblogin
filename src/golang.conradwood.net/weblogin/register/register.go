@@ -43,6 +43,10 @@ type RegisterRequest struct {
 	logger        *activitylog.Logger
 }
 
+func (rr *RegisterRequest) TargetURL() string {
+	return common.State2URL(rr.state)
+}
+
 func (rr *RegisterRequest) ReferrerHost() string {
 	if rr.state != nil {
 		return rr.state.TriggerHost

@@ -35,6 +35,7 @@ func (cr *Request) renderTemplate(l common.Template_data, templateFile string) (
 		"StateQuery":   l.StateQuery,
 		"Heading":      e.Heading,
 		"ReferrerHost": l.ReferrerHost,
+		"TargetURL":    l.TargetURL,
 	})
 	b, err := readTemplateFile(tfname)
 	if err != nil {

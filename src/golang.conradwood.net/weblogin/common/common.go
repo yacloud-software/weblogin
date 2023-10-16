@@ -20,6 +20,7 @@ type Template_data interface {
 	StateQuery() template.HTMLAttr
 	ReferrerHost() string
 	Heading() string
+	TargetURL() string
 }
 
 func Debugf(format string, args ...interface{}) {

@@ -14,6 +14,10 @@ type errordata struct {
 	ErrorText string
 }
 
+func (rr *errordata) TargetURL() string {
+	return "/"
+}
+
 func (e *errordata) Username() string {
 	return ""
 }

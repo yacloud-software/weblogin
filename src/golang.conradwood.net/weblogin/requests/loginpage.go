@@ -34,6 +34,10 @@ type loginrender struct {
 	SiteKey              string
 }
 
+func (rr *loginrender) TargetURL() string {
+	return common.State2URL(rr.weblogin_state_value)
+}
+
 func (l *loginrender) Heading() string {
 	return "Log In"
 }

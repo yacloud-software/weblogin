@@ -17,6 +17,10 @@ type LogoutStruct struct {
 	state *pb.State
 }
 
+func (rr *LogoutStruct) TargetURL() string {
+	return cm.State2URL(rr.state)
+}
+
 func (l *LogoutStruct) Heading() string {
 	return "Log out"
 }
