@@ -99,7 +99,7 @@ func (rr *RegisterRequest) send_email(w *web.WebRequest) error {
 		return err
 	}
 	t := &email.TemplateEmailRequest{
-		Sender:       "foo",
+		Sender:       "",
 		Recipient:    rs.Email,
 		TemplateName: "verify_email",
 		Values: map[string]string{
