@@ -49,4 +49,5 @@ func WebloginLookupID() string { return "weblogin.Weblogin" } // returns the ID 
 
 func init() {
    client.RegisterDependency("weblogin.Weblogin")
+   AddService("weblogin.Weblogin")
 }
