@@ -16,7 +16,7 @@ func NewHandler() *Handler {
 
 func (h *Handler) StartGRPC(port int) error {
 	sd := server.NewServerDef()
-	sd.Port = port
+	sd.SetPort(port)
 	sd.Register = func(server *grpc.Server) error {
 		pb.RegisterWebloginServer(server, h)
 		return nil

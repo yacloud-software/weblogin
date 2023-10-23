@@ -62,7 +62,7 @@ func main() {
 	go rh.StartGRPC(*port)
 	fmt.Printf("Starting http server on port %d\n", *httpport)
 	sd := server.NewHTMLServerDef("weblogin.Weblogin")
-	sd.Port = *httpport
+	sd.SetPort(*httpport)
 	server.AddRegistry(sd)
 	conn, err := net.Listen("tcp", fmt.Sprintf(":%d", *httpport))
 	if err != nil {

@@ -23,7 +23,7 @@ import (
 
 func (r *RequestHandler) StartGRPC(port int) error {
 	sd := server.NewServerDef()
-	sd.Port = port
+	sd.SetPort(port)
 	sd.Register = func(server *grpc.Server) error {
 		pb.RegisterWebloginServer(server, r)
 		return nil
