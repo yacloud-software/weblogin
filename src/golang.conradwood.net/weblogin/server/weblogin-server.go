@@ -119,13 +119,21 @@ func (w *webhandler) ServeHTTP(response http.ResponseWriter, req *http.Request) 
 	fmt.Printf("URL: %#v\n", url)
 	ctx := authremote.Context()
 	greq := &pb.WebloginRequest{
-		Method: req.Method,
-		Scheme: "http",
-		Host:   host,
-		Path:   loc,
-		Query:  url.RawQuery,
-		Body:   string(body),
-		Peer:   peerip,
+		Method:    req.Method,
+		Scheme:    "http",
+		Host:      host,
+		Path:      loc,
+		Query:     url.RawQuery,
+		Body:      string(body),
+		Peer:      peerip,
+		Submitted: make(map[string]string),
+	}
+	values := req.URL.Query()
+	for k, v := range values {
+		if len(v) == 0 {
+			continue
+		}
+		greq.Submitted[k] = v[0]
 	}
 	fmt.Printf("HTTP proxy request for %s://%s/%s from ip %s\n", greq.Scheme, greq.Host, greq.Path, peerip)
 	wr, err := rh.GetLoginPage(ctx, greq)

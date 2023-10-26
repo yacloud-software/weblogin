@@ -26,12 +26,17 @@ var (
 	Cookie_livetime        *int
 )
 
+// implements common.Template_data
 type loginrender struct {
 	Msg                  string
 	weblogin_state_value *pb.State
 	magic                string
 	ImageURLs            []string
 	SiteKey              string
+}
+
+func (rr *loginrender) GetQueryValue(key string) string {
+	return common.State2URLValues(rr.weblogin_state_value)[key]
 }
 
 func (rr *loginrender) TargetURL() string {

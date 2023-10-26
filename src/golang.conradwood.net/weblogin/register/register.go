@@ -43,6 +43,10 @@ type RegisterRequest struct {
 	logger        *activitylog.Logger
 }
 
+func (rr *RegisterRequest) GetQueryValue(key string) string {
+	return common.State2URLValues(rr.state)[key]
+}
+
 func (rr *RegisterRequest) TargetURL() string {
 	return common.State2URL(rr.state)
 }

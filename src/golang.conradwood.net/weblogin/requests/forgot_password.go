@@ -21,6 +21,10 @@ type ForgotStruct struct {
 	PW2   string
 }
 
+func (rr *ForgotStruct) GetQueryValue(key string) string {
+	return common.State2URLValues(rr.state)[key]
+}
+
 func (rr *ForgotStruct) TargetURL() string {
 	return common.State2URL(rr.state)
 }

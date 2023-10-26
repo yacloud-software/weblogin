@@ -21,6 +21,7 @@ type Template_data interface {
 	ReferrerHost() string
 	Heading() string
 	TargetURL() string
+	GetQueryValue(string) string
 }
 
 func Debugf(format string, args ...interface{}) {

@@ -25,10 +25,12 @@ func (w *WebRequest) Render(templateFile string, data common.Template_data) ([]b
 	s1 = append(s1, s3...)
 	t := template.New(templateFile)
 	t.Funcs(template.FuncMap{
-		"username":     w.Username,
-		"StateQuery":   data.StateQuery,
-		"Heading":      data.Heading,
-		"ReferrerHost": data.ReferrerHost,
+		"username":       w.Username,
+		"StateQuery":     data.StateQuery,
+		"Heading":        data.Heading,
+		"ReferrerHost":   data.ReferrerHost,
+		"TargetURL":      data.TargetURL,
+		"GetQueryValues": data.GetQueryValue,
 	})
 	_, err = t.Parse(string(s1))
 	if err != nil {

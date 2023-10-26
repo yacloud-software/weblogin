@@ -14,6 +14,10 @@ type errordata struct {
 	ErrorText string
 }
 
+func (rr *errordata) GetQueryValue(key string) string {
+	return ""
+}
+
 func (rr *errordata) TargetURL() string {
 	return "/"
 }
