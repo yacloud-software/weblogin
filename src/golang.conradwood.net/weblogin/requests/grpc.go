@@ -162,6 +162,14 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 		msg = fmt.Sprintf("This page must be loaded at %s (not \"%s\"). (path=%s)", web.SSOHost(), host, req.Path)
 		fmt.Println(msg)
 	}
+
+	if strings.HasSuffix(req.Path, "/needsession") { // user clicked on link in reset password email
+		res, err := needSessionPage(cr)
+		cr.SetError(err)
+		cr.SessionSet()
+		return res, err
+	}
+
 	paras := req.Submitted
 
 	if paras["email"] != "" {
@@ -201,6 +209,7 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	return res, err
 
 }
+
 func (w *RequestHandler) GetVerifyEmail(ctx context.Context, req *pb.WebloginRequest) (*pb.EmailPageResponse, error) {
 	cr := requesttracker.NewRequest(ctx, req)
 	CountURL(cr)

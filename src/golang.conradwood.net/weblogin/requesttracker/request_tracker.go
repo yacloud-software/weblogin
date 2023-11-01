@@ -155,6 +155,9 @@ func (cr *Request) SetError(err error) {
 	}
 	cr.last_error = err
 }
+func (cr *Request) SessionSet() {
+	cr.request_log(pb.AuthAction_SESSION_SET)
+}
 func (cr *Request) ForgotPasswordSent() {
 	cr.request_log(pb.AuthAction_FORGOT_PASSWORD_SENT)
 }
