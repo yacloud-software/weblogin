@@ -92,6 +92,7 @@ func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest)
 func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
 	cr := requesttracker.NewRequest(ctx, req)
 	u := auth.GetUser(ctx)
+	cr.SetUser(u)
 	host := req.Host
 	q := cr.Request().Query
 	if len(q) > 50 {
@@ -169,8 +170,9 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 			UserAgent:   cr.UserAgent(),
 		}
 		r, user, err := processLogin(cr)
+		cr.SetUser(user)
+		cr.SetError(err)
 		if err != nil {
-			cr.SetError(err)
 			cr.LoginPageSubmitted()
 			werr, castable := err.(*common.WError)
 			if (castable && werr.Urgent) || (!castable) {

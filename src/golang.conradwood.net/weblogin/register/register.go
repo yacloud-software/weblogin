@@ -28,7 +28,6 @@ type RegisterRequest struct {
 	SSOHost       string
 	Host          string
 	Error         string
-	Email         string
 	userid        string
 	Password1     string
 	Password2     string
@@ -148,7 +147,7 @@ func Registration(ctx context.Context, req *pb.WebloginRequest, cr *requesttrack
 func (rr *RegisterRequest) register1_submitted(ctx context.Context, logger *activitylog.Logger, w *web.WebRequest) ([]byte, error) {
 	e := w.GetPara("email")
 	fmt.Printf("Register email submitted (%s)\n", e)
-	rr.Email = e
+	rr.SetEmail(e)
 	logger.Email = e
 	notvalid := ""
 	var c bool
@@ -176,7 +175,7 @@ func (rr *RegisterRequest) register1_submitted(ctx context.Context, logger *acti
 			notvalid = fmt.Sprintf("%s", err)
 		}
 		if ad != nil {
-			rr.Email = ad.Address
+			rr.SetEmail(ad.Address)
 		}
 	}
 
@@ -221,7 +220,7 @@ func (rr *RegisterRequest) VerifyEmail(w *web.WebRequest) (*pb.WebloginResponse,
 	rr.magic = rs.Magic
 	rr.RegisterState = rs
 	rr.Host = rs.Host
-	rr.Email = rs.Email
+	rr.SetEmail(rs.Email)
 	rr.Password1 = w.GetPara("password1")
 	rr.Password2 = w.GetPara("password2")
 	rr.FirstName = w.GetPara("firstname")
@@ -229,9 +228,9 @@ func (rr *RegisterRequest) VerifyEmail(w *web.WebRequest) (*pb.WebloginResponse,
 	rr.UserExists = false
 	// it is possible that user re-registered (e.g. already exists)
 
-	user, err = authremote.GetAuthManagerClient().GetUserByEmail(ctx, &au.ByEmailRequest{Email: rr.Email})
+	user, err = authremote.GetAuthManagerClient().GetUserByEmail(ctx, &au.ByEmailRequest{Email: rr.GetEmail()})
 	if err != nil {
-		fmt.Printf("error checking user \"%s\": %s\n", rr.Email, utils.ErrorString(err))
+		fmt.Printf("error checking user \"%s\": %s\n", rr.GetEmail(), utils.ErrorString(err))
 	} else if user != nil {
 		rr.UserExists = true
 		rr.userid = user.ID
@@ -304,11 +303,11 @@ func (rr *RegisterRequest) verify_submit_reg_form(w *web.WebRequest) error {
 // update a users' password
 func (rr *RegisterRequest) update_user(w *web.WebRequest) error {
 	ctx := authremote.Context()
-	fmt.Printf("updating password for user \"%s\" (%s)\n", rr.Email, rr.userid)
+	fmt.Printf("updating password for user \"%s\" (%s)\n", rr.GetEmail(), rr.userid)
 	upd := &au.ForceUpdatePasswordRequest{UserID: rr.userid, NewPassword: w.GetPara("password1")}
 	_, err := authremote.GetAuthManagerClient().ForceUpdatePassword(ctx, upd)
 	if err != nil {
-		fmt.Printf("failed to update password for user \"%s\": %s\n", rr.Email, utils.ErrorString(err))
+		fmt.Printf("failed to update password for user \"%s\": %s\n", rr.GetEmail(), utils.ErrorString(err))
 	}
 	return err
 }
@@ -316,7 +315,7 @@ func (rr *RegisterRequest) update_user(w *web.WebRequest) error {
 // create a new uesr
 func (rr *RegisterRequest) create_user(w *web.WebRequest) error {
 	cr := &au.CreateUserRequest{
-		Email:         rr.Email,
+		Email:         rr.GetEmail(),
 		FirstName:     rr.FirstName,
 		LastName:      rr.LastName,
 		Password:      w.GetPara("password1"),
@@ -346,4 +345,11 @@ func (rr *RegisterRequest) login(w *web.WebRequest) (*pb.WebloginResponse, error
 	}
 	wr.Body = b
 	return wr, nil
+}
+
+func (rr *RegisterRequest) SetEmail(email string) {
+	rr.cr.SetEmail(email)
+}
+func (rr *RegisterRequest) GetEmail() string {
+	return rr.cr.GetEmail()
 }

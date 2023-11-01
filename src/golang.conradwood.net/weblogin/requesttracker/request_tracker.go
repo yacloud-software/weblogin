@@ -3,6 +3,7 @@ package requesttracker
 import (
 	"context"
 	"fmt"
+	"golang.conradwood.net/apis/auth"
 	"golang.conradwood.net/apis/h2gproxy"
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/utils"
@@ -24,11 +25,13 @@ type Request struct {
 	ctx        context.Context
 	magic      string
 	state      *pb.State
+	email      string
 	ip         string
 	port       int
 	logger     *al.Logger
 	browserid  string
 	tr         trackerif.TrackerIF
+	user       *auth.User
 	last_error error
 }
 
@@ -58,6 +61,19 @@ func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
 	}
 	res.tr = &StandardTracker{}
 	return res
+}
+func (r *Request) SetEmail(email string) {
+	r.email = email
+}
+func (r *Request) GetEmail() string {
+	return r.email
+}
+
+func (r *Request) GetUser() *auth.User {
+	return r.user
+}
+func (r *Request) SetUser(u *auth.User) {
+	r.user = u
 }
 func (r *Request) Context() context.Context {
 	return r.ctx
@@ -139,35 +155,63 @@ func (cr *Request) SetError(err error) {
 	cr.last_error = err
 }
 func (cr *Request) ForgotPasswordSent() {
-	cr.request_log("forgot_password_sent")
+	cr.request_log(pb.AuthAction_FORGOT_PASSWORD_SENT)
 }
 func (cr *Request) ResetPasswordSent() {
-	cr.request_log("reset_password_sent")
+	cr.request_log(pb.AuthAction_RESET_PASSWORD_SENT)
 }
 func (cr *Request) LoggedOut() {
-	cr.request_log("loggedout")
+	cr.request_log(pb.AuthAction_LOGGED_OUT)
 }
 func (cr *Request) LoginPageSubmitted() {
-	cr.request_log("loginpagesubmitted")
+	cr.request_log(pb.AuthAction_CREDENTIALS_SUBMITTED)
 }
 func (cr *Request) LoginPageRendered() {
-	cr.request_log("loginpagerendered")
+	cr.request_log(pb.AuthAction_LOGIN_RENDERED)
 }
 func (cr *Request) UnspecifiedRequest() {
-	cr.request_log("unspecifiedrequest")
+	cr.request_log(pb.AuthAction_UNDEFINED)
 }
 func (cr *Request) RegistrationSubmitted() {
-	cr.request_log("registrationsubmitted")
+	cr.request_log(pb.AuthAction_SIGNUP_SUBMITTED)
 }
 func (cr *Request) RegistrationEmailVerified() {
-	cr.request_log("registrationemailverified")
+	cr.request_log(pb.AuthAction_SIGNUP_EMAILCLICKED)
 }
 func (cr *Request) RegistrationRendered() {
-	cr.request_log("registrationrendered")
+	cr.request_log(pb.AuthAction_SIGNUP_RENDERED)
 }
 func (cr *Request) RegistrationEmailSent() {
-	cr.request_log("registrationemailsent")
+	cr.request_log(pb.AuthAction_SIGNUP_EMAILSENT)
 }
-func (cr *Request) request_log(text string) {
-	fmt.Printf("[REQUESTTRACKER " + text + "]\n")
+func (cr *Request) TriggerURL() string {
+	req := cr.Request()
+	q := ""
+	if req.Query != "" {
+		q = q + "?" + req.Query
+	}
+	return req.Scheme + "://" + req.Host + "/" + req.Path + q
+}
+func (cr *Request) request_log(action pb.AuthAction) {
+	em := cr.GetEmail()
+	u := cr.GetUser()
+	userid := ""
+	if u != nil {
+		userid = u.ID
+		if em == "" {
+			em = u.Email
+		}
+	}
+	aar := &pb.AuthActivityRequest{
+		Timestamp:      uint32(time.Now().Unix()),
+		IP:             cr.IP(),
+		PreviousUserID: "weblogin-notimplemented",
+		UserID:         userid,
+		Email:          em,
+		URL:            cr.TriggerURL(),
+	}
+	cr.tr.LogActivity(action, aar)
+	//	text := fmt.Sprintf("%v", action)
+	//fmt.Printf("[REQUESTTRACKER "+text+"] %#v\n", aar)
+
 }

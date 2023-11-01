@@ -93,7 +93,7 @@ func (rr *RegisterRequest) send_email(w *web.WebRequest) error {
 	if th == "" {
 		rr.logger.Log(ctx, "no referrer host for email")
 	}
-	rs := &pb.RegisterState{Host: th, Email: rr.Email, Created: uint32(time.Now().Unix()), Magic: rr.magic}
+	rs := &pb.RegisterState{Host: th, Email: rr.GetEmail(), Created: uint32(time.Now().Unix()), Magic: rr.magic}
 	e, err := create_email(rs)
 	if err != nil {
 		return err
