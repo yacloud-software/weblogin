@@ -8,6 +8,7 @@ import (
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/requesttracker"
 	//	"net/url"
 	"strings"
 )
@@ -22,9 +23,9 @@ const (
 	MY_GOOGLE_CLIENT_SECRET = ""
 )
 
-func googleOAuth(cr *Request) (*pb.WebloginResponse, error) {
-	ctx := cr.ctx
-	req := cr.req
+func googleOAuth(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
+	ctx := cr.Context()
+	req := cr.Request()
 	u := auth.GetUser(ctx)
 	if u == nil {
 		return nil, errors.Unauthenticated(ctx, "please log in")
@@ -117,7 +118,7 @@ func singlePara(req *pb.WebloginRequest, name string) string {
 	}
 	return ""
 }
-func completed(cr *Request, u *au.User) (*pb.WebloginResponse, error) {
+func completed(cr *requesttracker.Request, u *au.User) (*pb.WebloginResponse, error) {
 	body := `<html><body>
 Welcome %s %s<br/>
 Authorization completed.<br/>

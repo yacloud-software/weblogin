@@ -1,4 +1,4 @@
-package requests
+package requesttracker
 
 import (
 	"context"
@@ -7,6 +7,8 @@ import (
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/utils"
 	al "golang.conradwood.net/weblogin/activitylog"
+	"golang.conradwood.net/weblogin/opts"
+	"golang.conradwood.net/weblogin/trackerif"
 	"net"
 	"strconv"
 	"strings"
@@ -18,14 +20,16 @@ const (
 )
 
 type Request struct {
-	req       *pb.WebloginRequest
-	ctx       context.Context
-	magic     string
-	state     *pb.State
-	ip        string
-	port      int
-	logger    *al.Logger
-	browserid string
+	req        *pb.WebloginRequest
+	ctx        context.Context
+	magic      string
+	state      *pb.State
+	ip         string
+	port       int
+	logger     *al.Logger
+	browserid  string
+	tr         trackerif.TrackerIF
+	last_error error
 }
 
 func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
@@ -52,7 +56,17 @@ func NewRequest(ctx context.Context, req *pb.WebloginRequest) *Request {
 			res.browserid = c.Value
 		}
 	}
+	res.tr = &StandardTracker{}
 	return res
+}
+func (r *Request) Context() context.Context {
+	return r.ctx
+}
+func (r *Request) Request() *pb.WebloginRequest {
+	return r.req
+}
+func (r *Request) IP() string {
+	return r.ip
 }
 func (l *Request) prefix() string {
 	m := "unknown"
@@ -66,7 +80,7 @@ func (l *Request) Printf(format string, args ...interface{}) {
 	fmt.Printf(l.prefix()+format, args...)
 }
 func (l *Request) Debugf(format string, args ...interface{}) {
-	dodebug := *debug
+	dodebug := opts.IsDebug()
 	dodebug = dodebug || strings.HasPrefix(l.req.Peer, "[2001:8b0:1400:279b:5")
 	dodebug = dodebug || strings.HasPrefix(l.req.Peer, "81.187.88.146")
 	dodebug = dodebug || strings.HasPrefix(l.req.Peer, "81.187.202.194")
@@ -78,8 +92,8 @@ func (l *Request) Debugf(format string, args ...interface{}) {
 
 	fmt.Printf(l.prefix()+format, args...)
 }
-func (cr *Request) printParas() {
-	if !*debug {
+func (cr *Request) PrintParas() {
+	if !opts.IsDebug() {
 		return
 	}
 	fmt.Printf("Path: https://%s/%s?%s\n", cr.req.Host, cr.req.Path, cr.req.Query)
@@ -89,6 +103,18 @@ func (cr *Request) printParas() {
 		}
 		fmt.Printf("Parameter %s: %s\n", k, v)
 	}
+}
+func (cr *Request) SetState(state *pb.State) {
+	cr.state = state
+}
+func (cr *Request) GetState() *pb.State {
+	return cr.state
+}
+func (cr *Request) SetMagic(magic string) {
+	cr.magic = magic
+}
+func (cr *Request) GetMagic() string {
+	return cr.magic
 }
 
 func (cr *Request) BrowserID() string {
@@ -105,4 +131,43 @@ func (cr *Request) CookiesToSet() []*h2gproxy.Cookie {
 }
 func (cr *Request) UserAgent() string {
 	return cr.req.UserAgent
+}
+func (cr *Request) SetError(err error) {
+	if err == nil {
+		return
+	}
+	cr.last_error = err
+}
+func (cr *Request) ForgotPasswordSent() {
+	cr.request_log("forgot_password_sent")
+}
+func (cr *Request) ResetPasswordSent() {
+	cr.request_log("reset_password_sent")
+}
+func (cr *Request) LoggedOut() {
+	cr.request_log("loggedout")
+}
+func (cr *Request) LoginPageSubmitted() {
+	cr.request_log("loginpagesubmitted")
+}
+func (cr *Request) LoginPageRendered() {
+	cr.request_log("loginpagerendered")
+}
+func (cr *Request) UnspecifiedRequest() {
+	cr.request_log("unspecifiedrequest")
+}
+func (cr *Request) RegistrationSubmitted() {
+	cr.request_log("registrationsubmitted")
+}
+func (cr *Request) RegistrationEmailVerified() {
+	cr.request_log("registrationemailverified")
+}
+func (cr *Request) RegistrationRendered() {
+	cr.request_log("registrationrendered")
+}
+func (cr *Request) RegistrationEmailSent() {
+	cr.request_log("registrationemailsent")
+}
+func (cr *Request) request_log(text string) {
+	fmt.Printf("[REQUESTTRACKER " + text + "]\n")
 }

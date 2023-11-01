@@ -7,6 +7,7 @@ import (
 	"golang.conradwood.net/apis/themes"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"golang.conradwood.net/weblogin/web"
 	"html/template"
 )
@@ -25,11 +26,11 @@ func (e *extra_data) Heading() string {
 	return t.Text
 }
 
-func (cr *Request) renderTemplate(l common.Template_data, templateFile string) ([]byte, error) {
+func renderTemplate(cr *requesttracker.Request, l common.Template_data, templateFile string) ([]byte, error) {
 	cr.Debugf("Rendering template %s\n", templateFile)
 	tfname := web.TemplatePath() + "/" + templateFile + ".html"
 	t := template.New(templateFile)
-	e := &extra_data{td: l, ctx: cr.ctx}
+	e := &extra_data{td: l, ctx: cr.Context()}
 	t.Funcs(template.FuncMap{
 		"username":     l.Username,
 		"StateQuery":   l.StateQuery,

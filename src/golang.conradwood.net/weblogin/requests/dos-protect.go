@@ -8,6 +8,7 @@ import (
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/cache"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	//	"net"
@@ -27,16 +28,16 @@ type ipcache struct {
 }
 
 // return error if ip makes too many dodgy requests
-func IsDosing(cr *Request) error {
+func IsDosing(cr *requesttracker.Request) error {
 	if !*enable_dos {
 		return nil
 	}
-	peer_ip_string := cr.ip
+	peer_ip_string := cr.IP()
 	if peer_ip_string == "" {
 		fmt.Printf("antidos: no ip address!!!\n")
 		return nil
 	}
-	u := auth.GetUser(cr.ctx)
+	u := auth.GetUser(cr.Context())
 	if u != nil {
 		return nil
 	}
@@ -55,7 +56,7 @@ func IsDosing(cr *Request) error {
 		}
 		return status.Error(codes.ResourceExhausted, "you reached your limit of accesses. please try later")
 	}
-	url := cr.req.Host + cr.req.Path
+	url := cr.Request().Host + cr.Request().Path
 	if ipc.isURLOverLimit(url) {
 		fmt.Printf("Blocked peer %s on url %s\n", peer_ip_string, url)
 		return status.Error(codes.ResourceExhausted, "you reached your limit of accesses. please try later")
@@ -77,18 +78,18 @@ func (i *ipcache) isPeerOverLimit() bool {
 }
 
 // call if a url is called. TODO: implement optimistic locking
-func CountURL(cr *Request) {
+func CountURL(cr *requesttracker.Request) {
 	var ipc *ipcache
-	o := ips.Get(cr.ip)
+	o := ips.Get(cr.IP())
 	if o == nil {
 		ipc = &ipcache{
 			URLCounter: make(map[string]int),
 		}
-		ips.Put(cr.ip, ipc)
+		ips.Put(cr.IP(), ipc)
 	} else {
 		ipc = o.(*ipcache)
 	}
-	url := cr.req.Host + cr.req.Path
+	url := cr.Request().Host + cr.Request().Path
 	ipc.Count(url)
 }
 

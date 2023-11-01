@@ -1,32 +1,33 @@
 package requests
 
 import (
-    "golang.conradwood.net/go-easyops/authremote"
 	"context"
 	pb "golang.conradwood.net/apis/weblogin"
+	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/client"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"time"
 )
 
 // add a 'magic' to submitted parameters
-func generateMagicIfNecessary(cr *Request) error {
-	if cr.req.Submitted == nil {
-		cr.req.Submitted = make(map[string]string)
+func generateMagicIfNecessary(cr *requesttracker.Request) error {
+	if cr.Request().Submitted == nil {
+		cr.Request().Submitted = make(map[string]string)
 	}
-	if len(cr.req.Submitted[common.WEBLOGIN_STATE]) >= 10 {
+	if len(cr.Request().Submitted[common.WEBLOGIN_STATE]) >= 10 {
 		return nil
 	}
 	magic, _, err := createState(cr)
 	if err != nil {
 		return err
 	}
-	cr.req.Submitted[common.WEBLOGIN_STATE] = magic
+	cr.Request().Submitted[common.WEBLOGIN_STATE] = magic
 	return nil
 }
 
-func (cr *Request) putMagic(magic string, state *pb.State) error {
+func putMagic(cr *requesttracker.Request, magic string, state *pb.State) error {
 	ctx := authremote.Context()
 	state_string, err := utils.Marshal(state)
 	if err != nil {
@@ -44,10 +45,10 @@ func (cr *Request) putMagic(magic string, state *pb.State) error {
 	}
 	return err
 }
-func (cr *Request) getState(ctx context.Context) (*pb.State, error) {
-	magic := cr.req.Submitted[common.WEBLOGIN_STATE]
-	return cr.getMagic(ctx, magic)
+func getState(ctx context.Context, cr *requesttracker.Request) (*pb.State, error) {
+	magic := cr.Request().Submitted[common.WEBLOGIN_STATE]
+	return getMagic(ctx, cr, magic)
 }
-func (cr *Request) getMagic(ctx context.Context, magic string) (*pb.State, error) {
+func getMagic(ctx context.Context, cr *requesttracker.Request, magic string) (*pb.State, error) {
 	return common.ParseMagic(ctx, magic)
 }

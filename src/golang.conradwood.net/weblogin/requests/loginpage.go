@@ -13,6 +13,7 @@ import (
 	"golang.conradwood.net/go-easyops/http"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"golang.conradwood.net/weblogin/web"
 	"html/template"
 	"net/url"
@@ -78,10 +79,10 @@ func (l *loginrender) Username() string {
 }
 
 // this redirects to sso.yacloud.eu if it is not already and then serves the form
-func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
+func createLoginPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	cr.Debugf("createLoginPage()\n")
-	ctx := cr.ctx
-	req := cr.req
+	ctx := cr.Context()
+	req := cr.Request()
 	if req.Host != web.SSOHost() {
 		cr.Debugf("going from host %s to sso.yacloud.eu...\n", req.Host)
 		magic, _, err := createState(cr)
@@ -99,12 +100,12 @@ func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
 	// are we authenticated already? if so, skip asking and move on
 	u := auth.GetUser(ctx)
 	if u != nil {
-		return cr.skipAuth()
+		return skipAuth(cr)
 	}
 	res := NewWebloginResponse()
 	submittedParameters := req.Submitted
 	magic := submittedParameters[common.WEBLOGIN_STATE]
-	state, err := cr.getMagic(ctx, magic)
+	state, err := getMagic(ctx, cr, magic)
 	if err != nil {
 		cr.Debugf("Whilst presenting login page, tried to recreate state, but error: %s\n", err)
 		return nil, err
@@ -121,7 +122,7 @@ func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
 		cr.Debugf("[servehtml] failed to create domain logins: %s\n", err)
 	}
 	cr.Debugf("[servehtml] State: %#v\n", l.weblogin_state_value)
-	t, err := cr.renderTemplate(l, "loginv2")
+	t, err := renderTemplate(cr, l, "loginv2")
 	if err != nil {
 		cr.Debugf("template error: %s\n", err)
 		return nil, err
@@ -132,13 +133,13 @@ func (cr *Request) createLoginPage() (*pb.WebloginResponse, error) {
 
 // we end up here if h2gproxy sends us to sso from a page that was not authenticated.
 // we need to get a token, redirect to the original page, set the cookie and reload
-func (cr *Request) skipAuth() (*pb.WebloginResponse, error) {
-	ctx := cr.ctx
-	req := cr.req
+func skipAuth(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
+	ctx := cr.Context()
+	req := cr.Request()
 	u := auth.GetUser(ctx)
 	cr.Debugf("Skipping auth for user %s\n", auth.Description(u))
 	magic := req.Submitted[common.WEBLOGIN_STATE]
-	state, err := cr.getMagic(ctx, magic)
+	state, err := getMagic(ctx, cr, magic)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +148,7 @@ func (cr *Request) skipAuth() (*pb.WebloginResponse, error) {
 		return nil, err
 	}
 	state.Token = tr.Token
-	err = cr.putMagic(magic, state)
+	err = putMagic(cr, magic, state)
 	if err != nil {
 		return nil, err
 	}
@@ -162,13 +163,13 @@ func (cr *Request) skipAuth() (*pb.WebloginResponse, error) {
 /*********************************************
 * process a form that was submitted.
 **********************************************/
-func processLogin(cr *Request) (*pb.WebloginResponse, *au.User, error) {
-	req := cr.req
-	ctx := cr.ctx
+func processLogin(cr *requesttracker.Request) (*pb.WebloginResponse, *au.User, error) {
+	req := cr.Request()
+	ctx := cr.Context()
 	cr.Debugf("[processLogin] path for weblogin: %s/%s\n", req.Host, req.Path)
 	paras := req.Submitted
 	if *check_captcha_on_login {
-		err := check_captcha(paras["g_captcha"], cr.req.Host)
+		err := check_captcha(paras["g_captcha"], cr.Request().Host)
 		if err != nil {
 			fmt.Printf("Captcha verification failed: %s\n", err)
 			return nil, nil, err
@@ -179,7 +180,7 @@ func processLogin(cr *Request) (*pb.WebloginResponse, *au.User, error) {
 	if magic == "" {
 		return nil, nil, errors.InvalidArgs(ctx, "ordering mismatch", "no state in processLogin")
 	}
-	state, err := cr.getMagic(ctx, magic)
+	state, err := getMagic(ctx, cr, magic)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -209,7 +210,7 @@ func processLogin(cr *Request) (*pb.WebloginResponse, *au.User, error) {
 	res.Body = b
 	addCookie(res, "Auth-Token", u.Token)
 	state.Token = u.Token
-	err = cr.putMagic(magic, state) // update our store with the state including token
+	err = putMagic(cr, magic, state) // update our store with the state including token
 	if err != nil {
 		return nil, nil, err
 	}
@@ -254,11 +255,11 @@ func stateToURL(state *pb.State, qparas map[string]string) string {
 	}
 	return fmt.Sprintf("https://%s%s%s", h, p, q)
 }
-func createState(cr *Request) (string, *pb.State, error) {
-	req := cr.req
+func createState(cr *requesttracker.Request) (string, *pb.State, error) {
+	req := cr.Request()
 	state := &pb.State{Method: req.Method, TriggerHost: req.Host, TriggerPath: req.Path, TriggerQuery: req.Query}
 	magic := utils.RandomString(60)
-	err := cr.putMagic(magic, state)
+	err := putMagic(cr, magic, state)
 	if err != nil {
 		return "", nil, err
 	}

@@ -8,19 +8,20 @@ import (
 	"fmt"
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/errors"
+	"golang.conradwood.net/weblogin/requesttracker"
 	//	"golang.conradwood.net/go-easyops/utils"
 )
 
 // got here after login. url is /weblogin/setcookie and we redirect to url as requested by user in the first request
-func setCookiePage(cr *Request) (*pb.WebloginResponse, error) {
-	ctx := cr.ctx
-	req := cr.req
+func setCookiePage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
+	ctx := cr.Context()
+	req := cr.Request()
 	paras := req.Submitted
 	magic := paras[common.WEBLOGIN_STATE]
 	if magic == "" {
 		return nil, errors.InvalidArgs(ctx, "missing state", "setcookiepage - missing state")
 	}
-	state, err := cr.getMagic(ctx, magic)
+	state, err := getMagic(ctx, cr, magic)
 	if err != nil {
 		return nil, err
 	}

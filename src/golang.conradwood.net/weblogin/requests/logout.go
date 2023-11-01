@@ -8,6 +8,7 @@ import (
 	"golang.conradwood.net/go-easyops/auth"
 	"golang.conradwood.net/go-easyops/utils"
 	cm "golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"html/template"
 )
 
@@ -49,18 +50,18 @@ func (l *LogoutStruct) Username() string {
 	return l.user.Email
 }
 
-func logoutPage(cr *Request) (*pb.WebloginResponse, error) {
-	ctx := cr.ctx
+func logoutPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
+	ctx := cr.Context()
 	u := auth.GetUser(ctx)
 	if u == nil {
 		return nil, cm.Errorf("cannot log you out because you are not yet logged in")
 	}
-	state, err := cr.getState(ctx)
+	state, err := getState(ctx, cr)
 	l := &LogoutStruct{user: u, state: state}
 	res := NewWebloginResponse()
 	addCookies(res, cr.CookiesToSet())
 	addCookie(res, "Auth-Token", "")
-	t, err := cr.renderTemplate(l, "loggedout")
+	t, err := renderTemplate(cr, l, "loggedout")
 	if err != nil {
 		fmt.Printf("template error: %s\n", err)
 		return nil, err

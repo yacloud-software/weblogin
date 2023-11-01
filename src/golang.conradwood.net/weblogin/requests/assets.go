@@ -5,11 +5,12 @@ import (
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"mime"
 	"path/filepath"
 )
 
-func (r *Request) ServeAsset(ctx context.Context, assetname string) (*pb.WebloginResponse, error) {
+func ServeAsset(ctx context.Context, r *requesttracker.Request, assetname string) (*pb.WebloginResponse, error) {
 	fname := "templates/v2/assets/" + utils.MakeSafeFilename(assetname)
 	f, err := utils.FindFileInWorkingDir(fname)
 	//f, err := utils.FindFile(fname)

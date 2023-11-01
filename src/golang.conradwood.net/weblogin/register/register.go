@@ -12,6 +12,7 @@ import (
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/activitylog"
 	"golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"golang.conradwood.net/weblogin/web"
 	"html/template"
 	"net/mail"
@@ -41,6 +42,7 @@ type RegisterRequest struct {
 	state         *pb.State
 	RegisterState *pb.RegisterState
 	logger        *activitylog.Logger
+	cr            *requesttracker.Request
 }
 
 func (rr *RegisterRequest) GetQueryValue(key string) string {
@@ -71,7 +73,7 @@ func (rr *RegisterRequest) StateQuery() template.HTMLAttr {
 func (rr *RegisterRequest) Heading() string {
 	return "Register Account"
 }
-func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
+func Registration(ctx context.Context, req *pb.WebloginRequest, cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	var err error
 	if !web.AllowRegister() {
 		fmt.Printf("Attempt to register\n")
@@ -84,6 +86,7 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	rr := &RegisterRequest{
 		SSOHost: web.SSOHost(),
 		SiteKey: web.CaptchaKey(),
+		cr:      cr,
 	}
 	rr.logger = logger
 	w := web.NewWebRequest(ctx, req)
@@ -108,7 +111,10 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	if w.GetPara("v_reg") != "" || w.GetPara("form_submit_Ohg5quei4no2gZZZrgeserg") != "" {
 		logger.Log(ctx, fmt.Sprintf("Registration email verification request from host \"%s\"", rr.state.TriggerHost))
 		// this is a link from an email
-		return rr.VerifyEmail(w)
+		response, err := rr.VerifyEmail(w)
+		cr.SetError(err)
+		cr.RegistrationEmailVerified()
+		return response, err
 	}
 
 	// the register stuff needs redirecting
@@ -122,9 +128,13 @@ func Registration(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginRes
 	if w.GetPara("form_submit_Ohg5quei4no2grgeserg") != "" || w.GetPara("email") != "" {
 		logger.Log(ctx, fmt.Sprintf("Registration email from submitted from host \"%s\" for email \"%s\"", rr.state.TriggerHost, w.GetPara("email")))
 		b, err = rr.register1_submitted(ctx, logger, w)
+		cr.SetError(err)
+		cr.RegistrationSubmitted()
 	} else {
 		// default - no submission
 		b, err = w.Render("register1", rr)
+		cr.SetError(err)
+		cr.RegistrationRendered()
 	}
 	if err != nil {
 		return nil, err
@@ -181,6 +191,8 @@ func (rr *RegisterRequest) register1_submitted(ctx context.Context, logger *acti
 	// now send email
 	err = rr.send_email(w)
 	if err != nil {
+		rr.cr.SetError(err)
+		rr.cr.RegistrationEmailSent()
 		rr.Error = fmt.Sprintf("%s", err)
 	}
 	return w.Render("register2", rr)

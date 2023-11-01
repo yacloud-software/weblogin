@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	pb "golang.conradwood.net/apis/weblogin"
+	"golang.conradwood.net/weblogin/opts"
 	"golang.conradwood.net/weblogin/web"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -37,7 +38,7 @@ func (e *errordata) StateQuery() template.HTMLAttr {
 
 // this must not return an error ever. (an error is badly displayed as plain text to user)
 func ServeError(ctx context.Context, req *pb.WebloginRequest, err error) (*pb.WebloginResponse, error) {
-	if *debug {
+	if opts.IsDebug() {
 		fmt.Printf("Serving error: %v\n", err)
 	}
 	wr := web.NewWebRequest(ctx, req)

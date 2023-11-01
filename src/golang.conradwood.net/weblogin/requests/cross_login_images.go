@@ -4,6 +4,7 @@ import (
 	"fmt"
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/requesttracker"
 )
 
 var (
@@ -20,12 +21,12 @@ var (
 
 // given the host the user requested we should authenticate some other domains here as well
 // for now, it is hardcoded...
-func createDomainLogins(cr *Request) ([]string, error) {
+func createDomainLogins(cr *requesttracker.Request) ([]string, error) {
 	if 1 == 1 {
 		// do not use preauthimg anymore
 		return nil, nil
 	}
-	submittedParameters := cr.req.Submitted
+	submittedParameters := cr.Request().Submitted
 	state := submittedParameters[common.WEBLOGIN_STATE]
 
 	domains := []string{"sso.yacloud.eu", "api.conradwood.net", "api.yacloud.eu", "api.yacloud.eu", "api.singingcat.net"}
@@ -40,7 +41,7 @@ func createDomainLogins(cr *Request) ([]string, error) {
 // the authentication is complete.
 // there is also is a distinct possibility that we have already authenticated the user (because a cookie for sso.yacloud.eu was set when they got here)
 // if so, we just need to set more auth cookies
-func preAuthCookie(cr *Request) (*pb.WebloginResponse, error) {
+func preAuthCookie(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	res := NewWebloginResponse()
 	res.Cookies = append(res.Cookies, cr.CookiesToSet()...)
 	res.Body = smallimg

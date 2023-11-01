@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"golang.conradwood.net/apis/themes"
 	pb "golang.conradwood.net/apis/weblogin"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"strings"
 )
 
@@ -13,10 +14,10 @@ var (
 	debug_themes = flag.Bool("debug_themes", false, "debug themes stuff")
 )
 
-func serveThemes(ctx context.Context, cr *Request) (*pb.WebloginResponse, error) {
-	req := cr.req
+func serveThemes(ctx context.Context, cr *requesttracker.Request) (*pb.WebloginResponse, error) {
+	req := cr.Request()
 	host := req.Host
-	state, err := cr.getState(ctx)
+	state, err := getState(ctx, cr)
 	if err != nil {
 		fmt.Printf("[themes] Error getting state: %s\n", err)
 	}

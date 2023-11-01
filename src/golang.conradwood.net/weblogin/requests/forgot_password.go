@@ -9,6 +9,7 @@ import (
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"html/template"
 )
 
@@ -71,20 +72,20 @@ func (l *ForgotStruct) Username() string {
 	return l.user.Email
 }
 
-func forgotpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
+func forgotpasswordPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	cr.Debugf("Forgotpassword request\n")
-	ctx := cr.ctx
-	req := cr.req
+	ctx := cr.Context()
+	req := cr.Request()
 	if req.Submitted["email"] != "" {
-		return cr.forgotSent()
+		return forgotSent(cr)
 	}
 	// render template to type in an email address
 	u := auth.GetUser(ctx)
-	state, err := cr.getState(ctx)
+	state, err := getState(ctx, cr)
 	l := &ForgotStruct{user: u, state: state}
 	res := NewWebloginResponse()
 	addCookies(res, cr.CookiesToSet())
-	t, err := cr.renderTemplate(l, "forgotv2")
+	t, err := renderTemplate(cr, l, "forgotv2")
 	if err != nil {
 		fmt.Printf("template error: %s\n", err)
 		return nil, err
@@ -93,15 +94,15 @@ func forgotpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
 
 	return res, nil
 }
-func (cr *Request) forgotSent() (*pb.WebloginResponse, error) {
-	req := cr.req
-	ctx := cr.ctx
+func forgotSent(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
+	req := cr.Request()
+	ctx := cr.Context()
 	email := req.Submitted["email"]
 	_, err := authremote.GetAuthManagerClient().ResetPasswordEmail(ctx, &apb.ResetRequest{Email: email})
 	if err != nil {
 		l := &ForgotStruct{Msg: fmt.Sprintf("%s", err)}
 		res := NewWebloginResponse()
-		t, err := cr.renderTemplate(l, "forgotv2")
+		t, err := renderTemplate(cr, l, "forgotv2")
 		if err != nil {
 			fmt.Printf("template error: %s\n", err)
 			return nil, err
@@ -111,7 +112,7 @@ func (cr *Request) forgotSent() (*pb.WebloginResponse, error) {
 	}
 	l := &ForgotStruct{Msg: fmt.Sprintf("email sent to %s", email)}
 	res := NewWebloginResponse()
-	t, err := cr.renderTemplate(l, "forgotv2.1")
+	t, err := renderTemplate(cr, l, "forgotv2.1")
 	if err != nil {
 		fmt.Printf("template error: %s\n", err)
 		return nil, err
@@ -120,13 +121,13 @@ func (cr *Request) forgotSent() (*pb.WebloginResponse, error) {
 	return res, nil
 
 }
-func resetpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
-	ctx := cr.ctx
-	req := cr.req
+func resetpasswordPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
+	ctx := cr.Context()
+	req := cr.Request()
 	pw1 := req.Submitted["password1"]
 	pw2 := req.Submitted["password2"]
 	if pw1 != "" && pw2 != "" && pw1 == pw2 {
-		return cr.resettingPage()
+		return resettingPage(cr)
 	}
 	apikey := req.Submitted["apikey"]
 	if apikey == "" {
@@ -141,7 +142,7 @@ func resetpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
 	}
 	state := &pb.State{Token: apikey}
 	magic := utils.RandomString(60)
-	err = cr.putMagic(magic, state)
+	err = putMagic(cr, magic, state)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +161,7 @@ func resetpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
 	}
 	res := NewWebloginResponse()
 	addCookies(res, cr.CookiesToSet())
-	t, err := cr.renderTemplate(l, "forgotv2.2")
+	t, err := renderTemplate(cr, l, "forgotv2.2")
 	if err != nil {
 		fmt.Printf("template error: %s\n", err)
 		return nil, err
@@ -168,11 +169,11 @@ func resetpasswordPage(cr *Request) (*pb.WebloginResponse, error) {
 	res.Body = t
 	return res, nil
 }
-func (cr *Request) resettingPage() (*pb.WebloginResponse, error) {
-	req := cr.req
-	ctx := cr.ctx
+func resettingPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
+	req := cr.Request()
+	ctx := cr.Context()
 	s := req.Submitted[common.WEBLOGIN_STATE]
-	state, err := cr.getMagic(ctx, s)
+	state, err := getMagic(ctx, cr, s)
 	if err != nil {
 		return nil, err
 	}
@@ -202,7 +203,7 @@ func (cr *Request) resettingPage() (*pb.WebloginResponse, error) {
 		fmt.Printf("Error changing password: %s\n", err)
 	}
 	res := NewWebloginResponse()
-	t, err := cr.renderTemplate(l, "forgotv2.3")
+	t, err := renderTemplate(cr, l, "forgotv2.3")
 	if err != nil {
 		fmt.Printf("template error: %s\n", err)
 		return nil, err

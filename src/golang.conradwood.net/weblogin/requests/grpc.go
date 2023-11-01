@@ -11,6 +11,7 @@ import (
 	"golang.conradwood.net/go-easyops/server"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"golang.conradwood.net/weblogin/web"
 	//	"golang.conradwood.net/go-easyops/utils"
 	al "golang.conradwood.net/weblogin/activitylog"
@@ -47,26 +48,28 @@ func (w *RequestHandler) IsBasicAuthValid(ctx context.Context, cr *pb.BasicAuthR
 // we end up in here if a well-known url for weblogin is requested, that is "/weblogin/"
 func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
 	fmt.Printf("Requested path \"%s\"\n", req.Path)
-	cr := NewRequest(ctx, req)
+	cr := requesttracker.NewRequest(ctx, req)
 
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
+		cr.SetError(e)
+		cr.UnspecifiedRequest()
 		cr.Debugf("not serving path \"%s\": %s\n", req.Path, e)
 		return ServeError(ctx, req, e)
 	}
-	if *debug {
-		cr.Debugf("weblogin.ServeHTML(), serving %s\n", req.Path)
-	}
+	cr.Debugf("weblogin.ServeHTML(), serving %s\n", req.Path)
 	xs := strings.Split(req.Path, "/")
 	if len(xs) >= 2 {
 		fname := xs[len(xs)-1]
 		if xs[len(xs)-2] == "assets" {
-			return cr.ServeAsset(ctx, fname)
+			return ServeAsset(ctx, cr, fname)
 		}
 	}
 
 	wl, err := w.ServeHTMLWithError(ctx, req)
+	cr.SetError(err)
+	cr.UnspecifiedRequest()
 	if err != nil {
 		u := auth.GetUser(ctx)
 		cr.Debugf("weblogin.ServeHTML: error serving https://%s/%s?%s for user %s: %s\n", req.Host, req.Path, req.Query, auth.Description(u), utils.ErrorString(err))
@@ -87,15 +90,15 @@ func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest)
 	return wl, nil
 }
 func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
-	cr := NewRequest(ctx, req)
+	cr := requesttracker.NewRequest(ctx, req)
 	u := auth.GetUser(ctx)
 	host := req.Host
-	q := cr.req.Query
+	q := cr.Request().Query
 	if len(q) > 50 {
 		q = q[:50] + "..."
 	}
 	cr.Debugf("weblogin.ServeHTMLWithError: serving https://%s/%s?%s for user %s\n", req.Host, req.Path, q, auth.Description(u))
-	cr.printParas()
+	cr.PrintParas()
 	if strings.HasSuffix(req.Path, "/oauth") { // oauththing
 		if u != nil {
 			return googleOAuth(cr)
@@ -118,7 +121,7 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	}
 
 	if strings.Contains(req.Path, "/register") {
-		return register.Registration(ctx, req)
+		return register.Registration(ctx, req, cr)
 	}
 
 	if strings.HasSuffix(req.Path, "/setcookie") { // after authentication
@@ -128,13 +131,22 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 		return preAuthCookie(cr)
 	}
 	if strings.HasSuffix(req.Path, "/logout") { // user clicked "logout"
-		return logoutPage(cr)
+		res, err := logoutPage(cr)
+		cr.SetError(err)
+		cr.LoggedOut()
+		return res, err
 	}
 	if strings.HasSuffix(req.Path, "/forgotPassword") { // user clicked "forgot password"
-		return forgotpasswordPage(cr)
+		res, err := forgotpasswordPage(cr)
+		cr.SetError(err)
+		cr.ForgotPasswordSent()
+		return res, err
 	}
 	if strings.HasSuffix(req.Path, "/forgotpw") { // user clicked on link in reset password email
-		return resetpasswordPage(cr)
+		res, err := resetpasswordPage(cr)
+		cr.SetError(err)
+		cr.ResetPasswordSent()
+		return res, err
 	}
 	// .../login
 	msg := ""
@@ -146,11 +158,11 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 
 	if paras["email"] != "" {
 		s := ""
-		if cr.state != nil {
-			s = cr.state.TriggerHost
+		if cr.GetState() != nil {
+			s = cr.GetState().TriggerHost
 		}
 		logger := &al.Logger{
-			IP:          cr.req.Peer,
+			IP:          cr.Request().Peer,
 			TriggerHost: s,
 			Email:       paras["email"],
 			BrowserID:   cr.BrowserID(),
@@ -158,25 +170,30 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 		}
 		r, user, err := processLogin(cr)
 		if err != nil {
+			cr.SetError(err)
+			cr.LoginPageSubmitted()
 			werr, castable := err.(*common.WError)
 			if (castable && werr.Urgent) || (!castable) {
 				logger.Log(ctx, fmt.Sprintf("login failed: %s", err))
 			}
 		} else {
 			login_success(ctx, user, logger)
+			cr.LoginPageSubmitted()
 		}
 		return r, err
 	}
 	// any other path: serve a login page
-	res, err := cr.createLoginPage()
+	res, err := createLoginPage(cr)
 	if err != nil {
+		cr.SetError(err)
+		cr.LoginPageRendered()
 		cr.Debugf("createLoginPage() failed: %s\n", err)
 	}
 	return res, err
 
 }
 func (w *RequestHandler) GetVerifyEmail(ctx context.Context, req *pb.WebloginRequest) (*pb.EmailPageResponse, error) {
-	cr := NewRequest(ctx, req)
+	cr := requesttracker.NewRequest(ctx, req)
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
@@ -193,7 +210,7 @@ func (w *RequestHandler) GetVerifyEmail(ctx context.Context, req *pb.WebloginReq
 	return res, nil
 }
 func (w *RequestHandler) SaveState(ctx context.Context, req *pb.WebloginRequest) (*pb.StateResponse, error) {
-	cr := NewRequest(ctx, req)
+	cr := requesttracker.NewRequest(ctx, req)
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
@@ -211,7 +228,7 @@ func (w *RequestHandler) SaveState(ctx context.Context, req *pb.WebloginRequest)
 
 // we end up here if h2gproxy calls a backend which then says 'please authenticate me'
 func (w *RequestHandler) GetLoginPage(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
-	cr := NewRequest(ctx, req)
+	cr := requesttracker.NewRequest(ctx, req)
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
@@ -222,7 +239,7 @@ func (w *RequestHandler) GetLoginPage(ctx context.Context, req *pb.WebloginReque
 	host := req.Host
 	u := auth.GetUser(ctx)
 	cr.Debugf("(rpc) host \"%s\" login request Peer=%s for user %s\n", host, req.Peer, auth.Description(u))
-	res, err := cr.createLoginPage()
+	res, err := createLoginPage(cr)
 	if err != nil {
 		cr.Debugf("createLoginPage() failed: %s\n", err)
 	}
@@ -230,7 +247,7 @@ func (w *RequestHandler) GetLoginPage(ctx context.Context, req *pb.WebloginReque
 
 }
 func (w *RequestHandler) VerifyURL(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
-	cr := NewRequest(ctx, req)
+	cr := requesttracker.NewRequest(ctx, req)
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
@@ -242,7 +259,7 @@ func (w *RequestHandler) VerifyURL(ctx context.Context, req *pb.WebloginRequest)
 	if wls == "" {
 		return nil, errors.InvalidArgs(ctx, "missing weblogin", "missing weblogin parameter")
 	}
-	state, err := cr.getMagic(ctx, wls)
+	state, err := getMagic(ctx, cr, wls)
 	if err != nil {
 		return nil, err
 	}
@@ -275,13 +292,14 @@ func addStandardHeader(r *pb.WebloginResponse) {
 	r.Headers["weblogin"] = "true"
 }
 
-func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *Request) {
-	cr.magic = cr.req.Submitted[common.WEBLOGIN_STATE]
-	if cr.magic != "" {
-		cr.state, _ = common.ParseMagic(ctx, cr.magic)
+func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *requesttracker.Request) {
+	cr.SetMagic(cr.Request().Submitted[common.WEBLOGIN_STATE])
+	if cr.GetMagic() != "" {
+		xstate, _ := common.ParseMagic(ctx, cr.GetMagic())
+		cr.SetState(xstate)
 		return
 	}
-	s := cr.req.Submitted["v_reg"] // email link
+	s := cr.Request().Submitted["v_reg"] // email link
 	if s != "" {
 		p, err := register.DecodeEmailLink(ctx, s)
 		if err != nil {
@@ -289,7 +307,7 @@ func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *Request) {
 		}
 		if p != nil {
 			fmt.Printf("[regverify] user verified link. state: %#v\n", p)
-			cr.state = &pb.State{}
+			cr.SetState(&pb.State{})
 		}
 	}
 }
