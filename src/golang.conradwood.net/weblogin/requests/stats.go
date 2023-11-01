@@ -34,4 +34,22 @@ var (
 		},
 		[]string{},
 	)
+	templateRenderCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "weblogin_template_render_counter",
+			Help: "V=1 UNIT=hz DESC=failed to render a page",
+		},
+		[]string{"name", "counter"},
+	)
+	requestCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "weblogin_serve_request_counter",
+			Help: "V=1 UNIT=hz DESC=request counter",
+		},
+		[]string{"counter"},
+	)
 )
+
+func init() {
+	prometheus.MustRegister(templateRenderCounter, requestCounter)
+}

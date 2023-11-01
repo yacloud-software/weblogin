@@ -8,6 +8,7 @@ import (
 	"golang.conradwood.net/go-easyops/auth"
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/errors"
+	"golang.conradwood.net/go-easyops/prometheus"
 	"golang.conradwood.net/go-easyops/server"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
@@ -49,10 +50,11 @@ func (w *RequestHandler) IsBasicAuthValid(ctx context.Context, cr *pb.BasicAuthR
 func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
 	fmt.Printf("Requested path \"%s\"\n", req.Path)
 	cr := requesttracker.NewRequest(ctx, req)
-
+	requestCounter.With(prometheus.Labels{"counter": "total"}).Inc()
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
+		requestCounter.With(prometheus.Labels{"counter": "fail-dos"}).Inc()
 		cr.SetError(e)
 		cr.UnspecifiedRequest()
 		cr.Debugf("not serving path \"%s\": %s\n", req.Path, e)
@@ -63,7 +65,11 @@ func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest)
 	if len(xs) >= 2 {
 		fname := xs[len(xs)-1]
 		if xs[len(xs)-2] == "assets" {
-			return ServeAsset(ctx, cr, fname)
+			res, err := ServeAsset(ctx, cr, fname)
+			if err != nil {
+				requestCounter.With(prometheus.Labels{"counter": "fail-asset"}).Inc()
+			}
+			return res, err
 		}
 	}
 
@@ -71,6 +77,7 @@ func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest)
 	cr.SetError(err)
 	cr.UnspecifiedRequest()
 	if err != nil {
+		requestCounter.With(prometheus.Labels{"counter": "fail"}).Inc()
 		u := auth.GetUser(ctx)
 		cr.Debugf("weblogin.ServeHTML: error serving https://%s/%s?%s for user %s: %s\n", req.Host, req.Path, req.Query, auth.Description(u), utils.ErrorString(err))
 		wr, err2 := ServeError(ctx, req, err)

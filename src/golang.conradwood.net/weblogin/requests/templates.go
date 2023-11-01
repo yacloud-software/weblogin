@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"golang.conradwood.net/apis/themes"
+	"golang.conradwood.net/go-easyops/prometheus"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/requesttracker"
@@ -52,8 +53,10 @@ func renderTemplate(cr *requesttracker.Request, l common.Template_data, template
 	}
 
 	buf := &bytes.Buffer{}
+	templateRenderCounter.With(prometheus.Labels{"name": templateFile, "counter": "total"}).Inc()
 	err = t.Execute(buf, l)
 	if err != nil {
+		templateRenderCounter.With(prometheus.Labels{"name": templateFile, "counter": "fail"}).Inc()
 		cr.Printf("Failed to execute template: %s\n", err)
 		return nil, err
 	}
