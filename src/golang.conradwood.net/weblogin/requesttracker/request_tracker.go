@@ -6,6 +6,7 @@ import (
 	"golang.conradwood.net/apis/auth"
 	"golang.conradwood.net/apis/h2gproxy"
 	pb "golang.conradwood.net/apis/weblogin"
+	gctx "golang.conradwood.net/go-easyops/ctx"
 	"golang.conradwood.net/go-easyops/utils"
 	al "golang.conradwood.net/weblogin/activitylog"
 	"golang.conradwood.net/weblogin/opts"
@@ -202,6 +203,7 @@ func (cr *Request) request_log(action pb.AuthAction) {
 			em = u.Email
 		}
 	}
+	ctx := cr.Context()
 	aar := &pb.AuthActivityRequest{
 		Timestamp:      uint32(time.Now().Unix()),
 		IP:             cr.IP(),
@@ -209,12 +211,13 @@ func (cr *Request) request_log(action pb.AuthAction) {
 		UserID:         userid,
 		Email:          em,
 		URL:            cr.TriggerURL(),
+		RequestID:      gctx.GetRequestID(ctx),
+		SessionID:      gctx.GetSessionID(ctx),
 	}
 	if cr.last_error != nil {
 		aar.UserErrorMessage = fmt.Sprintf("%s", cr.last_error)
 		aar.LogErrorMessage = utils.ErrorString(cr.last_error)
 	}
-
 	cr.tr.LogActivity(action, aar)
 	//	text := fmt.Sprintf("%v", action)
 	//fmt.Printf("[REQUESTTRACKER "+text+"] %#v\n", aar)
