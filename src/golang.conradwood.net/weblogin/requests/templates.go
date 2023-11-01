@@ -32,11 +32,12 @@ func renderTemplate(cr *requesttracker.Request, l common.Template_data, template
 	t := template.New(templateFile)
 	e := &extra_data{td: l, ctx: cr.Context()}
 	t.Funcs(template.FuncMap{
-		"username":     l.Username,
-		"StateQuery":   l.StateQuery,
-		"Heading":      e.Heading,
-		"ReferrerHost": l.ReferrerHost,
-		"TargetURL":    l.TargetURL,
+		"username":      l.Username,
+		"StateQuery":    l.StateQuery,
+		"Heading":       e.Heading,
+		"ReferrerHost":  l.ReferrerHost,
+		"TargetURL":     l.TargetURL,
+		"GetQueryValue": l.GetQueryValue,
 	})
 	b, err := readTemplateFile(tfname)
 	if err != nil {
