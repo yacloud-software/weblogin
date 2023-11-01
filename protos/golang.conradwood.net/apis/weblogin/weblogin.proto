@@ -125,7 +125,7 @@ message AuthActivityRequest {
   string PreviousUserID=4; // if user has authenticated to our system previously, this is the userid the user used when doing so, otherwise "" if it is a new user (or new device/browser for that matter)
   string UserID=5; // userid as authenticated (or "" if none)
   string Email=6; // emailaddress used to (attempt to) authenticate
-  AuthAction Action=7;
+  AuthAction Action=7 [(common.sql_type)="uint32"];
   string URL=8; // url the user triggered (could be html or api or sth)
   string UserErrorMessage=9; // typically "", but could be "no such object" or sth or "access denied"
   string LogErrorMessage=10; // typically "", but could be geeky detail such as "database foreign key violation" or "user is a serviceaccount" or "password mismatch"
