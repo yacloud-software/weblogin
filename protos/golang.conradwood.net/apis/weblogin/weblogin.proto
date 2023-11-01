@@ -8,6 +8,7 @@ import "golang.conradwood.net/apis/auth/auth.proto";
 option java_package = "net.conradwood.golang.apis.weblogin";
 import "golang.conradwood.net/apis/h2gproxy/h2gproxy.proto";
 import "golang.yacloud.eu/apis/session/session.proto";
+import "golang.conradwood.net/apis/common/common.proto";
 
 message BasicAuthRequest {
   // the stuff extracted from "Authorization" Header
@@ -101,6 +102,36 @@ message V3State {
   uint64 RequestID=5; // remains the same throughout the weblogin session
 }
 
+/* for user journey tracking purposes */
+
+enum AuthAction {
+  UNDEFINED=0;
+  LOGIN_RENDERED=1;
+  CREDENTIALS_SUBMITTED=2;
+  SIGNUP_RENDERED=3;
+  SIGNUP_SUBMITTED=4;
+  SIGNUP_EMAILSENT=5;
+  SIGNUP_EMAILCLICKED=6;
+  FORGOT_PASSWORD_SENT=7;
+  RESET_PASSWORD_SENT=8;
+  LOGGED_OUT=9;
+}
+
+message AuthActivityRequest {
+  uint64 ID=1;
+  uint32 Timestamp=2;
+  string IP=3;  // note - could be IP6 or IPv4
+  string PreviousUserID=4; // if user has authenticated to our system previously, this is the userid the user used when doing so, otherwise "" if it is a new user (or new device/browser for that matter)
+  string UserID=5; // userid as authenticated (or "" if none)
+  string Email=6; // emailaddress used to (attempt to) authenticate
+  AuthAction Action=7;
+  string URL=8; // url the user triggered (could be html or api or sth)
+  string UserErrorMessage=9; // typically "", but could be "no such object" or sth or "access denied"
+  string LogErrorMessage=10; // typically "", but could be geeky detail such as "database foreign key violation" or "user is a serviceaccount" or "password mismatch"
+  
+}
+
+
 service Weblogin {
   rpc CreateRegisterEmail(RegisterState) returns (Email);
   // sometimes we need basic auth if so, we get a request to same URL with a an
@@ -119,4 +150,9 @@ service Weblogin {
   rpc VerifyURL(WebloginRequest) returns (WebloginResponse);
   // helper for h2gproxy. create a state (before redirecting browser to weblogin)
   rpc SaveState(WebloginRequest) returns (StateResponse);
+}
+
+// this is how a userjourney tracker service needs to look like
+service TrackerService {
+  rpc LogActivity(AuthActivityRequest) returns (common.Void);
 }
