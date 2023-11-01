@@ -128,7 +128,8 @@ message AuthActivityRequest {
   string URL=8; // url the user triggered (could be html or api or sth)
   string UserErrorMessage=9; // typically "", but could be "no such object" or sth or "access denied"
   string LogErrorMessage=10; // typically "", but could be geeky detail such as "database foreign key violation" or "user is a serviceaccount" or "password mismatch"
-  
+  string RequestID=11;
+  string SessionID=12;
 }
 
 
