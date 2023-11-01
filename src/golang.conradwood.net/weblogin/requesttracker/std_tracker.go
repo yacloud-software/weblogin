@@ -56,7 +56,7 @@ func log_chan() {
 		ctx := authremote.ContextWithTimeout(time.Duration(500) * time.Millisecond)
 		_, err := ls.LogActivity(ctx, lr.req)
 		if err != nil {
-			fmt.Printf("FAILED TO LOG ACTIVITY: %s\n", utils.ErrorString(err))
+			fmt.Printf("FAILED TO LOG ACTIVITY (to service \"%s\"): %s\n", ls.servicename, utils.ErrorString(err))
 		}
 
 	}

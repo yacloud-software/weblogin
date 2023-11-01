@@ -210,6 +210,11 @@ func (cr *Request) request_log(action pb.AuthAction) {
 		Email:          em,
 		URL:            cr.TriggerURL(),
 	}
+	if cr.last_error != nil {
+		aar.UserErrorMessage = fmt.Sprintf("%s", cr.last_error)
+		aar.LogErrorMessage = utils.ErrorString(cr.last_error)
+	}
+
 	cr.tr.LogActivity(action, aar)
 	//	text := fmt.Sprintf("%v", action)
 	//fmt.Printf("[REQUESTTRACKER "+text+"] %#v\n", aar)
