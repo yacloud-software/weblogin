@@ -350,6 +350,9 @@ func (rr *RegisterRequest) login(w *web.WebRequest) (*pb.WebloginResponse, error
 func (rr *RegisterRequest) SetEmail(email string) {
 	rr.cr.SetEmail(email)
 }
+func (rr *RegisterRequest) Email() string {
+	return rr.GetEmail()
+}
 func (rr *RegisterRequest) GetEmail() string {
 	return rr.cr.GetEmail()
 }
