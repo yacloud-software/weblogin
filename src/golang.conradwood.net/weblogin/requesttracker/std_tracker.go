@@ -37,7 +37,7 @@ type StandardTracker struct {
 }
 
 func (st *StandardTracker) LogActivity(action pb.AuthAction, req *pb.AuthActivityRequest) {
-	fmt.Printf("[standardtracker %v] %#v\n", action, req)
+	//	fmt.Printf("[standardtracker %v] %#v\n", action, req)
 	req.Action = action
 	logreq := &logreq{req: req}
 	select {
