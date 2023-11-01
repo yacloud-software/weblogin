@@ -115,6 +115,7 @@ enum AuthAction {
   FORGOT_PASSWORD_SENT=7;
   RESET_PASSWORD_SENT=8;
   LOGGED_OUT=9;
+  SESSION_SET=10;
 }
 
 message AuthActivityRequest {
