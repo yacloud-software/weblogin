@@ -54,7 +54,10 @@ func logoutPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	ctx := cr.Context()
 	u := auth.GetUser(ctx)
 	if u == nil {
-		return nil, cm.Errorf("cannot log you out because you are not yet logged in")
+		u = cr.GetUser()
+		if u == nil {
+			return nil, cm.Errorf("cannot log you out because you are not yet logged in")
+		}
 	}
 	state, err := getState(ctx, cr)
 	l := &LogoutStruct{user: u, state: state}
