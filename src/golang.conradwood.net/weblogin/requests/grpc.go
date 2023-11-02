@@ -315,6 +315,13 @@ func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *requesttracker.
 	if cr.GetMagic() != "" {
 		xstate, _ := common.ParseMagic(ctx, cr.GetMagic())
 		cr.SetState(xstate)
+		if xstate != nil && xstate.Token != "" && cr.GetUser() == nil {
+			apr := &au.AuthenticateTokenRequest{Token: xstate.Token}
+			u, err := authremote.GetAuthClient().GetByToken(ctx, apr)
+			if err == nil && u != nil {
+				cr.SetUser(u.User)
+			}
+		}
 		return
 	}
 	s := cr.Request().Submitted["v_reg"] // email link

@@ -74,6 +74,9 @@ func (r *Request) GetUser() *auth.User {
 	return r.user
 }
 func (r *Request) SetUser(u *auth.User) {
+	if u == nil && r.user != nil {
+		fmt.Printf("requestttracker cleared user\n")
+	}
 	r.user = u
 }
 func (r *Request) Context() context.Context {

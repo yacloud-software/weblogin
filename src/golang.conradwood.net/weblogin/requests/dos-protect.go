@@ -41,6 +41,11 @@ func IsDosing(cr *requesttracker.Request) error {
 	if u != nil {
 		return nil
 	}
+	u = cr.GetUser()
+	if u != nil {
+		return nil
+	}
+
 	var ipc *ipcache
 	o := ips.Get(peer_ip_string)
 	if o == nil {
