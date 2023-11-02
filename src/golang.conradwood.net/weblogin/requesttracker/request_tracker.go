@@ -192,6 +192,14 @@ func (cr *Request) RegistrationEmailSent() {
 	cr.request_log(pb.AuthAction_SIGNUP_EMAILSENT)
 }
 func (cr *Request) TriggerURL() string {
+	state := cr.GetState()
+	if state != nil {
+		q := ""
+		if state.TriggerQuery != "" {
+			q = "?" + state.TriggerQuery
+		}
+		return "https://" + state.TriggerHost + "/" + state.TriggerPath + q
+	}
 	req := cr.Request()
 	q := ""
 	if req.Query != "" {
