@@ -174,6 +174,7 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 
 	if paras["email"] != "" {
 		s := ""
+		cr.SetEmail(paras["email"]) // so it shows up in the activity log with an email, even if it does not become a user through authentication
 		if cr.GetState() != nil {
 			s = cr.GetState().TriggerHost
 		}
