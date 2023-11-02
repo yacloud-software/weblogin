@@ -191,9 +191,9 @@ func (rr *RegisterRequest) register1_submitted(ctx context.Context, logger *acti
 	err = rr.send_email(w)
 	if err != nil {
 		rr.cr.SetError(err)
-		rr.cr.RegistrationEmailSent()
 		rr.Error = fmt.Sprintf("%s", err)
 	}
+	rr.cr.RegistrationEmailSent()
 	return w.Render("register2", rr)
 }
 
