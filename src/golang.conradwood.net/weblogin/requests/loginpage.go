@@ -1,6 +1,7 @@
 package requests
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -15,6 +16,7 @@ import (
 	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/requesttracker"
 	"golang.conradwood.net/weblogin/web"
+	"golang.yacloud.eu/apis/sessionmanager"
 	"html/template"
 	"net/url"
 	"strings"
@@ -22,9 +24,10 @@ import (
 )
 
 var (
-	check_captcha_on_login = flag.Bool("check_captcha_on_login", true, "if true also checks captcha on login")
-	dur_secs               = flag.Int("session_lifetime", 12*60*60, "session lifetime in `seconds`")
-	Cookie_livetime        *int
+	issue_session_cookie_instead_of_auth = flag.Bool("issue_session_cookie", false, "if true issue a session token instead of an auth token")
+	check_captcha_on_login               = flag.Bool("check_captcha_on_login", true, "if true also checks captcha on login")
+	dur_secs                             = flag.Int("session_lifetime", 12*60*60, "session lifetime in `seconds`")
+	Cookie_livetime                      *int
 )
 
 // implements common.Template_data
@@ -206,10 +209,19 @@ func processLogin(cr *requesttracker.Request) (*pb.WebloginResponse, *au.User, e
 	s := "<html><body>Welcome " + u.User.Email + "<br>\nYou were coming from here:</br>\n" + target + "</body></html>"
 	b := []byte(s)
 	res := NewWebloginResponse()
+	cookie_token := u.Token
+	if *issue_session_cookie_instead_of_auth {
+		ct, err := session_for_user(ctx, cr, u.User)
+		if err != nil {
+			fmt.Printf("failed to issue session cookie: %s\n", utils.ErrorString(err))
+		} else {
+			cookie_token = ct
+		}
+	}
 	addCookies(res, cr.CookiesToSet())
 	res.Body = b
-	addCookie(res, "Auth-Token", u.Token)
-	state.Token = u.Token
+	addCookie(res, "Auth-Token", cookie_token)
+	state.Token = cookie_token
 	err = putMagic(cr, magic, state) // update our store with the state including token
 	if err != nil {
 		return nil, nil, err
@@ -314,4 +326,21 @@ func check_captcha(response string, hostname string) error {
 	}
 	return nil
 
+}
+
+func session_for_user(ctx context.Context, cr *requesttracker.Request, u *au.User) (string, error) {
+	ns := &sessionmanager.NewSessionRequest{
+		IPAddress:   cr.IP(),
+		UserID:      u.ID,
+		Username:    u.FirstName + " " + u.LastName,
+		Useremail:   u.Email,
+		TriggerHost: cr.TriggerURL(),
+		UserAgent:   cr.UserAgent(),
+		BrowserID:   cr.BrowserID(),
+	}
+	sv, err := sessionmanager.GetSessionManagerClient().NewSession(ctx, ns)
+	if err != nil {
+		return "", err
+	}
+	return sv.Token, nil
 }
