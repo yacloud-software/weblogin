@@ -106,6 +106,9 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	}
 	cr.Debugf("weblogin.ServeHTMLWithError: serving https://%s/%s?%s for user %s\n", req.Host, req.Path, q, auth.Description(u))
 	cr.PrintParas()
+	if strings.HasSuffix(req.Path, "/renderlog") {
+		return renderlog(cr)
+	}
 	if strings.HasSuffix(req.Path, "/oauth") { // oauththing
 		if u != nil {
 			return googleOAuth(cr)

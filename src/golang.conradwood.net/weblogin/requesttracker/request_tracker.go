@@ -112,6 +112,19 @@ func (l *Request) Debugf(format string, args ...interface{}) {
 
 	fmt.Printf(l.prefix()+format, args...)
 }
+
+// get submitted parameter from url or ""
+func (cr *Request) GetPara(name string) string {
+	if cr.req == nil {
+		return ""
+	}
+	for k, v := range cr.req.Submitted {
+		if k == name {
+			return v
+		}
+	}
+	return ""
+}
 func (cr *Request) PrintParas() {
 	if !opts.IsDebug() {
 		return
