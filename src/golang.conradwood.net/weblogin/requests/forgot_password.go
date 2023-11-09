@@ -133,11 +133,12 @@ func resetpasswordPage(cr *requesttracker.Request) (*pb.WebloginResponse, error)
 	if apikey == "" {
 		return forgotpasswordPage(cr)
 	}
-	u, err := authremote.GetAuthClient().GetByToken(ctx, &apb.AuthenticateTokenRequest{Token: apikey})
+	u, err := UserByToken(ctx, apikey)
+	//	u, err := authremote.GetAuthClient().GetByToken(ctx, &apb.AuthenticateTokenRequest{Token: apikey})
 	if err != nil {
 		return nil, err
 	}
-	if !u.Valid {
+	if u == nil {
 		return nil, errors.AccessDenied(ctx, "user api key not valid. Old email?")
 	}
 	state := &pb.State{Token: apikey}
@@ -148,7 +149,7 @@ func resetpasswordPage(cr *requesttracker.Request) (*pb.WebloginResponse, error)
 	}
 
 	l := &ForgotStruct{
-		Msg:   "resetting password for " + auth.Description(u.User),
+		Msg:   "resetting password for " + auth.Description(u),
 		magic: magic,
 		PW1:   req.Submitted["password1"],
 		PW2:   req.Submitted["password2"],
@@ -177,19 +178,20 @@ func resettingPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	u, err := authremote.GetAuthClient().GetByToken(ctx, &apb.AuthenticateTokenRequest{Token: state.Token})
+	u, err := UserByToken(ctx, state.Token)
+	//	u, err := authremote.GetAuthClient().GetByToken(ctx, &apb.AuthenticateTokenRequest{Token: state.Token})
 	if err != nil {
 		return nil, err
 	}
-	if !u.Valid {
+	if u == nil {
 		return nil, errors.AccessDenied(ctx, "user api key not valid. Old email?")
 	}
-	ctx, err = authremote.ContextForUserID(u.User.ID)
+	ctx, err = authremote.ContextForUserID(u.ID)
 
 	pw := req.Submitted["password1"]
 	pw2 := req.Submitted["password2"]
-	l := &ForgotStruct{Msg: "Password reset for user " + auth.Description(u.User)}
-	if err != nil || u == nil || !u.Valid {
+	l := &ForgotStruct{Msg: "Password reset for user " + auth.Description(u)}
+	if err != nil || u == nil {
 		l.Msg = "Temporary login via URL failed. please try again"
 	} else if pw != pw2 {
 		l.Msg = "Passwords do not match"

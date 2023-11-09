@@ -6,7 +6,6 @@ import (
 	au "golang.conradwood.net/apis/auth"
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/auth"
-	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/go-easyops/prometheus"
 	"golang.conradwood.net/go-easyops/server"
@@ -286,15 +285,14 @@ func (w *RequestHandler) VerifyURL(ctx context.Context, req *pb.WebloginRequest)
 	if state.Token == "" {
 		return res, nil
 	}
-	apr := &au.AuthenticateTokenRequest{Token: state.Token}
-	u, err := authremote.GetAuthClient().GetByToken(ctx, apr)
+	u, err := UserByToken(ctx, state.Token)
 	if err != nil {
 		return nil, err
 	}
-	if !u.Valid {
+	if u == nil {
 		return res, nil
 	}
-	res.User = u.User
+	res.User = u
 	addCookie(res, "Auth-Token", state.Token)
 	return res, nil
 }
@@ -317,10 +315,9 @@ func initMagic(ctx context.Context, req *pb.WebloginRequest, cr *requesttracker.
 		xstate, _ := common.ParseMagic(ctx, cr.GetMagic())
 		cr.SetState(xstate)
 		if xstate != nil && xstate.Token != "" && cr.GetUser() == nil {
-			apr := &au.AuthenticateTokenRequest{Token: xstate.Token}
-			u, err := authremote.GetAuthClient().GetByToken(ctx, apr)
+			u, err := UserByToken(ctx, xstate.Token)
 			if err == nil && u != nil {
-				cr.SetUser(u.User)
+				cr.SetUser(u)
 			}
 		}
 		return
