@@ -72,20 +72,25 @@ func logoutPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	}
 	res.Body = t
 
+	var a_err error
+	var s_err error
+	_, a_err = authManager.LogMeOut(ctx, &common.Void{})
+	if a_err != nil {
+		fmt.Printf("Failed to log out: %s\n", utils.ErrorString(a_err))
+	}
+
 	token := cr.GetAuthCookie()
 	if token == "" {
 		fmt.Printf("no auth cookie to log out with\n")
 	} else {
 		st := &sessionmanager.SessionToken{Token: token}
-		_, err = sessionmanager.GetSessionManagerClient().DisassociateUserFromSession(ctx, st)
-		if err != nil {
-			fmt.Printf("failed to log out of session: %s\n", utils.ErrorString(err))
+		_, s_err = sessionmanager.GetSessionManagerClient().DisassociateUserFromSession(ctx, st)
+		if s_err != nil {
+			fmt.Printf("failed to log out of session: %s\n", utils.ErrorString(s_err))
 		}
 	}
-	_, e := authManager.LogMeOut(ctx, &common.Void{})
-	if e != nil {
-		fmt.Printf("Failed to log out: %s\n", utils.ErrorString(e))
-		return nil, e
+	if a_err != nil && s_err != nil {
+		return nil, a_err
 	}
 	return res, nil
 }
