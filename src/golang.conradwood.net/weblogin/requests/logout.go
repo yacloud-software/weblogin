@@ -9,6 +9,7 @@ import (
 	"golang.conradwood.net/go-easyops/utils"
 	cm "golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/requesttracker"
+	"golang.yacloud.eu/apis/sessionmanager"
 	"html/template"
 )
 
@@ -70,6 +71,17 @@ func logoutPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 		return nil, err
 	}
 	res.Body = t
+
+	token := cr.GetAuthCookie()
+	if token == "" {
+		fmt.Printf("no auth cookie to log out with\n")
+	} else {
+		st := &sessionmanager.SessionToken{Token: token}
+		_, err = sessionmanager.GetSessionManagerClient().DisassociateUserFromSession(ctx, st)
+		if err != nil {
+			fmt.Printf("failed to log out of session: %s\n", utils.ErrorString(err))
+		}
+	}
 	_, e := authManager.LogMeOut(ctx, &common.Void{})
 	if e != nil {
 		fmt.Printf("Failed to log out: %s\n", utils.ErrorString(e))

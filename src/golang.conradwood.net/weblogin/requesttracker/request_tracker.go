@@ -19,6 +19,7 @@ import (
 
 const (
 	BROWSERID_COOKIE = "yacloud_browserid"
+	AUTH_COOKIE      = "Auth-Token"
 )
 
 type Request struct {
@@ -153,6 +154,17 @@ func (cr *Request) GetMagic() string {
 func (cr *Request) BrowserID() string {
 	return cr.browserid
 }
+
+func (cr *Request) GetAuthCookie() string {
+	cookie_name := AUTH_COOKIE
+	for _, c := range cr.req.Cookies {
+		if c.Name == cookie_name {
+			return c.Value
+		}
+	}
+	return ""
+}
+
 func (cr *Request) CookiesToSet() []*h2gproxy.Cookie {
 	var res []*h2gproxy.Cookie
 	if cr.BrowserID() == "" {
