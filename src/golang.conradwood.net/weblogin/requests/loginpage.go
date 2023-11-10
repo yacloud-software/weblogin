@@ -24,7 +24,7 @@ import (
 )
 
 var (
-	issue_session_cookie_instead_of_auth = flag.Bool("issue_session_cookie", false, "if true issue a session token instead of an auth token")
+	issue_session_cookie_instead_of_auth = flag.Bool("issue_session_cookie", true, "if true issue a session token instead of an auth token")
 	check_captcha_on_login               = flag.Bool("check_captcha_on_login", true, "if true also checks captcha on login")
 	dur_secs                             = flag.Int("session_lifetime", 12*60*60, "session lifetime in `seconds`")
 	Cookie_livetime                      *int
