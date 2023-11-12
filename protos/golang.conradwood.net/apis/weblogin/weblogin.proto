@@ -62,6 +62,7 @@ message State {
   string TriggerQuery = 3; // part of the absolute URL that triggered the login request
   string Token = 4;        // once we authenticated a user this carries the token.
   string Method = 5; // the method the browser used to arrive at weblogin
+  uint32 TokenSource=6; // 0==authserver,1=sessionmanager
 }
 message StateResponse {
   string YacloudWebloginState = 1; // the encoded state, guaranteed to be valid to be added to a URL as ?[weblogin_state]=xxx
