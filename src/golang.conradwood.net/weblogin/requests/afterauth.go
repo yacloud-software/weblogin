@@ -30,7 +30,11 @@ func setCookiePage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	fmt.Printf("Setting cookie and redirecting to %s....\n", target)
 	res := NewWebloginResponse()
 	res.RedirectTo = target
-	addCookie(res, "Auth-Token", state.Token)
+	dur := common.AuthCookieLifetime()
+	if state.TokenSource == 1 {
+		dur = common.SessionCookieLifetime()
+	}
+	addCookie(res, "Auth-Token", state.Token, dur)
 	addCookies(res, cr.CookiesToSet())
 	if state.Token == "" {
 		return nil, errors.AccessDenied(ctx, "missing token")

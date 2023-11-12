@@ -46,6 +46,6 @@ func preAuthCookie(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	res.Cookies = append(res.Cookies, cr.CookiesToSet()...)
 	res.Body = smallimg
 	res.MimeType = "image/png"
-	addCookie(res, "Pre-Auth-Token", "weblogin_is_incomplete_cross_domain_pre_auth_not_working_yet")
+	addCookie(res, "Pre-Auth-Token", "weblogin_is_incomplete_cross_domain_pre_auth_not_working_yet", common.AuthCookieLifetime())
 	return res, nil
 }

@@ -11,6 +11,7 @@ import (
 	"golang.conradwood.net/weblogin/requesttracker"
 	"golang.yacloud.eu/apis/sessionmanager"
 	"html/template"
+	"time"
 )
 
 type LogoutStruct struct {
@@ -64,7 +65,7 @@ func logoutPage(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	l := &LogoutStruct{user: u, state: state}
 	res := NewWebloginResponse()
 	addCookies(res, cr.CookiesToSet())
-	addCookie(res, "Auth-Token", "")
+	addCookie(res, "Auth-Token", "", time.Duration(10)*time.Second) // clear cookie soonish
 	t, err := renderTemplate(cr, l, "loggedout")
 	if err != nil {
 		fmt.Printf("template error: %s\n", err)

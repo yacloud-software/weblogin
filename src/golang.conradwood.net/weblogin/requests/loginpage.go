@@ -26,8 +26,9 @@ import (
 var (
 	issue_session_cookie_instead_of_auth = flag.Bool("issue_session_cookie", true, "if true issue a session token instead of an auth token")
 	check_captcha_on_login               = flag.Bool("check_captcha_on_login", true, "if true also checks captcha on login")
-	dur_secs                             = flag.Int("session_lifetime", 12*60*60, "session lifetime in `seconds`")
-	Cookie_livetime                      *int
+
+// dur_secs                             = flag.Int("session_lifetime", 12*60*60, "session lifetime in `seconds`")
+// Cookie_livetime                      *int
 )
 
 // implements common.Template_data
@@ -146,7 +147,7 @@ func skipAuth(cr *requesttracker.Request) (*pb.WebloginResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	tr, err := authManager.GetTokenForMe(ctx, &au.GetTokenRequest{DurationSecs: uint64(*dur_secs)})
+	tr, err := authManager.GetTokenForMe(ctx, &au.GetTokenRequest{DurationSecs: uint64(common.AuthTokenLifetime().Seconds())})
 	if err != nil {
 		return nil, err
 	}
@@ -210,17 +211,20 @@ func processLogin(cr *requesttracker.Request) (*pb.WebloginResponse, *au.User, e
 	b := []byte(s)
 	res := NewWebloginResponse()
 	cookie_token := u.Token
+	dur := common.AuthCookieLifetime()
 	if *issue_session_cookie_instead_of_auth {
+		dur = common.SessionCookieLifetime()
 		ct, err := session_for_user(ctx, cr, u.User)
 		if err != nil {
 			fmt.Printf("failed to issue session cookie: %s\n", utils.ErrorString(err))
 		} else {
 			cookie_token = ct
+			state.TokenSource = 1
 		}
 	}
 	addCookies(res, cr.CookiesToSet())
 	res.Body = b
-	addCookie(res, "Auth-Token", cookie_token)
+	addCookie(res, "Auth-Token", cookie_token, dur)
 	state.Token = cookie_token
 	err = putMagic(cr, magic, state) // update our store with the state including token
 	if err != nil {
@@ -236,9 +240,8 @@ func addCookies(wr *pb.WebloginResponse, cookies []*h2gproxy.Cookie) {
 	wr.Cookies = append(wr.Cookies, cookies...)
 
 }
-func addCookie(wr *pb.WebloginResponse, name string, value string) {
-	exp := time.Now().Unix()
-	exp = exp + int64(*Cookie_livetime)
+func addCookie(wr *pb.WebloginResponse, name string, value string, dur time.Duration) {
+	exp := time.Now().Add(dur).Unix()
 	hc := &h2gproxy.Cookie{Name: name, Value: value, Expiry: uint32(exp)}
 	wr.Cookies = append(wr.Cookies, hc)
 }

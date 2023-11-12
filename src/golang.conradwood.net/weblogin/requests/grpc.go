@@ -296,7 +296,7 @@ func (w *RequestHandler) VerifyURL(ctx context.Context, req *pb.WebloginRequest)
 		return res, nil
 	}
 	res.User = u
-	addCookie(res, "Auth-Token", state.Token)
+	addCookie(res, "Auth-Token", state.Token, common.AuthCookieLifetime())
 	return res, nil
 }
 

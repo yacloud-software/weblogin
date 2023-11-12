@@ -38,19 +38,19 @@ The authentication works as follows:
 */
 // static variables for flag parser
 var (
-	port            = flag.Int("port", 10001, "The server port")
-	httpport        = flag.Int("http_port", 8091, "The port to start the HTTP listener on")
-	cookie_livetime = flag.Int("cookie_expiry", 30*60, "cookie expiry time in seconds")
-	use_version     = flag.Int("use_version", 2, "use a particular version (cannot be set live)")
-	authClient      apb.AuthenticationServiceClient
-	authMgr         apb.AuthManagerServiceClient
-	rh              common.VersionHandler
+	port     = flag.Int("port", 10001, "The server port")
+	httpport = flag.Int("http_port", 8091, "The port to start the HTTP listener on")
+	//	cookie_livetime = flag.Int("cookie_expiry", 30*60, "cookie expiry time in seconds")
+	use_version = flag.Int("use_version", 2, "use a particular version (cannot be set live)")
+	authClient  apb.AuthenticationServiceClient
+	authMgr     apb.AuthManagerServiceClient
+	rh          common.VersionHandler
 )
 
 func main() {
 	flag.Parse() // parse stuff. see "var" section above
 	common.InitKey()
-	requests.Cookie_livetime = cookie_livetime
+	//requests.Cookie_livetime = cookie_livetime
 	v := *use_version
 	if v == 2 {
 		rh = requests.NewHandler()
