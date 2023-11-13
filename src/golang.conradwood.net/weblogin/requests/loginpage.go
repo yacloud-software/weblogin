@@ -14,6 +14,7 @@ import (
 	"golang.conradwood.net/go-easyops/http"
 	"golang.conradwood.net/go-easyops/utils"
 	"golang.conradwood.net/weblogin/common"
+	"golang.conradwood.net/weblogin/register"
 	"golang.conradwood.net/weblogin/requesttracker"
 	"golang.conradwood.net/weblogin/web"
 	"golang.yacloud.eu/apis/sessionmanager"
@@ -26,6 +27,7 @@ import (
 var (
 	issue_session_cookie_instead_of_auth = flag.Bool("issue_session_cookie", true, "if true issue a session token instead of an auth token")
 	check_captcha_on_login               = flag.Bool("check_captcha_on_login", true, "if true also checks captcha on login")
+	captcha_bypass_on_login              = flag.Bool("captcha_bypass_on_login", false, "if true, allows captcha bypass on login as well as register")
 
 // dur_secs                             = flag.Int("session_lifetime", 12*60*60, "session lifetime in `seconds`")
 // Cookie_livetime                      *int
@@ -172,7 +174,9 @@ func processLogin(cr *requesttracker.Request) (*pb.WebloginResponse, *au.User, e
 	ctx := cr.Context()
 	cr.Debugf("[processLogin] path for weblogin: %s/%s\n", req.Host, req.Path)
 	paras := req.Submitted
-	if *check_captcha_on_login {
+	if *captcha_bypass_on_login && paras["captcha_bypass"] == *register.CAPTCHA_BYPASS {
+		fmt.Println("captcha bypassed")
+	} else if *check_captcha_on_login {
 		err := check_captcha(paras["g_captcha"], cr.Request().Host)
 		if err != nil {
 			fmt.Printf("Captcha verification failed: %s\n", err)
