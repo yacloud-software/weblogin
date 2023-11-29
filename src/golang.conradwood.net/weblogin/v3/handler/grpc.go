@@ -3,10 +3,16 @@ package handler
 import (
 	"context"
 	"fmt"
+	cm "golang.conradwood.net/apis/common"
 	"golang.conradwood.net/apis/themes"
 	pb "golang.conradwood.net/apis/weblogin"
+	"golang.conradwood.net/go-easyops/errors"
 	"golang.conradwood.net/weblogin/v3/common"
 )
+
+func (w *Handler) SignupEmailRPC(ctx context.Context, req *pb.SignupEmail) (*cm.Void, error) {
+	return nil, errors.NotImplemented(ctx, "no signup emails")
+}
 
 func (w *Handler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
 	if req.Host == common.SSOHost() && req.Path == "/weblogin/login" {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	au "golang.conradwood.net/apis/auth"
+	cm "golang.conradwood.net/apis/common"
 	pb "golang.conradwood.net/apis/weblogin"
 	"golang.conradwood.net/go-easyops/auth"
 	"golang.conradwood.net/go-easyops/errors"
@@ -22,6 +23,9 @@ import (
 	"time"
 )
 
+func (r *RequestHandler) SignupEmailRPC(ctx context.Context, req *pb.SignupEmail) (*cm.Void, error) {
+	return register.SignupEmailRPC(ctx, req)
+}
 func (r *RequestHandler) StartGRPC(port int) error {
 	sd := server.NewServerDef()
 	sd.SetPort(port)
