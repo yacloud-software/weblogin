@@ -1,4 +1,3 @@
-
 syntax = "proto3";
 
 package weblogin;
@@ -9,7 +8,10 @@ option java_package = "net.conradwood.golang.apis.weblogin";
 import "golang.conradwood.net/apis/h2gproxy/h2gproxy.proto";
 import "golang.yacloud.eu/apis/session/session.proto";
 import "golang.conradwood.net/apis/common/common.proto";
-
+message SignupEmail {
+  string Host=1;
+  string Email=2;
+}
 message BasicAuthRequest {
   // the stuff extracted from "Authorization" Header
   string Username = 1;
@@ -153,6 +155,8 @@ service Weblogin {
   rpc VerifyURL(WebloginRequest) returns (WebloginResponse);
   // helper for h2gproxy. create a state (before redirecting browser to weblogin)
   rpc SaveState(WebloginRequest) returns (StateResponse);
+  // send/re-send a sign-up email
+  rpc SignupEmailRPC(SignupEmail) returns (common.Void);
 }
 
 // this is how a userjourney tracker service needs to look like
