@@ -7,7 +7,9 @@ import (
 	"golang.conradwood.net/apis/common"
 	"golang.conradwood.net/apis/email"
 	pb "golang.conradwood.net/apis/weblogin"
+	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/utils"
+	"golang.conradwood.net/weblogin/requesttracker"
 	"net/url"
 )
 
@@ -49,6 +51,15 @@ func SignupEmailRPC(ctx context.Context, req *pb.SignupEmail) (*common.Void, err
 		fmt.Printf("failed attempt to send email to %s", t.Recipient)
 		return nil, fmt.Errorf("of an uncategorised error")
 	}
-
+	wr := &pb.WebloginRequest{
+		Peer: "127.0.0.1",
+	}
+	cr := requesttracker.NewRequest(ctx, wr)
+	cr.SetEmail(req.Email)
+	u, err := authremote.GetUserByEmail(ctx, req.Email)
+	if err == nil && u != nil {
+		cr.SetUser(u)
+	}
+	cr.RegistrationEmailSent()
 	return &common.Void{}, nil
 }
