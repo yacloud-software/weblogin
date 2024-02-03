@@ -52,8 +52,9 @@ func IsDosing(cr *requesttracker.Request) error {
 		return nil
 	}
 	ipc = o.(*ipcache)
+	url := cr.Request().Host + cr.Request().Path
 	if ipc.isPeerOverLimit() {
-		fmt.Printf("Blocked peer %s\n", peer_ip_string)
+		fmt.Printf("Blocked peer %s (accessing \"%s\")\n", peer_ip_string, url)
 		ctx := authremote.Context()
 		_, err := antidos.GetAntiDOSClient().IPFailure(ctx, &antidos.IPFailureRequest{Botiness: 1, Message: "peer over limit", IP: peer_ip_string})
 		if err != nil {
@@ -61,7 +62,6 @@ func IsDosing(cr *requesttracker.Request) error {
 		}
 		return status.Error(codes.ResourceExhausted, "you reached your limit of accesses. please try later")
 	}
-	url := cr.Request().Host + cr.Request().Path
 	if ipc.isURLOverLimit(url) {
 		fmt.Printf("Blocked peer %s on url %s\n", peer_ip_string, url)
 		return status.Error(codes.ResourceExhausted, "you reached your limit of accesses. please try later")
