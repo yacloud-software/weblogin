@@ -39,7 +39,7 @@ func needSessionPage(ctx context.Context, req *pb.WebloginRequest, cr *requesttr
 	}
 
 	marshalled := req.Path[idx+1:]
-	fmt.Printf("[needsession] Marshalled: \"%s\"\n", marshalled)
+	//	fmt.Printf("[needsession] Marshalled: \"%s\"\n", marshalled)
 	state := &pb.SessionState{}
 	err := utils.Unmarshal(marshalled, state)
 	if err != nil {

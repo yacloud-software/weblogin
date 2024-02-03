@@ -111,7 +111,7 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	cr.Debugf("weblogin.ServeHTMLWithError: serving https://%s/%s?%s for user %s\n", req.Host, req.Path, q, auth.Description(u))
 	cr.PrintParas()
 
-	if strings.Contains(req.Path, "/weblogin/needsession/") { // user clicked on link in reset password email
+	if strings.Contains(req.Path, "/weblogin/needsession/") { // h2gproxy redirected to session generator
 		res, err := needSessionPage(ctx, req, cr)
 		cr.SetError(err)
 		cr.SessionSet()
