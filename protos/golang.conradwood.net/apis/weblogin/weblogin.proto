@@ -71,6 +71,14 @@ message StateResponse {
   string URLStateName = 2; // the name of the parameter to use to pass state into weblogin service
 }
 
+// created by h2gproxy when user has no session but needs one 
+message SessionState {
+  string TriggerHost = 1;  // part of the absolute URL that triggered the login request
+  string TriggerPath = 2;  // part of the absolute URL that triggered the login request
+  string TriggerQuery = 3; // part of the absolute URL that triggered the login request
+  string NewSessionToken=4; // filled by weblogin
+}
+
 message RegisterState {
   string Host=1; // which host the user originally signed on in
   string Email=2; // the email address the user claimed to have
