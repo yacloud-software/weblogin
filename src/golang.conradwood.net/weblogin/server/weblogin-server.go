@@ -69,7 +69,7 @@ func main() {
 		panic(err)
 	}
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", sd.Port),
+		Addr:    fmt.Sprintf(":%d", *httpport),
 		Handler: &webhandler{},
 	}
 	err = srv.Serve(conn)

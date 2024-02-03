@@ -17,10 +17,10 @@ func NewHandler() *Handler {
 func (h *Handler) StartGRPC(port int) error {
 	sd := server.NewServerDef()
 	sd.SetPort(port)
-	sd.Register = func(server *grpc.Server) error {
+	sd.SetRegister(func(server *grpc.Server) error {
 		pb.RegisterWebloginServer(server, h)
 		return nil
-	}
+	})
 	err := server.ServerStartup(sd)
 	if err != nil {
 		s := fmt.Sprintf("failed to start server: %s\n", err)

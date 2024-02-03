@@ -29,10 +29,10 @@ func (r *RequestHandler) SignupEmailRPC(ctx context.Context, req *pb.SignupEmail
 func (r *RequestHandler) StartGRPC(port int) error {
 	sd := server.NewServerDef()
 	sd.SetPort(port)
-	sd.Register = func(server *grpc.Server) error {
+	sd.SetRegister(func(server *grpc.Server) error {
 		pb.RegisterWebloginServer(server, r)
 		return nil
-	}
+	})
 	err := server.ServerStartup(sd)
 	if err != nil {
 		fmt.Printf("failed to start server: %s\n", err)
@@ -110,6 +110,14 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	}
 	cr.Debugf("weblogin.ServeHTMLWithError: serving https://%s/%s?%s for user %s\n", req.Host, req.Path, q, auth.Description(u))
 	cr.PrintParas()
+
+	if strings.Contains(req.Path, "/weblogin/needsession/") { // user clicked on link in reset password email
+		res, err := needSessionPage(ctx, req, cr)
+		cr.SetError(err)
+		cr.SessionSet()
+		return res, err
+	}
+
 	if strings.HasSuffix(req.Path, "/renderlog") {
 		return renderlog(cr)
 	}
@@ -167,13 +175,6 @@ func (w *RequestHandler) ServeHTMLWithError(ctx context.Context, req *pb.Weblogi
 	if host != web.SSOHost() {
 		msg = fmt.Sprintf("This page must be loaded at %s (not \"%s\"). (path=%s)", web.SSOHost(), host, req.Path)
 		fmt.Println(msg)
-	}
-
-	if strings.HasSuffix(req.Path, "/needsession") { // user clicked on link in reset password email
-		res, err := needSessionPage(cr)
-		cr.SetError(err)
-		cr.SessionSet()
-		return res, err
 	}
 
 	paras := req.Submitted
