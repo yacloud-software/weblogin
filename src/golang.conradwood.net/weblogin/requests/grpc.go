@@ -52,8 +52,18 @@ func (w *RequestHandler) IsBasicAuthValid(ctx context.Context, cr *pb.BasicAuthR
 // we end up in here if a well-known url for weblogin is requested, that is "/weblogin/"
 func (w *RequestHandler) ServeHTML(ctx context.Context, req *pb.WebloginRequest) (*pb.WebloginResponse, error) {
 	fmt.Printf("Requested path \"%s\"\n", req.Path)
+
 	cr := requesttracker.NewRequest(ctx, req)
 	requestCounter.With(prometheus.Labels{"counter": "total"}).Inc()
+
+	// does not count to dosing, does its own dosing thing
+	if strings.Contains(req.Path, "/weblogin/needsession/") { // h2gproxy redirected to session generator
+		res, err := needSessionPage(ctx, req, cr)
+		cr.SetError(err)
+		cr.SessionSet()
+		return res, err
+	}
+
 	CountURL(cr)
 	e := IsDosing(cr)
 	if e != nil {
