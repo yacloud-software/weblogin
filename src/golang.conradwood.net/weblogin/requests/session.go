@@ -46,6 +46,8 @@ func needSessionPage(ctx context.Context, req *pb.WebloginRequest, cr *requesttr
 		return nil, fmt.Errorf("[needsession] could not parse state: %w", err)
 	}
 
+	fmt.Printf("[session] request from http[s]://\"%s/%s\"\n", stripslash(state.TriggerHost), stripslash(state.TriggerPath))
+
 	// builds the url it originally came from
 	next_url := "https://" + state.TriggerHost + state.TriggerPath
 	if state.TriggerQuery != "" {
