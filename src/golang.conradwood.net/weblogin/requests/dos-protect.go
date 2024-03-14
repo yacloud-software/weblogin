@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	ips        = cache.New("anti-dos", time.Duration(60)*time.Minute, 1000)
+	ips        = cache.New("anti-dos", time.Duration(5)*time.Minute, 1000)
 	enable_dos = flag.Bool("enable_dos_protection", true, "does a basic invalid login detection perip")
 )
 
