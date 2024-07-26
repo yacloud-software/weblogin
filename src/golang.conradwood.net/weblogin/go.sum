@@ -77,6 +77,8 @@ golang.yacloud.eu/apis/autodeployer2 v1.1.2897 h1:3nds5+4d7DGIQmI5tQDNeZQCJTYiHm
 golang.yacloud.eu/apis/autodeployer2 v1.1.2897/go.mod h1:AqC+ISk34OzNT1uHz5w/RvOwqLd7XyKCfgzZZ/8vedY=
 golang.yacloud.eu/apis/fscache v1.1.2897 h1:CVqvmToI4juR7e1BCjYWDOjOUQaVq0hemtZfF1MCAPw=
 golang.yacloud.eu/apis/fscache v1.1.2897/go.mod h1:G6DgJiHQRdl4OFcr+4ADNQIk33fwKQ7Ff1UUltTa2HQ=
+golang.yacloud.eu/apis/messaging v1.1.2948 h1:m63zMtknM6EaCnSKr6FRHGz5zGiqO7lM1cVF0gpjaqw=
+golang.yacloud.eu/apis/messaging v1.1.2948/go.mod h1:5f7h2SAFvtr/dtu8hwzHTeWHbjQAIELqiVvjpGRnpjA=
 golang.yacloud.eu/apis/session v1.1.2943 h1:auBRO2/StP4adjIovlui9gLr9TOH/b3odK8k5MlwG9Q=
 golang.yacloud.eu/apis/session v1.1.2943/go.mod h1:qgptYnvJCH5bKhvf90fXaRoK0v/irNvr7WcP6p6ZJjQ=
 golang.yacloud.eu/apis/sessionmanager v1.1.2777 h1:Jlk90KzGAf7nO6wOdmeGaPCnSuwhxZzX6uHk7G+A0Eo=

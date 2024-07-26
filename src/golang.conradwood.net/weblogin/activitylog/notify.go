@@ -1,25 +1,20 @@
 package activitylog
 
 import (
-	"flag"
 	"fmt"
-	slack "golang.conradwood.net/apis/slackgateway"
 	"golang.conradwood.net/go-easyops/authremote"
 	"golang.conradwood.net/go-easyops/utils"
-)
-
-var (
-	slack_userid = flag.String("slack_userid", "7", "userid for notifications")
+	"golang.yacloud.eu/apis/messaging"
 )
 
 func send_notification(format string, args ...interface{}) {
 	text := fmt.Sprintf(format, args...)
-	p := &slack.PostRequest{UserID: *slack_userid, Text: text}
-	go func(pr *slack.PostRequest) {
+	p := &messaging.TopicMessageRequest{Topic: "weblogin", Message: text}
+	go func(pr *messaging.TopicMessageRequest) {
 		ctx := authremote.Context()
-		_, err := slack.GetSlackGatewayClient().Post(ctx, pr)
+		_, err := messaging.GetMessagingClient().MessageToTopic(ctx, pr)
 		if err != nil {
-			fmt.Printf("Failed to slack \"%s\" to \"%s\": %s", pr.Text, pr.UserID, utils.ErrorString(err))
+			fmt.Printf("Failed to slack \"%s\" to \"%s\": %s", pr.Message, "none", utils.ErrorString(err))
 		}
 	}(p)
 }

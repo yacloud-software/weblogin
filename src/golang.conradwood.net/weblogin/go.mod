@@ -44,6 +44,7 @@ require (
 	golang.org/x/text v0.16.0 // indirect
 	golang.yacloud.eu/apis/autodeployer2 v1.1.2897 // indirect
 	golang.yacloud.eu/apis/fscache v1.1.2897 // indirect
+	golang.yacloud.eu/apis/messaging v1.1.2948 // indirect
 	golang.yacloud.eu/apis/unixipc v1.1.2878 // indirect
 	golang.yacloud.eu/apis/urlcacher v1.1.2878 // indirect
 	golang.yacloud.eu/unixipc v0.1.26120 // indirect
