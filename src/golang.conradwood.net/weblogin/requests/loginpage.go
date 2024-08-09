@@ -42,6 +42,10 @@ type loginrender struct {
 	SiteKey              string
 }
 
+func (rr *loginrender) Year() string {
+	t := time.Now().Year()
+	return fmt.Sprintf("%d", t)
+}
 func (rr *loginrender) GetQueryValue(key string) string {
 	return common.State2URLValues(rr.weblogin_state_value)[key]
 }

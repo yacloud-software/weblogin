@@ -20,6 +20,11 @@ type LogoutStruct struct {
 	state *pb.State
 }
 
+func (rr *LogoutStruct) Year() string {
+	t := time.Now().Year()
+	return fmt.Sprintf("%d", t)
+}
+
 func (rr *LogoutStruct) GetQueryValue(key string) string {
 	return cm.State2URLValues(rr.state)[key]
 }

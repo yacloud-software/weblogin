@@ -44,6 +44,11 @@ type RegisterRequest struct {
 	cr            *requesttracker.Request
 }
 
+func (rr *RegisterRequest) Year() string {
+	t := time.Now().Year()
+	return fmt.Sprintf("%d", t)
+}
+
 func (rr *RegisterRequest) GetQueryValue(key string) string {
 	return common.State2URLValues(rr.state)[key]
 }

@@ -16,6 +16,7 @@ const (
 )
 
 type Template_data interface {
+	Year() string
 	Username() string
 	StateQuery() template.HTMLAttr
 	ReferrerHost() string

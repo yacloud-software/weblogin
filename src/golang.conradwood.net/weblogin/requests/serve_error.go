@@ -9,10 +9,16 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"html/template"
+	"time"
 )
 
 type errordata struct {
 	ErrorText string
+}
+
+func (rr *errordata) Year() string {
+	t := time.Now().Year()
+	return fmt.Sprintf("%d", t)
 }
 
 func (rr *errordata) GetQueryValue(key string) string {

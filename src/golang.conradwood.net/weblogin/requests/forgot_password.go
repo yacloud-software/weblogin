@@ -11,6 +11,7 @@ import (
 	"golang.conradwood.net/weblogin/common"
 	"golang.conradwood.net/weblogin/requesttracker"
 	"html/template"
+	"time"
 )
 
 type ForgotStruct struct {
@@ -20,6 +21,11 @@ type ForgotStruct struct {
 	state *pb.State
 	PW1   string
 	PW2   string
+}
+
+func (rr *ForgotStruct) Year() string {
+	t := time.Now().Year()
+	return fmt.Sprintf("%d", t)
 }
 
 func (rr *ForgotStruct) GetQueryValue(key string) string {
