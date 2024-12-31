@@ -1,17 +1,15 @@
 module golang.conradwood.net/apis/weblogin
 
-go 1.22.7
-
-toolchain go1.23.3
+go 1.22.2
 
 require (
 	github.com/golang/protobuf v1.5.4
-	golang.conradwood.net/apis/auth v1.1.3522
-	golang.conradwood.net/apis/common v1.1.3522
+	golang.conradwood.net/apis/auth v1.1.3552
+	golang.conradwood.net/apis/common v1.1.3552
 	golang.conradwood.net/apis/h2gproxy v1.1.3340
-	golang.conradwood.net/go-easyops v0.1.32310
+	golang.conradwood.net/go-easyops v0.1.32768
 	golang.org/x/net v0.32.0
-	golang.yacloud.eu/apis/session v1.1.3522
+	golang.yacloud.eu/apis/session v1.1.3552
 	google.golang.org/grpc v1.68.1
 )
 
@@ -27,7 +25,7 @@ require (
 	golang.conradwood.net/apis/autodeployer v1.1.3340 // indirect
 	golang.conradwood.net/apis/deploymonkey v1.1.3340 // indirect
 	golang.conradwood.net/apis/framework v1.1.3340 // indirect
-	golang.conradwood.net/apis/goeasyops v1.1.3522 // indirect
+	golang.conradwood.net/apis/goeasyops v1.1.3552 // indirect
 	golang.conradwood.net/apis/grafanadata v1.1.3340 // indirect
 	golang.conradwood.net/apis/objectstore v1.1.3340 // indirect
 	golang.conradwood.net/apis/registry v1.1.3340 // indirect
