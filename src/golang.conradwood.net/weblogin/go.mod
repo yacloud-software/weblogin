@@ -11,7 +11,7 @@ require (
 	golang.conradwood.net/apis/objectstore v1.1.3625
 	golang.conradwood.net/apis/themes v1.1.2777
 	golang.conradwood.net/apis/weblogin v1.1.1428
-	golang.conradwood.net/go-easyops v0.1.33761
+	golang.conradwood.net/go-easyops v0.1.33838
 	golang.yacloud.eu/apis/messaging v1.1.2948
 	golang.yacloud.eu/apis/session v1.1.3627
 	golang.yacloud.eu/apis/sessionmanager v1.1.2777
