@@ -6,18 +6,18 @@ toolchain go1.23.3
 
 require (
 	golang.conradwood.net/apis/antidos v1.1.2777
-	golang.conradwood.net/apis/auth v1.1.3773
-	golang.conradwood.net/apis/common v1.1.3773
+	golang.conradwood.net/apis/auth v1.1.3833
+	golang.conradwood.net/apis/common v1.1.3833
 	golang.conradwood.net/apis/email v1.1.2777
 	golang.conradwood.net/apis/h2gproxy v1.1.3625
 	golang.conradwood.net/apis/objectstore v1.1.3625
 	golang.conradwood.net/apis/themes v1.1.2777
 	golang.conradwood.net/apis/weblogin v1.1.1428
-	golang.conradwood.net/go-easyops v0.1.34924
+	golang.conradwood.net/go-easyops v0.1.35313
 	golang.yacloud.eu/apis/messaging v1.1.2948
-	golang.yacloud.eu/apis/session v1.1.3773
+	golang.yacloud.eu/apis/session v1.1.3833
 	golang.yacloud.eu/apis/sessionmanager v1.1.2777
-	google.golang.org/grpc v1.71.0
+	google.golang.org/grpc v1.71.1
 )
 
 require (
@@ -40,12 +40,12 @@ require (
 	golang.conradwood.net/apis/errorlogger v1.1.3625 // indirect
 	golang.conradwood.net/apis/framework v1.1.3625 // indirect
 	golang.conradwood.net/apis/getestservice v1.1.3625 // indirect
-	golang.conradwood.net/apis/goeasyops v1.1.3773 // indirect
+	golang.conradwood.net/apis/goeasyops v1.1.3833 // indirect
 	golang.conradwood.net/apis/grafanadata v1.1.3625 // indirect
 	golang.conradwood.net/apis/registry v1.1.3625 // indirect
-	golang.org/x/net v0.37.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/text v0.24.0 // indirect
 	golang.yacloud.eu/apis/autodeployer2 v1.1.3625 // indirect
 	golang.yacloud.eu/apis/faultindicator v1.1.3625 // indirect
 	golang.yacloud.eu/apis/fscache v1.1.3625 // indirect
@@ -53,7 +53,7 @@ require (
 	golang.yacloud.eu/apis/urlcacher v1.1.3625 // indirect
 	golang.yacloud.eu/unixipc v0.1.31725 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
-	google.golang.org/protobuf v1.36.5 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
